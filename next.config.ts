@@ -1,7 +1,13 @@
-import type { NextConfig } from "next";
+const nextConfig = {
+  async redirects() {
+    return [
+      {
+        source: '/dashboard/reportes',
+        destination: '/dashboard/caja',
+        permanent: true, // Esto es un redirect 301 (permanente)
+      },
+    ]
+  },
+}
 
-const nextConfig: NextConfig = {
-  /* config options here */
-};
-
-export default nextConfig;
+export default nextConfig
