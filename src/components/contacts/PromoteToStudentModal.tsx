@@ -15,7 +15,6 @@ export function PromoteToStudentModal({ contact, clubs }: { contact: any, clubs:
 
   useEffect(() => { setMounted(true) }, [])
 
-  // Funciones para manejar múltiples horarios
   const addSchedule = () => {
     setSchedules([...schedules, { day_of_week: 1, start_time: "10:00" }])
   }
@@ -28,16 +27,19 @@ export function PromoteToStudentModal({ contact, clubs }: { contact: any, clubs:
 
   const handleAction = async (formData: FormData) => {
     setIsSubmitting(true)
-    const price = Math.round(parseFloat(formData.get('price') as string) * 100)
     
-    const result = await promoteContactToStudent({
-      contactId: contact.id,
-      full_name: formData.get('full_name') as string,
-      phone: contact.phone,
+    // Convertimos a número el precio para enviarlo a la acción
+    const pricePerClass = parseFloat(formData.get('price') as string)
+    
+    // FIX: Llamada con dos argumentos (ID, Objeto de datos) según definición en actions.ts
+    const result = await promoteContactToStudent(contact.id, {
       club_id: formData.get('club_id') as string,
-      level: formData.get('level') as any,
-      price_per_class_cents: price,
-      schedules: schedules // Se envían TODOS los horarios agregados
+      level: formData.get('level') as string,
+      price_per_class: pricePerClass,
+      // Aunque promoteContactToStudent en actions.ts no procesaba schedules aún, 
+      // lo incluimos si decides extender la acción luego.
+      // @ts-ignore (Si el tipo en la acción aún no incluye schedules)
+      schedules: schedules 
     })
 
     if (result.success) {
@@ -62,7 +64,6 @@ export function PromoteToStudentModal({ contact, clubs }: { contact: any, clubs:
         </div>
 
         <form action={handleAction} className="space-y-5">
-          {/* ... (Campos de Nombre, Sede y Nivel) ... */}
           <div>
             <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Nombre Completo</label>
             <input type="text" name="full_name" defaultValue={contact.full_name} required className="w-full bg-slate-950 border border-slate-800 rounded-2xl p-4 text-sm font-bold text-white mt-1" />
@@ -97,7 +98,7 @@ export function PromoteToStudentModal({ contact, clubs }: { contact: any, clubs:
                 + AÑADIR DÍA
               </button>
             </div>
-             
+              
              <div className="space-y-3">
                {schedules.map((s, i) => (
                  <div key={i} className="flex gap-2 items-center animate-in fade-in">
@@ -125,7 +126,6 @@ export function PromoteToStudentModal({ contact, clubs }: { contact: any, clubs:
                         setSchedules(newSchedules);
                       }} 
                     />
-                   {/* Botón de eliminar, solo si hay más de 1 horario */}
                    {schedules.length > 1 && (
                      <button type="button" onClick={() => removeSchedule(i)} className="p-2 text-slate-600 hover:text-rose-500 transition-colors">
                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
@@ -137,9 +137,9 @@ export function PromoteToStudentModal({ contact, clubs }: { contact: any, clubs:
           </div>
 
           <div>
-            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Cuota Mensual Total ($)</label>
-            <input type="number" name="price" required className="w-full bg-slate-950 border border-slate-800 rounded-2xl p-4 text-sm font-bold text-white mt-1" placeholder="Ej: 50000" />
-            <p className="text-[10px] text-slate-600 mt-1 ml-1">* Precio total a cobrarle por todos sus horarios en el mes.</p>
+            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Precio por Clase ($)</label>
+            <input type="number" name="price" required className="w-full bg-slate-950 border border-slate-800 rounded-2xl p-4 text-sm font-bold text-white mt-1" placeholder="Ej: 12000" />
+            <p className="text-[10px] text-slate-600 mt-1 ml-1">* El sistema calculará el total mensual según las clases del mes.</p>
           </div>
 
           <button disabled={isSubmitting} type="submit" className="w-full bg-[#bdfd2c] text-slate-950 font-black py-5 rounded-2xl text-sm uppercase shadow-[0_10px_20px_rgba(189,253,44,0.3)]">

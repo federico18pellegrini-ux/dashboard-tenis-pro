@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
-import { updateRecurringSchedule } from '@/app/dashboard/actions'
+// FIX: Usamos la acción consolidada
+import { updateStudentData } from '@/lib/actions/contacts'
 import { useRouter } from 'next/navigation'
 
 interface Schedule {
@@ -19,17 +20,21 @@ interface StudentProps {
   full_name: string
   phone: string
   price_per_class_cents: number
+  level: string // Agregado para updateStudentData
+  club_id: string // Agregado para updateStudentData
   schedules: Schedule[]
 }
 
 export function StudentDetailModal({ 
   student, 
   isOpen, 
-  onClose 
+  onClose,
+  clubs = [] // Recibimos la lista de sedes para el select
 }: { 
   student: StudentProps, 
   isOpen: boolean, 
-  onClose: () => void 
+  onClose: () => void,
+  clubs?: any[]
 }) {
   const [mounted, setMounted] = useState(false)
   const [editingScheduleId, setEditingScheduleId] = useState<string | null>(null)
@@ -40,20 +45,36 @@ export function StudentDetailModal({
 
   const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
 
+  // FIX: Adaptado para usar updateStudentData
   async function handleUpdate(formData: FormData, scheduleId: string) {
     setIsSubmitting(true)
-    const priceCents = Math.round(parseFloat(formData.get('price') as string) * 100)
+    const price = parseFloat(formData.get('price') as string)
     
-    const result = await updateRecurringSchedule(scheduleId, {
-      day_of_week: parseInt(formData.get('day_of_week') as string),
-      start_time: formData.get('start_time') as string,
-      duration_minutes: parseInt(formData.get('duration') as string),
-      price_per_class_cents: priceCents
+    // Preparamos los horarios: mantenemos los actuales pero actualizamos el que se editó
+    const updatedSchedules = student.schedules.map(s => {
+      if (s.id === scheduleId) {
+        return {
+          day_of_week: parseInt(formData.get('day_of_week') as string),
+          start_time: formData.get('start_time') as string
+        }
+      }
+      return {
+        day_of_week: s.day_of_week,
+        start_time: s.start_time
+      }
+    })
+
+    const result = await updateStudentData(student.id, {
+      full_name: student.full_name,
+      level: student.level || 'principiante',
+      price_per_class: price,
+      club_id: student.club_id,
+      schedules: updatedSchedules
     })
 
     if (result.success) {
       setEditingScheduleId(null)
-      router.refresh() // Actualiza los datos en el servidor sin cerrar el modal
+      router.refresh()
     } else {
       alert(`Error: ${result.error}`)
     }
@@ -124,13 +145,9 @@ export function StudentDetailModal({
                     </div>
                   </div>
                   
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1">
                     <div>
-                      <label className={labelClasses}>Minutos</label>
-                      <input type="number" name="duration" defaultValue={60} step={30} required className={inputClasses} />
-                    </div>
-                    <div>
-                      <label className={labelClasses}>Precio ($)</label>
+                      <label className={labelClasses}>Precio por Clase ($)</label>
                       <input type="number" name="price" defaultValue={student.price_per_class_cents / 100} required className={inputClasses} />
                     </div>
                   </div>

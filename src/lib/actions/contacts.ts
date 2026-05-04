@@ -7,11 +7,13 @@ import { normalizePhone } from '@/lib/utils/phone'
 /**
  * 1. CREAR CONTACTO MANUAL
  * Registra prospectos en estado 'unclassified'.
+ * FIX: Se agregó 'notes' para compatibilidad con AddContactModal y build de producción.
  */
 export async function createManualContact(data: {
   full_name: string;
   phone: string;
   tags?: string[];
+  notes?: string; // ← Agregado para resolver el Type Error
 }) {
   try {
     const supabase = await createSupabaseServerClient()
@@ -24,6 +26,7 @@ export async function createManualContact(data: {
         phone: sanitizedPhone,
         status: 'unclassified',
         tags: data.tags || [],
+        notes: data.notes || '', // ← Se persiste en la base de datos
         source: 'manual_contact_page'
       })
 
@@ -91,7 +94,6 @@ export async function promoteContactToStudent(contactId: string, data: {
 
 /**
  * 3. ACTUALIZAR DATOS DE ALUMNO (Edición Completa)
- * Blindado contra club_id nulo y sincronización de horarios.
  */
 export async function updateStudentData(studentId: string, data: {
   full_name: string;
@@ -103,14 +105,12 @@ export async function updateStudentData(studentId: string, data: {
   try {
     const supabase = await createSupabaseServerClient()
 
-    // VALIDACIÓN CRÍTICA: Evita que club_id llegue como null o string 'null'
     if (!data.club_id || data.club_id === 'null') {
       return { success: false, error: "La sede seleccionada no es válida." }
     }
 
     const priceCents = Math.round(data.price_per_class * 100)
 
-    // A. Actualizamos la ficha principal del alumno
     const { error: studentError } = await supabase
       .from('students')
       .update({
@@ -123,12 +123,9 @@ export async function updateStudentData(studentId: string, data: {
 
     if (studentError) throw studentError
 
-    // B. Sincronización de Agenda (Horarios)
     if (data.schedules && data.schedules.length > 0) {
-      // Limpiamos horarios viejos para evitar duplicados
       await supabase.from('schedules').delete().eq('student_id', studentId)
 
-      // Insertamos la nueva agenda asegurando que hereden el club_id correcto
       const scheduleInserts = data.schedules.map(s => {
         const start = s.start_time.includes(':00') ? s.start_time : `${s.start_time}:00`
         const hour = parseInt(start.split(':')[0])
@@ -146,7 +143,6 @@ export async function updateStudentData(studentId: string, data: {
       const { error: scheduleError } = await supabase.from('schedules').insert(scheduleInserts)
       if (scheduleError) throw scheduleError
     } else {
-      // Si no se enviaron horarios nuevos, al menos actualizamos la sede de los actuales
       await supabase
         .from('schedules')
         .update({ club_id: data.club_id })
@@ -164,7 +160,6 @@ export async function updateStudentData(studentId: string, data: {
 
 /**
  * 4. ELIMINAR CONTACTO
- * Eliminación física definitiva de la base de datos.
  */
 export async function deleteContact(contactId: string) {
   try {

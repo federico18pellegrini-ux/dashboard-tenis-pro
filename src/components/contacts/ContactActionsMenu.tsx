@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { EditStudentModal } from './EditStudentModal'
-import { deleteContact } from '@/app/dashboard/actions'
+import { deleteContact } from '@/lib/actions/contacts' // Corregido el path si usas la nueva estructura
 import { useRouter } from 'next/navigation'
 
 export function ContactActionsMenu({ contact, clubs = [] }: { contact: any, clubs: any[] }) {
@@ -95,7 +95,6 @@ export function ContactActionsMenu({ contact, clubs = [] }: { contact: any, club
             Archivar
           </button>
 
-          {/* TAREA 6: ELIMINAR PERMANENTE */}
           <div className="border-t border-slate-800 mt-2 pt-2">
             <button 
               onClick={handleDelete}
@@ -112,12 +111,11 @@ export function ContactActionsMenu({ contact, clubs = [] }: { contact: any, club
         document.body
       )}
 
-      {/* MODAL DE EDICIÓN (Pasando la prop clubs para evitar el TypeError) */}
+      {/* MODAL DE EDICIÓN (Removida la prop isOpen que causaba el error) */}
       {showEditModal && (
         <EditStudentModal 
           contact={contact} 
           clubs={clubs} 
-          isOpen={showEditModal}
           onClose={() => setShowEditModal(false)} 
         />
       )}

@@ -16,7 +16,7 @@ export default async function ContactsPage({
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
-  // 1. Fetch de contactos con filtros aplicados
+  // 1. Fetch de contactos con filtros
   let query = supabase.from('contacts').select('*')
   
   if (status !== 'all') {
@@ -27,13 +27,15 @@ export default async function ContactsPage({
     query = query.ilike('full_name', `%${q}%`)
   }
 
-  // FIX: Aseguramos que data sea un array vacío por defecto si falla el fetch
-  const { data: contacts = [] } = await query.order('full_name')
+  // FIX: Tipado explícito para evitar 'never[]'
+  const { data: contactsData } = await query.order('full_name')
+  const contacts: any[] = contactsData || []
 
   // 2. Fetch de sedes (Clubes)
-  const { data: clubs = [] } = await supabase.from('clubs').select('*').order('name')
+  const { data: clubsData } = await supabase.from('clubs').select('*').order('name')
+  const clubs: any[] = clubsData || []
 
-  // 3. Métricas para el Header
+  // 3. Métricas
   const [totalRes, unclassifiedRes, studentsRes] = await Promise.all([
     supabase.from('contacts').select('*', { count: 'exact', head: true }),
     supabase.from('contacts').select('*', { count: 'exact', head: true }).eq('status', 'unclassified'),
@@ -75,7 +77,7 @@ export default async function ContactsPage({
           </div>
         </header>
 
-        {/* NAVEGACIÓN POR ESTADOS */}
+        {/* NAVEGACIÓN */}
         <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2 border-b border-slate-800/60">
           {[
             { id: 'unclassified', label: 'Sin Clasificar' },
@@ -97,7 +99,7 @@ export default async function ContactsPage({
           ))}
         </div>
 
-        {/* TABLA DE GESTIÓN */}
+        {/* TABLA */}
         <div className="bg-slate-900/30 rounded-[2.5rem] border border-slate-800 shadow-2xl overflow-hidden backdrop-blur-md">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
@@ -110,16 +112,15 @@ export default async function ContactsPage({
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-800/40">
-                {/* FIX: Agregamos optional chaining (?.) para el build de Vercel */}
-                {contacts?.map((contact) => (
+                {contacts.map((contact) => (
                   <tr key={contact.id} className="group hover:bg-slate-800/10 transition-colors">
                     <td className="px-8 py-5">
                       <div className="flex items-center gap-4">
                         <div className="h-11 w-11 rounded-full bg-slate-950 border border-slate-800 flex items-center justify-center font-black text-slate-500 group-hover:border-[#bdfd2c] group-hover:text-[#bdfd2c] transition-all">
-                          {contact.full_name[0]?.toUpperCase()}
+                          {contact.full_name?.[0]?.toUpperCase() || '?'}
                         </div>
                         <div>
-                          <p className="text-sm font-black text-slate-100 uppercase tracking-tight leading-none mb-1.5 leading-none">{contact.full_name}</p>
+                          <p className="text-sm font-black text-slate-100 uppercase tracking-tight mb-1.5">{contact.full_name}</p>
                           <p className="text-xs text-slate-500 font-bold tracking-widest">+{contact.phone}</p>
                         </div>
                       </div>
@@ -137,7 +138,7 @@ export default async function ContactsPage({
                       <span className={`text-[9px] font-black px-3 py-1.5 rounded-xl tracking-widest border uppercase ${
                         contact.status === 'student' ? 'bg-emerald-950/20 text-emerald-400 border-emerald-900/50' :
                         contact.status === 'archived' ? 'bg-slate-950 text-slate-600 border-slate-800' :
-                        'bg-[#bdfd2c]/10 text-[#bdfd2c] border-[#bdfd2c]/20 shadow-[0_0_10px_rgba(189,253,44,0.05)]'
+                        'bg-[#bdfd2c]/10 text-[#bdfd2c] border-[#bdfd2c]/20'
                       }`}>
                         {contact.status}
                       </span>
@@ -145,9 +146,9 @@ export default async function ContactsPage({
                     <td className="px-8 py-5 text-right">
                       <div className="flex justify-end items-center gap-4">
                         {contact.status === 'unclassified' && (
-                          <PromoteToStudentModal contact={contact} clubs={clubs || []} />
+                          <PromoteToStudentModal contact={contact} clubs={clubs} />
                         )}
-                        <ContactActionsMenu contact={contact} clubs={clubs || []} />
+                        <ContactActionsMenu contact={contact} clubs={clubs} />
                       </div>
                     </td>
                   </tr>

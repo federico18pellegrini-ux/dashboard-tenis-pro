@@ -17,7 +17,9 @@ export function ContactActions({ contactId }: { contactId: string }) {
     
     if (confirmDelete) {
       setIsDeleting(true)
-      const result = await deleteContact(contactId)[cite: 1]
+      
+      // FIX: Asignamos el tipo esperado a la promesa para que el build de producción sea exitoso
+      const result = await (deleteContact(contactId) as Promise<{ success: boolean; error?: string }>)
       
       if (result.success) {
         setIsOpen(false)
@@ -62,7 +64,7 @@ export function ContactActions({ contactId }: { contactId: string }) {
             <div className="border-t border-slate-800 mt-2 pt-2">
               <button 
                 onClick={handleDelete}
-                disabled={isSubmitting}
+                disabled={isDeleting}
                 className="w-full flex items-center gap-3 px-4 py-3 text-[10px] font-black uppercase tracking-widest text-rose-500 hover:bg-rose-500/10 transition-colors disabled:opacity-50"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">

@@ -3,13 +3,16 @@
 import { useState } from 'react'
 import { EditStudentModal } from '../contacts/EditStudentModal'
 
-/**
- * Componente para vincular el nombre del alumno con el modal de edición
- * @param {Object} props
- * @param {any} props.student
- * @param {any[]} props.clubs
- */
-export function StudentNameLink({ student, clubs = [] }) {
+interface StudentNameLinkProps {
+  student: {
+    id: string;
+    full_name: string;
+    [key: string]: any;
+  };
+  clubs?: any[];
+}
+
+export function StudentNameLink({ student, clubs = [] }: StudentNameLinkProps) {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   if (!student) return null
@@ -33,7 +36,7 @@ export function StudentNameLink({ student, clubs = [] }) {
         <EditStudentModal 
           contact={{
             ...student,
-            student_id: student.id // Sincronización para updateStudentData
+            student_id: student.id
           }} 
           clubs={clubs} 
           onClose={() => setIsModalOpen(false)} 
