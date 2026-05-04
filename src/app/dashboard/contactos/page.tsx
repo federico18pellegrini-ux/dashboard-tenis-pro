@@ -27,9 +27,10 @@ export default async function ContactsPage({
     query = query.ilike('full_name', `%${q}%`)
   }
 
+  // FIX: Aseguramos que data sea un array vacío por defecto si falla el fetch
   const { data: contacts = [] } = await query.order('full_name')
 
-  // 2. Fetch de sedes (Clubes) - CRÍTICO: Esta es la data que alimenta los desplegables[cite: 5]
+  // 2. Fetch de sedes (Clubes)
   const { data: clubs = [] } = await supabase.from('clubs').select('*').order('name')
 
   // 3. Métricas para el Header
@@ -109,12 +110,13 @@ export default async function ContactsPage({
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-800/40">
-                {contacts.map((contact) => (
+                {/* FIX: Agregamos optional chaining (?.) para el build de Vercel */}
+                {contacts?.map((contact) => (
                   <tr key={contact.id} className="group hover:bg-slate-800/10 transition-colors">
                     <td className="px-8 py-5">
                       <div className="flex items-center gap-4">
                         <div className="h-11 w-11 rounded-full bg-slate-950 border border-slate-800 flex items-center justify-center font-black text-slate-500 group-hover:border-[#bdfd2c] group-hover:text-[#bdfd2c] transition-all">
-                          {contact.full_name[0].toUpperCase()}
+                          {contact.full_name[0]?.toUpperCase()}
                         </div>
                         <div>
                           <p className="text-sm font-black text-slate-100 uppercase tracking-tight leading-none mb-1.5 leading-none">{contact.full_name}</p>
@@ -143,10 +145,9 @@ export default async function ContactsPage({
                     <td className="px-8 py-5 text-right">
                       <div className="flex justify-end items-center gap-4">
                         {contact.status === 'unclassified' && (
-                          <PromoteToStudentModal contact={contact} clubs={clubs} />
+                          <PromoteToStudentModal contact={contact} clubs={clubs || []} />
                         )}
-                        {/* 🚀 FIX: Pasamos los clubes al menú de acciones para que lleguen al EditStudentModal[cite: 5] */}
-                        <ContactActionsMenu contact={contact} clubs={clubs} />
+                        <ContactActionsMenu contact={contact} clubs={clubs || []} />
                       </div>
                     </td>
                   </tr>
