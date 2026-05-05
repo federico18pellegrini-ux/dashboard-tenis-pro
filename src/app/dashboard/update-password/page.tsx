@@ -1,6 +1,4 @@
 'use client'
-// Forzamos que la página sea dinámica para evitar el error de prerendering
-export const dynamic = 'force-dynamic'
 
 import { useState } from 'react'
 import { createBrowserClient } from '@supabase/ssr'
@@ -9,19 +7,20 @@ export default function UpdatePasswordPage() {
   const [password, setPassword] = useState('')
   const [message, setMessage] = useState('')
 
-  // Inicializamos el cliente con una validación simple para el build
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL ?? '',
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? ''
-  )
-
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault()
-    
-    if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
-      setMessage('Error: Variables de entorno no configuradas.')
+
+    // Movemos las variables adentro para que Vercel no las pida durante el build
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+    if (!url || !key) {
+      setMessage('Error: No se detectaron las credenciales de conexión.')
       return
     }
+
+    // El cliente se crea recién en este momento (solo en el navegador)
+    const supabase = createBrowserClient(url, key)
 
     const { error } = await supabase.auth.updateUser({ password })
     if (error) {
@@ -37,7 +36,7 @@ export default function UpdatePasswordPage() {
         <div className="text-center mb-6">
           <h1 className="text-2xl font-black text-white uppercase italic">Nueva Contraseña</h1>
           <p className="text-[10px] font-bold text-slate-500 mt-2 uppercase tracking-widest">
-            Establecé tu nueva clave de acceso
+            Establecé tu nueva clave de acceso para Padel Sartori
           </p>
         </div>
         
