@@ -1,4 +1,7 @@
 'use client'
+// Forzamos que la página sea dinámica para evitar el error de prerendering
+export const dynamic = 'force-dynamic'
+
 import { useState } from 'react'
 import { createBrowserClient } from '@supabase/ssr'
 
@@ -6,14 +9,20 @@ export default function UpdatePasswordPage() {
   const [password, setPassword] = useState('')
   const [message, setMessage] = useState('')
 
-  // Inicializamos el cliente usando las variables de entorno que ya configuraste en Vercel
+  // Inicializamos el cliente con una validación simple para el build
   const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    process.env.NEXT_PUBLIC_SUPABASE_URL ?? '',
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? ''
   )
 
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
+      setMessage('Error: Variables de entorno no configuradas.')
+      return
+    }
+
     const { error } = await supabase.auth.updateUser({ password })
     if (error) {
       setMessage('Error: ' + error.message)
