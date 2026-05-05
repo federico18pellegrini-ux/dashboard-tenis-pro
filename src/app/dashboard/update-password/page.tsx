@@ -1,36 +1,64 @@
 'use client'
 import { useState } from 'react'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { createBrowserClient } from '@supabase/ssr'
 
 export default function UpdatePasswordPage() {
   const [password, setPassword] = useState('')
   const [message, setMessage] = useState('')
-  const supabase = createClientComponentClient()
+
+  // Inicializamos el cliente usando las variables de entorno que ya configuraste en Vercel
+  const supabase = createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
 
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault()
     const { error } = await supabase.auth.updateUser({ password })
-    if (error) setMessage('Error: ' + error.message)
-    else setMessage('¡Contraseña actualizada con éxito! Ya podés volver al inicio.')
+    if (error) {
+      setMessage('Error: ' + error.message)
+    } else {
+      setMessage('¡Contraseña actualizada con éxito! Ya podés volver al inicio.')
+    }
   }
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-slate-950 p-6">
       <div className="w-full max-w-sm bg-slate-900 p-8 rounded-[2rem] border border-slate-800 shadow-2xl">
-        <h1 className="text-2xl font-black text-white uppercase italic text-center mb-6">Nueva Contraseña</h1>
+        <div className="text-center mb-6">
+          <h1 className="text-2xl font-black text-white uppercase italic">Nueva Contraseña</h1>
+          <p className="text-[10px] font-bold text-slate-500 mt-2 uppercase tracking-widest">
+            Establecé tu nueva clave de acceso
+          </p>
+        </div>
+        
         <form onSubmit={handleUpdate} className="space-y-4">
-          <input
-            type="password"
-            placeholder="Escribí tu nueva clave"
-            className="w-full bg-slate-950 border border-slate-800 rounded-2xl px-4 py-3 text-white focus:border-[#bdfd2c] outline-none"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <button className="w-full py-4 rounded-2xl font-black text-slate-950 bg-[#bdfd2c] uppercase tracking-widest hover:scale-[1.02] transition-all">
-            Actualizar
+          <div>
+            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1 mb-1.5 block">
+              Contraseña Nueva
+            </label>
+            <input
+              type="password"
+              placeholder="Escribí tu nueva clave"
+              className="w-full bg-slate-950 border border-slate-800 rounded-2xl px-4 py-3 text-sm font-bold text-white focus:border-[#bdfd2c] focus:ring-1 focus:ring-[#bdfd2c] outline-none transition-all"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          
+          <button 
+            type="submit"
+            className="w-full py-4 rounded-2xl font-black text-slate-950 bg-[#bdfd2c] uppercase tracking-widest hover:scale-[1.02] active:scale-95 transition-all shadow-[0_10px_20px_rgba(189,253,44,0.1)]"
+          >
+            Actualizar Clave
           </button>
-          {message && <p className="text-[10px] text-center text-[#bdfd2c] font-black uppercase mt-4">{message}</p>}
+          
+          {message && (
+            <p className={`text-[10px] text-center font-black uppercase mt-4 tracking-wider ${message.includes('Error') ? 'text-rose-500' : 'text-[#bdfd2c]'}`}>
+              {message}
+            </p>
+          )}
         </form>
       </div>
     </div>
