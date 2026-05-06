@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom'
 // FIX: Usamos la acción consolidada
 import { updateStudentData } from '@/lib/actions/contacts'
 import { useRouter } from 'next/navigation'
+import { formatPhoneForDisplay } from '@/lib/utils/phone'
 
 interface Schedule {
   id: string
@@ -106,7 +107,7 @@ export function StudentDetailModal({
                 {student.full_name}
               </h2>
               <p className="text-xs text-slate-500 font-bold tracking-[0.15em]">
-                +{student.phone}
+                {formatPhoneForDisplay(student.phone)}
               </p>
             </div>
           </div>

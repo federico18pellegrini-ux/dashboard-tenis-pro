@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { PromoteToStudentModal } from '@/components/contacts/PromoteToStudentModal'
 import { AddContactModal } from '@/components/contacts/AddContactModal'
 import { ContactActionsMenu } from '@/components/contacts/ContactActionsMenu'
+import { formatPhoneForDisplay } from '@/lib/utils/phone'
 
 export default async function ContactsPage({
   searchParams,
@@ -121,7 +122,7 @@ export default async function ContactsPage({
                         </div>
                         <div>
                           <p className="text-sm font-black text-slate-100 uppercase tracking-tight mb-1.5">{contact.full_name}</p>
-                          <p className="text-xs text-slate-500 font-bold tracking-widest">+{contact.phone}</p>
+                          <p className="text-xs text-slate-500 font-bold tracking-widest">{formatPhoneForDisplay(contact.phone)}</p>
                         </div>
                       </div>
                     </td>
