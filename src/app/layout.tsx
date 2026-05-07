@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { ThemeProvider } from "@/components/layout/ThemeProvider";
+import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -25,15 +27,14 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
+      suppressHydrationWarning
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      {/* 
-          bg-slate-950: Unifica el color de fondo para todas las pantallas.
-          text-slate-50: Asegura legibilidad por defecto.
-          selection:bg-[#bdfd2c]: Un toque de estilo para cuando selecciones texto.
-      */}
-      <body className="min-h-full flex flex-col bg-slate-950 text-slate-50 selection:bg-[#bdfd2c] selection:text-slate-950">
-        {children}
+      <body className="min-h-full flex flex-col selection:bg-[#bdfd2c] selection:text-slate-950">
+        <ThemeProvider>
+          <ThemeToggle />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

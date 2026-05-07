@@ -5,10 +5,12 @@ import { createPortal } from 'react-dom'
 import { EditStudentModal } from './EditStudentModal'
 import { deleteContact } from '@/lib/actions/contacts' // Corregido el path si usas la nueva estructura
 import { useRouter } from 'next/navigation'
+import { AddToClassModal } from '@/components/contacts/AddToClassModal'
 
 export function ContactActionsMenu({ contact, clubs = [] }: { contact: any, clubs: any[] }) {
   const [isOpen, setIsOpen] = useState(false)
   const [showEditModal, setShowEditModal] = useState(false)
+  const [showAddToClassModal, setShowAddToClassModal] = useState(false)
   const [mounted, setMounted] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
   const [coords, setCoords] = useState({ top: 0, left: 0 })
@@ -89,11 +91,21 @@ export function ContactActionsMenu({ contact, clubs = [] }: { contact: any, club
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
             Editar Datos
           </button>
-          
-          <button className="w-full text-left px-4 py-3 text-xs font-black text-slate-300 hover:bg-slate-800 transition-colors flex items-center gap-3 uppercase tracking-widest">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></svg>
-            Archivar
-          </button>
+
+          {!!contact?.student_id && (
+            <button
+              className="w-full text-left px-4 py-3 text-xs font-black text-slate-300 hover:bg-slate-800 hover:text-[#bdfd2c] transition-colors flex items-center gap-3 uppercase tracking-widest"
+              onClick={() => {
+                setShowAddToClassModal(true)
+                setIsOpen(false)
+              }}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 5v14"/><path d="M5 12h14"/>
+              </svg>
+              + Agregar a clase
+            </button>
+          )}
 
           <div className="border-t border-slate-800 mt-2 pt-2">
             <button 
@@ -117,6 +129,14 @@ export function ContactActionsMenu({ contact, clubs = [] }: { contact: any, club
           contact={contact} 
           clubs={clubs} 
           onClose={() => setShowEditModal(false)} 
+        />
+      )}
+
+      {showAddToClassModal && (
+        <AddToClassModal
+          studentId={contact.student_id}
+          studentName={contact.full_name ?? 'Alumno'}
+          onClose={() => setShowAddToClassModal(false)}
         />
       )}
     </>

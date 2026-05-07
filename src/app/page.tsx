@@ -24,7 +24,7 @@ export default function RootPage() {
           <h1 className="text-xl font-black text-white uppercase italic tracking-tighter">
             Padel Sartori
           </h1>
-          <p className="text-[10px] font-bold text-[#bdfd2c] uppercase tracking-[0.4em] mt-2">
+          <p className="text-[10px] font-bold text-gray-950 dark:text-[#ADFF2F] uppercase tracking-[0.4em] mt-2">
             Cargando Panel de Control...
           </p>
         </div>

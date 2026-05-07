@@ -2,12 +2,21 @@
 
 import { useRouter } from 'next/navigation'
 
-export function MonthSelector({ currentMonth, currentYear }: { currentMonth: number, currentYear: number }) {
+export function MonthSelector({
+  currentMonth,
+  currentYear,
+  /** Ruta absoluta (ej. `/dashboard/caja`) para evitar navegación incorrecta al usar solo query string. */
+  pathname,
+}: {
+  currentMonth: number
+  currentYear: number
+  pathname?: string
+}) {
   const router = useRouter()
-  
+
   const months = [
-    "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
-    "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre',
   ]
 
   const handleNavigate = (direction: number) => {
@@ -22,7 +31,12 @@ export function MonthSelector({ currentMonth, currentYear }: { currentMonth: num
       newYear--
     }
 
-    router.push(`?month=${newMonth}&year=${newYear}`)
+    const qs = `month=${newMonth}&year=${newYear}`
+    if (pathname) {
+      router.push(`${pathname}?${qs}`)
+    } else {
+      router.push(`?${qs}`)
+    }
   }
 
   return (
@@ -37,7 +51,7 @@ export function MonthSelector({ currentMonth, currentYear }: { currentMonth: num
       
       <div className="px-4 py-1 flex flex-col items-center min-w-[140px]">
         <span className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] leading-none mb-1">Visualizando</span>
-        <span className="text-sm font-black uppercase italic tracking-tighter text-[#bdfd2c]">
+        <span className="text-sm font-black uppercase italic tracking-tighter text-gray-950 dark:text-[#ADFF2F]">
           {months[currentMonth - 1]} {currentYear}
         </span>
       </div>

@@ -65,12 +65,12 @@ export function EditStudentModal({
   const labelClasses = "text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1"
 
   return createPortal(
-    <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[10050] flex items-start justify-center pt-5 p-4">
       <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-md" onClick={onClose} />
       
-      <div className="relative bg-slate-900 border border-slate-800 p-8 rounded-[2.5rem] w-full max-w-lg shadow-2xl space-y-6 overflow-y-auto max-h-[90vh] custom-scrollbar">
+      <div className="relative z-10 bg-slate-900 border border-slate-800 px-8 pt-8 pb-5 rounded-[2.5rem] w-full max-w-lg shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto custom-scrollbar">
         <div className="flex justify-between items-center">
-          <h2 className="text-2xl font-black text-[#bdfd2c] uppercase italic tracking-tighter">Editar Alumno</h2>
+          <h2 className="text-2xl font-black text-gray-950 dark:text-[#ADFF2F] uppercase italic tracking-tighter">Editar Alumno</h2>
           <button onClick={onClose} className="text-slate-500 hover:text-white">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
           </button>
@@ -118,7 +118,7 @@ export function EditStudentModal({
           <div className="bg-slate-950/50 p-5 rounded-[2rem] border border-slate-800 space-y-4">
             <div className="flex justify-between items-center">
               <p className={labelClasses}>Ajustar Horarios</p>
-              <button type="button" onClick={addSchedule} className="text-[10px] font-black text-[#bdfd2c] hover:underline">+ AÑADIR</button>
+              <button type="button" onClick={addSchedule} className="text-[10px] font-black text-gray-950 dark:text-[#ADFF2F] hover:underline">+ AÑADIR</button>
             </div>
             <div className="space-y-3">
               {schedules.map((s, i) => (
@@ -161,7 +161,7 @@ export function EditStudentModal({
             />
           </div>
 
-          <button disabled={isSubmitting} type="submit" className="w-full bg-[#bdfd2c] text-slate-950 font-black py-5 rounded-2xl text-sm uppercase tracking-tighter shadow-xl hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50">
+          <button disabled={isSubmitting} type="submit" className="w-full bg-green-700 hover:bg-green-800 dark:bg-[#bdfd2c] dark:hover:bg-[#a5e620] text-white dark:text-slate-950 font-black py-5 rounded-2xl text-sm uppercase tracking-tighter shadow-xl hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50">
             {isSubmitting ? 'GUARDANDO CAMBIOS...' : 'GUARDAR CAMBIOS'}
           </button>
         </form>

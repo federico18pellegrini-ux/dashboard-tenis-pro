@@ -1,10 +1,29 @@
 import { createSupabaseServerClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { getCurrentMonthAR } from '@/lib/utils/calendar'
 import { MonthSelector } from '@/components/dashboard/MonthSelector'
 import { AddExpenseModal } from '@/components/dashboard/AddExpenseModal'
-import { deleteExpense } from '../actions'
+import { getCurrentMonthAR } from '@/lib/utils/calendar'
+import { CajaClassPaymentsSection } from '@/components/dashboard/CajaClassPaymentsSection'
+import { CajaExpensesSection } from '@/components/dashboard/CajaExpensesSection'
+
+function paymentMethodLabel(method: string | null) {
+  if (!method) return '—'
+  if (method === 'cash') return 'Efectivo'
+  if (method === 'transfer') return 'Transferencia'
+  if (method === 'mp') return 'Mercado Pago'
+  return method
+}
+
+function formatMoney(cents: number) {
+  return (cents / 100).toLocaleString('es-AR')
+}
+
+function monthLabelEsAR(month1to12: number, year: number) {
+  const d = new Date(year, month1to12 - 1, 1)
+  const label = d.toLocaleDateString('es-AR', { month: 'long', year: 'numeric' })
+  return label.charAt(0).toUpperCase() + label.slice(1)
+}
 
 export default async function CajaPage({
   searchParams,
@@ -23,169 +42,173 @@ export default async function CajaPage({
 
   const firstDayOfMonth = new Date(year, month - 1, 1).toISOString()
   const lastDayOfMonth = new Date(year, month, 0, 23, 59, 59).toISOString()
+  const startOfMonth = new Date(year, month - 1, 1)
+  startOfMonth.setHours(0, 0, 0, 0)
+  const endOfMonth = new Date(year, month, 0)
+  endOfMonth.setHours(23, 59, 59, 999)
 
-  // Fetch de Ingresos, Clubes y Gastos detallados (Tarea 2)
-  const [clubsRes, paymentsRes, expensesRes] = await Promise.all([
+  const [clubsRes, expensesRes, classPaymentsRes] = await Promise.all([
     supabase.from('clubs').select('*'),
-    supabase.from('payments').select('*, students(club_id)').gte('payment_date', firstDayOfMonth).lte('payment_date', lastDayOfMonth),
-    supabase.from('expenses').select('*, clubs(name)').gte('expense_date', firstDayOfMonth).lte('expense_date', lastDayOfMonth).order('expense_date', { ascending: false })
+    supabase.from('expenses').select('*, clubs(name)').gte('expense_date', firstDayOfMonth).lte('expense_date', lastDayOfMonth).order('expense_date', { ascending: false }),
+    supabase
+      .from('class_students')
+      .select(`
+        class_id,
+        student_id,
+        paid_amount,
+        paid_at,
+        payment_method,
+        student:students(full_name),
+        class:classes(
+          club_id,
+          scheduled_at
+        )
+      `)
+      .eq('paid', true)
+      .not('paid_at', 'is', null)
+      .gte('paid_at', startOfMonth.toISOString())
+      .lte('paid_at', endOfMonth.toISOString()),
   ])
 
   const clubs = clubsRes.data || []
-  const payments = paymentsRes.data || []
   const expenses = expensesRes.data || []
+  const classPayments = classPaymentsRes.data || []
 
-  // Totales Globales
-  const totalIncomes = payments.reduce((acc, p) => acc + p.amount_cents, 0) / 100
-  const totalExpenses = expenses.reduce((acc, e) => acc + e.amount_cents, 0) / 100
-  const netMargin = totalIncomes - totalExpenses
-  const marginPercentage = totalIncomes > 0 ? ((netMargin / totalIncomes) * 100).toFixed(1) : "0.0"
+  const clubById = new Map<string, { id: string; name: string }>(clubs.map((c: any) => [c.id, { id: c.id, name: c.name }]))
 
-  // Rentabilidad por Sede
-  const clubPnl = clubs.map(c => {
-    const clubIncomes = payments.filter(p => p.students?.club_id === c.id).reduce((acc, p) => acc + p.amount_cents, 0) / 100
-    const clubExpenses = expenses.filter(e => e.club_id === c.id).reduce((acc, e) => acc + e.amount_cents, 0) / 100
-    const clubNet = clubIncomes - clubExpenses
-    const clubMargin = clubIncomes > 0 ? ((clubNet / clubIncomes) * 100).toFixed(1) : "0.0"
-    return { name: c.name, incomes: clubIncomes, expenses: clubExpenses, net: clubNet, margin: clubMargin }
+  const totalIncomesCents = classPayments.reduce((acc: number, p: any) => acc + (p.paid_amount || 0), 0)
+  const totalExpensesCents = expenses.reduce((acc: number, e: any) => acc + (e.amount_cents || 0), 0)
+  const netCents = totalIncomesCents - totalExpensesCents
+
+  const perClub = clubs.map((c: any) => {
+    const incomesCents = classPayments
+      .filter((p: any) => p.class?.club_id === c.id)
+      .reduce((acc: number, p: any) => acc + (p.paid_amount || 0), 0)
+
+    const expensesCents = expenses.filter((e: any) => e.club_id === c.id).reduce((acc: number, e: any) => acc + (e.amount_cents || 0), 0)
+    const net = incomesCents - expensesCents
+    return {
+      clubName: c.name as string,
+      incomesCents,
+      expensesCents,
+      netCents: net,
+    }
+  })
+
+  const classPaymentsRows = classPayments.map((p: any) => {
+    const clubName = p.class?.club_id ? (clubById.get(p.class.club_id)?.name ?? 'Global') : 'Global'
+    return {
+      class_id: p.class_id as string,
+      student_id: p.student_id as string,
+      paid_at: (p.paid_at as string | null) ?? null,
+      student_name: (p.student?.full_name as string | undefined) ?? 'Alumno',
+      method_label: paymentMethodLabel((p.payment_method as string | null) ?? null),
+      club_name: clubName,
+      amount_cents: Number(p.paid_amount || 0),
+    }
   })
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-50 p-4 md:p-8 font-sans selection:bg-[#bdfd2c] selection:text-slate-950">
+    <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)] p-4 md:p-8 font-sans selection:bg-[#bdfd2c] selection:text-slate-950 overflow-x-hidden max-w-full">
       <div className="max-w-7xl mx-auto space-y-8">
-        
-        {/* HEADER (Tarea 1: Consistencia en navegación y nuevo título) */}
-        <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-          <div className="flex items-center gap-5">
-            <Link 
-              href="/dashboard" 
-              className="group bg-slate-900 border border-slate-800 p-3 rounded-2xl hover:border-[#bdfd2c] transition-all shadow-xl"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-slate-500 group-hover:text-[#bdfd2c] transition-colors">
-                <path d="m15 18-6-6 6-6"/>
-              </svg>
-            </Link>
-            <div>
-              <h1 className="text-4xl font-black tracking-tighter text-[#bdfd2c] uppercase italic leading-none">Caja del Mes</h1>
-              <div className="mt-2">
-                <MonthSelector currentMonth={month} currentYear={year} />
-              </div>
+        {/* Header */}
+        <header className="flex flex-col gap-4">
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="flex items-center gap-2 shrink-0">
+              <Link
+                href="/dashboard"
+                className="shrink-0 group bg-gray-100 dark:bg-slate-900 border border-black/10 dark:border-white/10 p-3 rounded-2xl hover:border-green-600 dark:hover:border-[#bdfd2c] transition-all shadow-xl"
+                aria-label="Volver al dashboard"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-gray-500 dark:text-slate-500 group-hover:text-green-700 dark:group-hover:text-[#bdfd2c] transition-colors">
+                  <path d="m15 18-6-6 6-6"/>
+                </svg>
+              </Link>
+              <Link
+                href="/dashboard/contactos"
+                className="inline-flex items-center justify-center bg-gray-100 dark:bg-slate-900 border border-black/10 dark:border-white/10 p-3 rounded-2xl text-gray-900 dark:text-slate-200 hover:border-green-600 dark:hover:border-[#bdfd2c] hover:text-green-700 dark:hover:text-[#bdfd2c] transition-colors shadow-xl"
+                aria-label="Contactos"
+              >
+                <span aria-hidden className="text-lg leading-none">👥</span>
+              </Link>
+              <Link
+                href={`/dashboard/calendario?month=${month}&year=${year}`}
+                className="inline-flex items-center justify-center bg-gray-100 dark:bg-slate-900 border border-black/10 dark:border-white/10 p-3 rounded-2xl text-gray-900 dark:text-slate-200 hover:border-green-600 dark:hover:border-[#bdfd2c] hover:text-green-700 dark:hover:text-[#bdfd2c] transition-colors shadow-xl"
+                aria-label="Calendario"
+              >
+                <span aria-hidden className="text-lg leading-none">📅</span>
+              </Link>
             </div>
+            <h1 className="flex-1 min-w-0 text-center text-2xl md:text-3xl font-black tracking-tighter text-gray-950 dark:text-[#ADFF2F] uppercase italic leading-none">
+              Caja
+            </h1>
           </div>
-          <div className="flex gap-3">
-            <AddExpenseModal clubs={clubs} />
+
+          <div className="flex w-full items-center gap-2">
+            <div className="min-w-0 flex-1">
+              <MonthSelector currentMonth={month} currentYear={year} pathname="/dashboard/caja" />
+            </div>
+            <div className="shrink-0 flex items-center [&_button]:whitespace-nowrap">
+              <AddExpenseModal clubs={clubs} />
+            </div>
           </div>
         </header>
 
-        {/* KPIs GLOBALES */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-slate-900 p-8 rounded-[2.5rem] border border-slate-800 shadow-2xl">
-            <p className="text-[10px] font-black text-emerald-500 uppercase tracking-[0.25em] mb-3">Ingresos Operativos</p>
-            <p className="text-4xl font-black text-white italic tracking-tighter">${totalIncomes.toLocaleString('es-AR')}</p>
+        {/* Bloque 1 — 3 números grandes */}
+        <section className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+          <div className="bg-gray-100 dark:bg-slate-900 rounded-[2.5rem] border border-black/10 dark:border-white/10 shadow-2xl p-6 md:p-8">
+            <p className="text-[10px] font-black text-green-600 dark:text-emerald-400 uppercase tracking-[0.25em] mb-3">Cobrado</p>
+            <p className="text-4xl md:text-5xl font-black text-green-600 dark:text-emerald-300 italic tracking-tighter">${formatMoney(totalIncomesCents)}</p>
           </div>
-          <div className="bg-slate-900 p-8 rounded-[2.5rem] border border-slate-800 shadow-2xl">
-            <p className="text-[10px] font-black text-rose-500 uppercase tracking-[0.25em] mb-3">Costos y Gastos</p>
-            <p className="text-4xl font-black text-white italic tracking-tighter">${totalExpenses.toLocaleString('es-AR')}</p>
+          <div className="bg-gray-100 dark:bg-slate-900 rounded-[2.5rem] border border-black/10 dark:border-white/10 shadow-2xl p-6 md:p-8">
+            <p className="text-[10px] font-black text-red-600 dark:text-rose-400 uppercase tracking-[0.25em] mb-3">Gastado</p>
+            <p className="text-4xl md:text-5xl font-black text-red-600 dark:text-rose-300 italic tracking-tighter">-${formatMoney(totalExpensesCents)}</p>
           </div>
-          <div className={`p-8 rounded-[2.5rem] shadow-2xl relative overflow-hidden group ${netMargin >= 0 ? 'bg-slate-900 border-2 border-[#bdfd2c]/20 shadow-[0_0_40px_rgba(189,253,44,0.05)]' : 'bg-slate-900 border-2 border-rose-500/20'}`}>
-            <div className="flex justify-between items-start relative z-10">
-              <p className={`text-[10px] font-black uppercase tracking-[0.25em] mb-3 ${netMargin >= 0 ? 'text-[#bdfd2c]' : 'text-rose-500'}`}>Margen Neto</p>
-              <span className={`text-xs font-black px-2.5 py-1 rounded-lg shadow-xl ${netMargin >= 0 ? 'bg-[#bdfd2c] text-slate-950' : 'bg-rose-500 text-white'}`}>{marginPercentage}%</span>
-            </div>
-            <p className={`text-4xl font-black mt-1 italic tracking-tighter ${netMargin >= 0 ? 'text-[#bdfd2c]' : 'text-rose-500'}`}>${netMargin.toLocaleString('es-AR')}</p>
+          <div className="bg-gray-100 dark:bg-slate-900 rounded-[2.5rem] border border-black/10 dark:border-white/10 shadow-2xl p-6 md:p-8">
+            <p className="text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-[0.25em] mb-3">Ganancia</p>
+            <p className={`text-4xl md:text-5xl font-black italic tracking-tighter ${netCents >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-rose-300'}`}>
+              {netCents >= 0 ? '$' : '-$'}
+              {formatMoney(Math.abs(netCents))}
+            </p>
           </div>
-        </div>
+        </section>
 
-        {/* BREAKDOWN POR SEDE */}
-        <div className="bg-slate-900 rounded-[2.5rem] border border-slate-800 shadow-2xl p-8">
-          <h2 className="text-xs font-black text-white uppercase tracking-[0.15em] italic border-b border-slate-800 pb-5 mb-8">Estado de Resultados por Sede</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {clubPnl.map(club => (
-              <div key={club.name} className="bg-slate-950 p-6 rounded-3xl border border-slate-800/60 flex flex-col justify-between">
-                <div>
-                  <h3 className="text-sm font-black text-slate-300 uppercase tracking-widest mb-4">{club.name}</h3>
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center text-xs">
-                      <span className="text-slate-500 font-bold uppercase">Ingresos</span>
-                      <span className="text-emerald-400 font-black">${club.incomes.toLocaleString('es-AR')}</span>
-                    </div>
-                    <div className="flex justify-between items-center text-xs">
-                      <span className="text-slate-500 font-bold uppercase">Gastos</span>
-                      <span className="text-rose-400 font-black">-${club.expenses.toLocaleString('es-AR')}</span>
-                    </div>
+        {/* Bloque 2 — Por sede */}
+        <section className="bg-gray-100 dark:bg-slate-900 rounded-[2.5rem] border border-black/10 dark:border-white/10 shadow-2xl overflow-hidden">
+          <div className="p-6 md:p-8 border-b border-black/10 dark:border-white/10 bg-gray-200/80 dark:bg-slate-950/20">
+            <h2 className="text-sm md:text-xs font-black text-gray-900 dark:text-white uppercase tracking-[0.15em] italic">Por sede — {monthLabelEsAR(month, year)}</h2>
+          </div>
+          <div className="p-6 md:p-8 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+            {perClub.map((c) => (
+              <div key={c.clubName} className="bg-gray-200 dark:bg-slate-950 rounded-3xl border border-black/10 dark:border-white/10 p-5 md:p-6 shadow-xl">
+                <h3 className="text-xs font-black text-gray-800 dark:text-slate-300 uppercase tracking-widest mb-4">{c.clubName}</h3>
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center text-xs">
+                    <span className="text-gray-500 dark:text-gray-400 font-bold uppercase">Cobrado</span>
+                    <span className="text-green-600 dark:text-emerald-300 font-black">${formatMoney(c.incomesCents)}</span>
                   </div>
-                </div>
-                <div className="mt-6 pt-4 border-t border-slate-800 flex justify-between items-end">
-                  <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Neto</span>
-                  <span className={`text-xl font-black italic tracking-tighter ${club.net >= 0 ? 'text-[#bdfd2c]' : 'text-rose-400'}`}>${club.net.toLocaleString('es-AR')}</span>
+                  <div className="flex justify-between items-center text-xs">
+                    <span className="text-gray-500 dark:text-gray-400 font-bold uppercase">Gastado</span>
+                    <span className="text-red-600 dark:text-rose-300 font-black">-${formatMoney(c.expensesCents)}</span>
+                  </div>
+                  <div className="pt-3 mt-3 border-t border-black/10 dark:border-white/10 flex justify-between items-center text-xs">
+                    <span className="text-gray-500 dark:text-gray-400 font-bold uppercase">Ganancia</span>
+                    <span className={`font-black ${c.netCents >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-rose-300'}`}>
+                      {c.netCents >= 0 ? '$' : '-$'}
+                      {formatMoney(Math.abs(c.netCents))}
+                    </span>
+                  </div>
                 </div>
               </div>
             ))}
           </div>
-        </div>
-
-        {/* TAREA 2: DETALLE DE GASTOS CARGADOS (Auditabilidad) */}
-        <section className="bg-slate-900 rounded-[2.5rem] border border-slate-800 shadow-2xl overflow-hidden">
-          <div className="p-8 border-b border-slate-800 flex justify-between items-center bg-slate-950/20">
-            <h2 className="text-xs font-black text-white uppercase tracking-[0.15em] italic">Detalle de Gastos</h2>
-            <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{expenses.length} MOVIMIENTOS</span>
-          </div>
-          
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="text-[10px] font-black text-slate-500 uppercase tracking-widest bg-slate-950/40 border-b border-slate-800">
-                  <th className="px-8 py-4">Fecha</th>
-                  <th className="px-8 py-4">Descripción</th>
-                  <th className="px-8 py-4">Categoría</th>
-                  <th className="px-8 py-4">Sede</th>
-                  <th className="px-8 py-4">Monto</th>
-                  <th className="px-8 py-4 text-right">Acciones</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-800/50">
-                {expenses.map((exp: any) => (
-                  <tr key={exp.id} className="hover:bg-slate-800/30 transition-colors group">
-                    <td className="px-8 py-4 text-xs font-bold text-slate-400 uppercase">
-                      {new Date(exp.expense_date).toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit' })}
-                    </td>
-                    <td className="px-8 py-4 text-xs">
-                      <p className="font-black text-slate-100 uppercase tracking-tight">{exp.description}</p>
-                      {exp.paid_to && (
-                        <p className="text-[9px] text-slate-500 uppercase mt-1">
-                          A: {exp.paid_to} • {exp.payment_method}
-                        </p>
-                      )}
-                    </td>
-                    <td className="px-8 py-4">
-                      <span className="text-[9px] font-black bg-slate-950 text-rose-400 px-2.5 py-1 rounded-lg border border-rose-500/20 uppercase tracking-tighter">
-                        {exp.category.replace('_', ' ')}
-                      </span>
-                    </td>
-                    <td className="px-8 py-4 text-xs font-bold text-slate-500 uppercase tracking-tighter">
-                      {exp.clubs?.name || 'Global'}
-                    </td>
-                    <td className="px-8 py-4 text-sm font-black text-white italic tracking-tighter">
-                      -${(exp.amount_cents / 100).toLocaleString('es-AR')}
-                    </td>
-                    <td className="px-8 py-4 text-right">
-                      <form action={async () => { 'use server'; await deleteExpense(exp.id) }}>
-                        <button type="submit" className="text-slate-700 hover:text-rose-500 transition-colors p-2 rounded-lg hover:bg-rose-500/10">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
-                        </button>
-                      </form>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          {expenses.length === 0 && (
-            <div className="p-20 text-center opacity-20">
-              <p className="text-xs font-black uppercase tracking-[0.3em]">Sin gastos registrados este mes</p>
-            </div>
-          )}
         </section>
+
+        {/* Bloque 3 — Ingresos por clases */}
+        <CajaClassPaymentsSection title="Ingresos por clases" rows={classPaymentsRows} />
+
+        {/* Bloque 4 — Detalle de gastos */}
+        <CajaExpensesSection expenses={expenses} />
 
       </div>
     </div>

@@ -45,7 +45,7 @@ export function AddExpenseModal({ clubs }: { clubs: any[] }) {
   if (!isOpen) return (
     <button 
       onClick={() => setIsOpen(true)} 
-      className="bg-slate-900 border border-slate-800 text-rose-400 px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-rose-500/10 hover:border-rose-500/30 transition-all shadow-lg flex items-center gap-2"
+      className="inline-flex shrink-0 items-center justify-center whitespace-nowrap bg-slate-900 border border-slate-800 text-rose-400 px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-rose-500/10 hover:border-rose-500/30 transition-all shadow-lg gap-2"
     >
       <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
       Registrar Gasto

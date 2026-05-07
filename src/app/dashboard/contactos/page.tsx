@@ -12,13 +12,22 @@ export default async function ContactsPage({
   searchParams: Promise<{ status?: string; q?: string }>
 }) {
   const supabase = await createSupabaseServerClient()
-  const { status = 'unclassified', q = '' } = await searchParams
+  const { status = 'student', q = '' } = await searchParams
 
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
   // 1. Fetch de contactos con filtros
-  let query = supabase.from('contacts').select('*')
+  let query = supabase
+    .from('contacts')
+    .select(`
+      *,
+      student:students(
+        level,
+        club_id,
+        club:clubs(name)
+      )
+    `)
   
   if (status !== 'all') {
     query = query.eq('status', status)
@@ -47,116 +56,154 @@ export default async function ContactsPage({
   const unclassified = unclassifiedRes.count || 0
   const studentsCount = studentsRes.count || 0
 
+  const today = new Date()
+  const calHref = `/dashboard/calendario?month=${today.getMonth() + 1}&year=${today.getFullYear()}`
+
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-50 p-4 md:p-8 font-sans selection:bg-[#bdfd2c] selection:text-slate-950">
+    <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)] p-4 md:p-8 font-sans selection:bg-[#bdfd2c] selection:text-slate-950 overflow-x-hidden">
       <div className="max-w-7xl mx-auto space-y-8">
         
         {/* HEADER */}
-        <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-          <div className="flex items-center gap-5">
+        <header className="space-y-5">
+          <div className="flex items-center justify-start">
             <Link 
               href="/dashboard" 
-              className="group bg-slate-900 border border-slate-800 p-3 rounded-2xl hover:border-[#bdfd2c] transition-all shadow-xl"
+              className="group bg-gray-100 dark:bg-slate-900 border border-black/10 dark:border-white/10 p-3 rounded-2xl hover:border-green-600 dark:hover:border-[#bdfd2c] transition-all shadow-xl"
+              aria-label="Volver al dashboard"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-slate-500 group-hover:text-[#bdfd2c] transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-gray-500 dark:text-slate-500 group-hover:text-green-700 dark:group-hover:text-[#bdfd2c] transition-colors">
                 <path d="m15 18-6-6 6-6"/>
               </svg>
             </Link>
-
-            <div>
-              <h1 className="text-4xl font-black tracking-tighter text-[#bdfd2c] uppercase italic leading-none">
-                Contactos
-              </h1>
-              <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mt-3 leading-none">
-                {total} TOTAL • {studentsCount} ALUMNOS • {unclassified} PENDIENTES
-              </p>
-            </div>
           </div>
 
-          <div className="flex gap-3">
+          <div className="flex flex-col items-stretch gap-3">
+            <h1 className="text-center text-3xl md:text-4xl font-black tracking-tighter text-gray-950 dark:text-[#ADFF2F] uppercase italic leading-none w-full">
+              Contactos
+            </h1>
+            <div className="flex justify-end gap-2">
+              <Link
+                href="/dashboard/caja"
+                className="inline-flex items-center justify-center bg-gray-100 dark:bg-slate-900 border border-black/10 dark:border-white/10 px-3 py-2 rounded-xl text-gray-900 dark:text-slate-200 hover:border-green-600 dark:hover:border-[#bdfd2c] hover:text-green-700 dark:hover:text-[#bdfd2c] transition-colors shadow-xl"
+                aria-label="Caja"
+              >
+                <span aria-hidden className="text-base leading-none">💰</span>
+              </Link>
+              <Link
+                href={calHref}
+                className="inline-flex items-center justify-center bg-gray-100 dark:bg-slate-900 border border-black/10 dark:border-white/10 px-3 py-2 rounded-xl text-gray-900 dark:text-slate-200 hover:border-green-600 dark:hover:border-[#bdfd2c] hover:text-green-700 dark:hover:text-[#bdfd2c] transition-colors shadow-xl"
+                aria-label="Calendario"
+              >
+                <span aria-hidden className="text-base leading-none">📅</span>
+              </Link>
+            </div>
+            <p className="text-center text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-[0.2em] leading-none">
+              {total} TOTAL • {studentsCount} ALUMNOS • {unclassified} PENDIENTES
+            </p>
+          </div>
+
+          <div className="w-full max-w-lg mx-auto">
             <AddContactModal />
           </div>
         </header>
 
         {/* NAVEGACIÓN */}
-        <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2 border-b border-slate-800/60">
-          {[
-            { id: 'unclassified', label: 'Sin Clasificar' },
-            { id: 'student', label: 'Alumnos' },
-            { id: 'archived', label: 'Archivados' },
-            { id: 'all', label: 'Todos' }
-          ].map((tab) => (
-            <Link
-              key={tab.id}
-              href={`/dashboard/contactos?status=${tab.id}`}
-              className={`px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${
-                status === tab.id 
-                ? 'bg-[#bdfd2c] text-slate-950 shadow-[0_0_20px_rgba(189,253,44,0.2)]' 
-                : 'bg-slate-900 text-slate-500 hover:text-slate-300'
-              }`}
-            >
-              {tab.label}
-            </Link>
-          ))}
+        <div className="flex flex-nowrap gap-2 overflow-x-auto no-scrollbar pb-2 border-b border-black/10 dark:border-white/10">
+          <Link
+            href="/dashboard/contactos?status=student"
+            className="px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap bg-green-700 text-white dark:bg-[#bdfd2c] dark:text-slate-950 shadow-lg dark:shadow-[0_0_20px_rgba(189,253,44,0.2)]"
+          >
+            Alumnos
+          </Link>
         </div>
 
-        {/* TABLA */}
-        <div className="bg-slate-900/30 rounded-[2.5rem] border border-slate-800 shadow-2xl overflow-hidden backdrop-blur-md">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="border-b border-slate-800 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] bg-slate-950/40">
-                  <th className="px-8 py-6">Contacto</th>
-                  <th className="px-8 py-6">Etiquetas</th>
-                  <th className="px-8 py-6">Estado</th>
-                  <th className="px-8 py-6 text-right">Gestión</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-800/40">
-                {contacts.map((contact) => (
-                  <tr key={contact.id} className="group hover:bg-slate-800/10 transition-colors">
-                    <td className="px-8 py-5">
-                      <div className="flex items-center gap-4">
-                        <div className="h-11 w-11 rounded-full bg-slate-950 border border-slate-800 flex items-center justify-center font-black text-slate-500 group-hover:border-[#bdfd2c] group-hover:text-[#bdfd2c] transition-all">
-                          {contact.full_name?.[0]?.toUpperCase() || '?'}
-                        </div>
-                        <div>
-                          <p className="text-sm font-black text-slate-100 uppercase tracking-tight mb-1.5">{contact.full_name}</p>
-                          <p className="text-xs text-slate-500 font-bold tracking-widest">{formatPhoneForDisplay(contact.phone)}</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-8 py-5">
-                      <div className="flex flex-wrap gap-1.5">
-                        {contact.tags?.map((tag: string) => (
-                          <span key={tag} className="text-[9px] font-black bg-slate-950 text-slate-400 px-2.5 py-1 rounded-lg border border-slate-800 uppercase tracking-tighter">
-                            {tag}
+        {/* LISTA MOBILE-FIRST */}
+        <div className="space-y-3 pb-10">
+          {contacts.map((contact) => {
+            const phoneDigits = String(contact.phone || '').replace(/\D/g, '')
+            const waHref = phoneDigits ? `https://wa.me/${phoneDigits}` : null
+            const levelRaw = contact.student?.level as string | undefined
+            const levelLabel =
+              levelRaw === 'principiante'
+                ? 'Principiante'
+                : levelRaw === 'intermedio'
+                  ? 'Intermedio'
+                  : levelRaw === 'avanzado'
+                    ? 'Avanzado'
+                    : null
+            const clubName = (contact.student?.club?.name as string | undefined) ?? null
+
+            return (
+              <div
+                key={contact.id}
+                className="bg-gray-100/80 dark:bg-slate-900/30 rounded-3xl border border-black/10 dark:border-white/10 shadow-2xl overflow-hidden"
+              >
+                <div className="p-5 flex items-start justify-between gap-4">
+                  <div className="flex items-start gap-4 min-w-0">
+                    <div className="h-12 w-12 rounded-full bg-gray-200 dark:bg-slate-950 border border-black/10 dark:border-white/10 flex items-center justify-center font-black text-gray-500 dark:text-slate-500 shrink-0">
+                      {(contact.full_name || '?')
+                        .split(' ')
+                        .filter(Boolean)
+                        .slice(0, 2)
+                        .map((n: string) => n[0]?.toUpperCase())
+                        .join('') || '?'}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-sm font-black text-gray-900 dark:text-slate-100 uppercase tracking-tight leading-tight truncate">
+                        {contact.full_name}
+                      </p>
+
+                      {waHref ? (
+                        <a
+                          href={waHref}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 mt-2 text-xs uppercase tracking-widest hover:opacity-90 transition-opacity"
+                        >
+                          <span className="text-green-700 dark:text-green-400 font-medium">WA</span>
+                          <span className="text-gray-700 dark:text-gray-300 font-bold normal-case tracking-normal">
+                            {formatPhoneForDisplay(contact.phone)}
                           </span>
-                        )) || <span className="text-[10px] text-slate-600 italic font-bold">-</span>}
-                      </div>
-                    </td>
-                    <td className="px-8 py-5">
-                      <span className={`text-[9px] font-black px-3 py-1.5 rounded-xl tracking-widest border uppercase ${
-                        contact.status === 'student' ? 'bg-emerald-950/20 text-emerald-400 border-emerald-900/50' :
-                        contact.status === 'archived' ? 'bg-slate-950 text-slate-600 border-slate-800' :
-                        'bg-[#bdfd2c]/10 text-[#bdfd2c] border-[#bdfd2c]/20'
-                      }`}>
-                        {contact.status}
-                      </span>
-                    </td>
-                    <td className="px-8 py-5 text-right">
-                      <div className="flex justify-end items-center gap-4">
-                        {contact.status === 'unclassified' && (
-                          <PromoteToStudentModal contact={contact} clubs={clubs} />
-                        )}
-                        <ContactActionsMenu contact={contact} clubs={clubs} />
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                        </a>
+                      ) : (
+                        <p className="mt-2 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">
+                          Sin teléfono
+                        </p>
+                      )}
+
+                      {(levelLabel || clubName) && (
+                        <div className="mt-2 flex flex-wrap gap-2">
+                          {levelLabel && (
+                            <span className="text-xs font-bold bg-gray-200 dark:bg-slate-950/60 text-gray-800 dark:text-slate-300 px-2.5 py-1 rounded-lg border border-black/10 dark:border-white/10">
+                              {levelLabel}
+                            </span>
+                          )}
+                          {clubName && (
+                            <span className="text-xs font-bold bg-gray-200 dark:bg-slate-950/60 text-gray-800 dark:text-slate-300 px-2.5 py-1 rounded-lg border border-black/10 dark:border-white/10">
+                              {clubName}
+                            </span>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2 shrink-0">
+                    {contact.status === 'unclassified' && (
+                      <PromoteToStudentModal contact={contact} clubs={clubs} />
+                    )}
+                    <ContactActionsMenu contact={contact} clubs={clubs} />
+                  </div>
+                </div>
+              </div>
+            )
+          })}
+
+          {contacts.length === 0 && (
+            <div className="p-10 text-center text-xs text-gray-500 dark:text-gray-400 font-bold uppercase tracking-widest border border-black/10 dark:border-white/10 rounded-3xl bg-gray-100/50 dark:bg-slate-900/20">
+              No hay contactos para este filtro
+            </div>
+          )}
         </div>
       </div>
     </div>

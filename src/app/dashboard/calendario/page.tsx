@@ -1,0 +1,118 @@
+import { createSupabaseServerClient } from '@/lib/supabase/server'
+import { redirect } from 'next/navigation'
+import Link from 'next/link'
+import { MonthSelector } from '@/components/dashboard/MonthSelector'
+import { CalendarMonthGrid, type CalendarClassChip } from '@/components/dashboard/CalendarMonthGrid'
+
+function dayKeyLocal(d: Date) {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+}
+
+function abbrevClub(fullName: string | null | undefined): string {
+  const n = (fullName ?? '').toLowerCase()
+  if (n.includes('cuba')) return 'Cuba'
+  if (n.includes('río') || n.includes('rio')) return 'Río'
+  if (n.includes('palermo')) return 'Pal.'
+  return (fullName ?? 'Club').slice(0, 4) + (fullName && fullName.length > 4 ? '.' : '')
+}
+
+export default async function CalendarioPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ month?: string; year?: string }>
+}) {
+  const supabase = await createSupabaseServerClient()
+  const { month: queryMonth, year: queryYear } = await searchParams
+
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) redirect('/login')
+
+  const selectedMonth = Number(queryMonth ?? new Date().getMonth() + 1)
+  const selectedYear = Number(queryYear ?? new Date().getFullYear())
+
+  const startOfMonth = new Date(selectedYear, selectedMonth - 1, 1)
+  startOfMonth.setHours(0, 0, 0, 0)
+  const endOfMonth = new Date(selectedYear, selectedMonth, 0, 23, 59, 59, 999)
+
+  const { data: classesRaw } = await supabase
+    .from('classes')
+    .select(`
+      id,
+      scheduled_at,
+      duration_minutes,
+      status,
+      price_cents,
+      club:clubs(name),
+      students:class_students(
+        paid,
+        paid_amount,
+        student:students(full_name)
+      )
+    `)
+    .gte('scheduled_at', startOfMonth.toISOString())
+    .lte('scheduled_at', endOfMonth.toISOString())
+    .order('scheduled_at', { ascending: true })
+
+  const classesByDay: Record<string, CalendarClassChip[]> = {}
+
+  for (const row of classesRaw ?? []) {
+    const c = row as any
+    const start = new Date(c.scheduled_at)
+    const end = new Date(start.getTime() + (Number(c.duration_minutes) || 0) * 60 * 1000)
+    const key = dayKeyLocal(start)
+    const clubFull = c.club?.name ?? 'Sede'
+    const students = Array.isArray(c.students) ? c.students : []
+    const studentNames = students.map((s: any) => s.student?.full_name).filter(Boolean) as string[]
+    const totalCobradoCents = students.reduce((acc: number, s: any) => {
+      if (!s?.paid || !s?.paid_amount) return acc
+      return acc + Number(s.paid_amount ?? 0)
+    }, 0)
+
+    const chip: CalendarClassChip = {
+      id: c.id,
+      scheduledAt: c.scheduled_at,
+      timeShort: start.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' }),
+      timeRangeLabel: `${start.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' })} – ${end.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' })}`,
+      dateLabel: start.toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }),
+      clubAbbrev: abbrevClub(clubFull),
+      clubFull,
+      status: String(c.status ?? 'scheduled'),
+      studentNames,
+      totalCobradoCents,
+    }
+
+    if (!classesByDay[key]) classesByDay[key] = []
+    classesByDay[key].push(chip)
+  }
+
+  for (const k of Object.keys(classesByDay)) {
+    classesByDay[k].sort((a, b) => a.scheduledAt.localeCompare(b.scheduledAt))
+  }
+
+  const backHref = `/dashboard?month=${selectedMonth}&year=${selectedYear}`
+
+  return (
+    <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)] p-4 md:p-8 font-sans selection:bg-[#bdfd2c] selection:text-slate-950 overflow-x-hidden max-w-full">
+      <div className="max-w-7xl mx-auto space-y-6">
+        <header className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <div className="flex items-center gap-3 flex-wrap">
+            <Link
+              href={backHref}
+              className="inline-flex items-center gap-2 bg-gray-100 dark:bg-slate-900 border border-black/10 dark:border-white/10 px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest text-gray-800 dark:text-slate-300 hover:border-green-600 dark:hover:border-[#bdfd2c] hover:text-green-700 dark:hover:text-[#bdfd2c] transition-colors shrink-0"
+            >
+              &lt; Volver
+            </Link>
+            <h1 className="text-xl md:text-3xl font-black tracking-tighter text-gray-950 dark:text-[#ADFF2F] uppercase italic">
+              Calendario
+            </h1>
+          </div>
+          <div className="shrink-0">
+            <MonthSelector currentMonth={selectedMonth} currentYear={selectedYear} />
+          </div>
+        </header>
+
+        <CalendarMonthGrid year={selectedYear} month={selectedMonth} classesByDay={classesByDay} />
+      </div>
+    </div>
+  )
+}

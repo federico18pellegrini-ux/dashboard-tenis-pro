@@ -57,7 +57,7 @@ export function PromoteToStudentModal({ contact, clubs }: { contact: any, clubs:
       
       <div className="relative bg-slate-900 border border-slate-800 p-6 md:p-8 rounded-[2rem] w-full max-w-lg shadow-2xl overflow-y-auto max-h-[90vh] animate-in fade-in zoom-in-95 duration-200 custom-scrollbar">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-black tracking-tighter text-[#bdfd2c] uppercase italic">Convertir Alumno</h2>
+          <h2 className="text-2xl font-black tracking-tighter text-gray-950 dark:text-[#ADFF2F] uppercase italic">Convertir Alumno</h2>
           <button onClick={() => setIsOpen(false)} className="text-slate-500 hover:text-white transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
           </button>
@@ -93,7 +93,7 @@ export function PromoteToStudentModal({ contact, clubs }: { contact: any, clubs:
               <button 
                 type="button" 
                 onClick={addSchedule} 
-                className="text-[10px] font-black text-[#bdfd2c] hover:underline"
+                className="text-[10px] font-black text-gray-950 dark:text-[#ADFF2F] hover:underline"
               >
                 + AÑADIR DÍA
               </button>
@@ -142,7 +142,7 @@ export function PromoteToStudentModal({ contact, clubs }: { contact: any, clubs:
             <p className="text-[10px] text-slate-600 mt-1 ml-1">* El sistema calculará el total mensual según las clases del mes.</p>
           </div>
 
-          <button disabled={isSubmitting} type="submit" className="w-full bg-[#bdfd2c] text-slate-950 font-black py-5 rounded-2xl text-sm uppercase shadow-[0_10px_20px_rgba(189,253,44,0.3)]">
+          <button disabled={isSubmitting} type="submit" className="w-full bg-green-700 hover:bg-green-800 dark:bg-[#bdfd2c] dark:hover:bg-[#a5e620] text-white dark:text-slate-950 font-black py-5 rounded-2xl text-sm uppercase shadow-[0_10px_20px_rgba(189,253,44,0.3)]">
             {isSubmitting ? 'PROCESANDO...' : 'CONFIRMAR ALTA'}
           </button>
         </form>
@@ -152,7 +152,7 @@ export function PromoteToStudentModal({ contact, clubs }: { contact: any, clubs:
 
   return (
     <>
-      <button onClick={() => setIsOpen(true)} className="text-[10px] font-black bg-[#bdfd2c] text-slate-950 px-4 py-2 rounded-xl uppercase hover:scale-105 transition-transform">
+      <button onClick={() => setIsOpen(true)} className="text-[10px] font-black bg-green-700 hover:bg-green-800 dark:bg-[#bdfd2c] dark:hover:bg-[#a5e620] text-white dark:text-slate-950 px-4 py-2 rounded-xl uppercase hover:scale-105 transition-transform">
         Convertir
       </button>
       {isOpen && mounted && createPortal(modalContent, document.body)}
