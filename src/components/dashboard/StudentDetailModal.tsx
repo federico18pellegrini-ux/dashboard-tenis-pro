@@ -1,13 +1,12 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
 import { createPortal } from 'react-dom'
-// FIX: Usamos la acción consolidada
-import { updateStudentData } from '@/lib/actions/contacts'
 import { useRouter } from 'next/navigation'
 import { formatPhoneForDisplay } from '@/lib/utils/phone'
+import { createScheduleSlot, deleteScheduleSlot, updateScheduleSlot } from '@/lib/actions/schedules'
 
-interface Schedule {
+export interface Schedule {
   id: string
   day_of_week: number
   start_time: string
@@ -16,13 +15,13 @@ interface Schedule {
   clubs: { name: string } | null
 }
 
-interface StudentProps {
+export interface StudentProps {
   id: string
   full_name: string
   phone: string
   price_per_class_cents: number
-  level: string // Agregado para updateStudentData
-  club_id: string // Agregado para updateStudentData
+  level: string
+  club_id: string
   schedules: Schedule[]
 }
 
@@ -39,46 +38,124 @@ export function StudentDetailModal({
 }) {
   const [mounted, setMounted] = useState(false)
   const [editingScheduleId, setEditingScheduleId] = useState<string | null>(null)
+  const [showCreateForm, setShowCreateForm] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const router = useRouter()
 
   useEffect(() => { setMounted(true) }, [])
 
-  const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
+  type FeedbackState =
+    | { kind: 'idle'; message: '' }
+    | { kind: 'error'; message: string }
 
-  // FIX: Adaptado para usar updateStudentData
-  async function handleUpdate(formData: FormData, scheduleId: string) {
-    setIsSubmitting(true)
-    const price = parseFloat(formData.get('price') as string)
-    
-    // Preparamos los horarios: mantenemos los actuales pero actualizamos el que se editó
-    const updatedSchedules = student.schedules.map(s => {
-      if (s.id === scheduleId) {
-        return {
-          day_of_week: parseInt(formData.get('day_of_week') as string),
-          start_time: formData.get('start_time') as string
-        }
-      }
-      return {
-        day_of_week: s.day_of_week,
-        start_time: s.start_time
-      }
-    })
+  const [feedback, setFeedback] = useState<FeedbackState>({ kind: 'idle', message: '' })
 
-    const result = await updateStudentData(student.id, {
-      full_name: student.full_name,
-      level: student.level || 'principiante',
-      price_per_class: price,
-      club_id: student.club_id,
-      schedules: updatedSchedules
-    })
+  const formRef = useRef<HTMLDivElement>(null)
 
-    if (result.success) {
-      setEditingScheduleId(null)
-      router.refresh()
-    } else {
-      alert(`Error: ${result.error}`)
+  useEffect(() => {
+    if (editingScheduleId || showCreateForm) {
+      setTimeout(() => {
+        formRef.current?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest',
+        })
+      }, 50)
     }
+  }, [editingScheduleId, showCreateForm])
+
+  const days = useMemo(
+    () => ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+    [],
+  )
+
+  function toHHMM(t: string) {
+    return t.length >= 5 ? t.slice(0, 5) : t
+  }
+
+  const sortedSchedules = useMemo(() => {
+    return [...(student.schedules ?? [])].sort((a, b) => {
+      if (a.day_of_week !== b.day_of_week) return a.day_of_week - b.day_of_week
+      return toHHMM(a.start_time).localeCompare(toHHMM(b.start_time))
+    })
+  }, [student.schedules])
+
+  async function handleEditSchedule(scheduleId: string, formData: FormData) {
+    setIsSubmitting(true)
+    setFeedback({ kind: 'idle', message: '' })
+
+    const dayOfWeek = parseInt(formData.get('day_of_week') as string, 10)
+    const startTime = (formData.get('start_time') as string) || ''
+    const clubId = (formData.get('club_id') as string) || ''
+
+    const result = await updateScheduleSlot({
+      scheduleId,
+      dayOfWeek,
+      startTime,
+      clubId,
+    })
+
+    if (!result.success) {
+      setFeedback({ kind: 'error', message: result.error ?? 'Error al guardar el turno.' })
+      setIsSubmitting(false)
+      return
+    }
+
+    setEditingScheduleId(null)
+    setFeedback({ kind: 'idle', message: '' })
+    router.refresh()
+    setIsSubmitting(false)
+  }
+
+  async function handleDeleteSchedule(sched: Schedule) {
+    const dayName = days[sched.day_of_week] ?? 'Día'
+    const time = toHHMM(sched.start_time)
+    const clubName = sched.clubs?.name || clubs.find((c: any) => c.id === sched.club_id)?.name || 'Sede'
+
+    const confirmed = window.confirm(
+      `¿Borrar el turno del ${dayName} ${time} en ${clubName}?\n\nEsto NO borra al alumno, solo este horario.`,
+    )
+    if (!confirmed) return
+
+    setIsSubmitting(true)
+    setFeedback({ kind: 'idle', message: '' })
+
+    const result = await deleteScheduleSlot({ scheduleId: sched.id })
+
+    if (!result.success) {
+      setFeedback({ kind: 'error', message: result.error ?? 'Error al eliminar el turno.' })
+      setIsSubmitting(false)
+      return
+    }
+
+    if (editingScheduleId === sched.id) setEditingScheduleId(null)
+    router.refresh()
+    setIsSubmitting(false)
+  }
+
+  async function handleCreateSchedule(formData: FormData) {
+    setIsSubmitting(true)
+    setFeedback({ kind: 'idle', message: '' })
+
+    const dayOfWeek = parseInt(formData.get('day_of_week') as string, 10)
+    const startTime = (formData.get('start_time') as string) || ''
+    const clubId = (formData.get('club_id') as string) || ''
+
+    const result = await createScheduleSlot({
+      studentId: student.id,
+      dayOfWeek,
+      startTime,
+      clubId,
+    })
+
+    if (!result.success) {
+      setFeedback({ kind: 'error', message: result.error ?? 'Error al crear el turno.' })
+      setIsSubmitting(false)
+      return
+    }
+
+    setShowCreateForm(false)
+    setFeedback({ kind: 'idle', message: '' })
+    router.refresh()
     setIsSubmitting(false)
   }
 
@@ -119,57 +196,76 @@ export function StudentDetailModal({
           </button>
         </div>
 
-        {/* AGENDA SETTINGS */}
-        <div className="space-y-5 overflow-y-auto max-h-[50vh] pr-2 custom-scrollbar">
-          <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.25em] mb-4">Agenda Recurrente</h3>
-          
-          {student.schedules.map(sched => {
+        <div className="space-y-5 overflow-y-auto max-h-[55vh] pr-2 custom-scrollbar">
+          <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.25em]">
+            Horarios fijos
+          </h3>
+
+          <div className="space-y-3">
+          {sortedSchedules.map(sched => {
             const isEditing = editingScheduleId === sched.id
 
             if (isEditing) {
               return (
-                <form 
-                  key={sched.id} 
-                  action={(fd) => handleUpdate(fd, sched.id)} 
-                  className="bg-slate-950 p-6 rounded-[2rem] border border-[#bdfd2c]/40 space-y-5 animate-in slide-in-from-top-2"
-                >
-                  <div className="grid grid-cols-2 gap-4">
+                <div ref={editingScheduleId === sched.id ? formRef : null}>
+                  <form
+                    key={sched.id}
+                    onSubmit={(e) => {
+                      e.preventDefault()
+                      void handleEditSchedule(sched.id, new FormData(e.currentTarget))
+                    }}
+                    className="bg-slate-950 p-6 rounded-[2rem] border border-[#bdfd2c]/40 space-y-5 animate-in slide-in-from-top-2"
+                  >
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className={labelClasses}>Día</label>
+                        <select name="day_of_week" defaultValue={sched.day_of_week} className={inputClasses}>
+                          {days.map((d, i) => <option key={i} value={i}>{d}</option>)}
+                        </select>
+                      </div>
+                      <div>
+                        <label className={labelClasses}>Hora</label>
+                        <input type="time" name="start_time" defaultValue={toHHMM(sched.start_time)} required className={inputClasses} />
+                      </div>
+                    </div>
+
                     <div>
-                      <label className={labelClasses}>Día</label>
-                      <select name="day_of_week" defaultValue={sched.day_of_week} className={inputClasses}>
-                        {days.map((d, i) => <option key={i} value={i}>{d}</option>)}
+                      <label className={labelClasses}>Club</label>
+                      <select name="club_id" defaultValue={sched.club_id} className={inputClasses}>
+                        {clubs.map((c: any) => <option key={c.id} value={c.id}>{c.name}</option>)}
                       </select>
                     </div>
-                    <div>
-                      <label className={labelClasses}>Inicio</label>
-                      <input type="time" name="start_time" defaultValue={sched.start_time.slice(0, 5)} required className={inputClasses} />
-                    </div>
-                  </div>
-                  
-                  <div className="grid grid-cols-1">
-                    <div>
-                      <label className={labelClasses}>Precio por Clase ($)</label>
-                      <input type="number" name="price" defaultValue={student.price_per_class_cents / 100} required className={inputClasses} />
-                    </div>
-                  </div>
 
-                  <div className="flex gap-2">
-                    <button 
-                      type="button" 
-                      onClick={() => setEditingScheduleId(null)} 
-                      className="flex-1 bg-slate-900 border border-slate-800 text-slate-500 py-3 rounded-xl text-[10px] font-black uppercase transition-all"
-                    >
-                      Cerrar
-                    </button>
-                    <button 
-                      type="submit" 
-                      disabled={isSubmitting} 
-                      className="flex-1 bg-[#bdfd2c] text-slate-950 py-3 rounded-xl text-[10px] font-black uppercase shadow-lg disabled:opacity-50"
-                    >
-                      {isSubmitting ? '...' : 'OK'}
-                    </button>
-                  </div>
-                </form>
+                    {feedback.kind === 'error' && (
+                      <div
+                        className="px-5 py-4 rounded-2xl border shadow-2xl text-xs font-black uppercase tracking-widest bg-rose-950/30 border-rose-900/40 text-rose-300"
+                        role="status"
+                      >
+                        {feedback.message}
+                      </div>
+                    )}
+
+                    <div className="flex gap-2">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setEditingScheduleId(null)
+                          setFeedback({ kind: 'idle', message: '' })
+                        }}
+                        className="flex-1 bg-slate-900 border border-slate-800 text-slate-500 py-3 rounded-xl text-[10px] font-black uppercase transition-all"
+                      >
+                        Cerrar
+                      </button>
+                      <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="flex-1 bg-[#bdfd2c] text-slate-950 py-3 rounded-xl text-[10px] font-black uppercase shadow-lg disabled:opacity-50"
+                      >
+                        {isSubmitting ? '...' : 'OK'}
+                      </button>
+                    </div>
+                  </form>
+                </div>
               )
             }
 
@@ -180,21 +276,117 @@ export function StudentDetailModal({
               >
                 <div>
                   <p className="text-sm font-black text-slate-100 italic uppercase">
-                    {days[sched.day_of_week]} <span className="text-[#bdfd2c] ml-1">{sched.start_time.slice(0, 5)}hs</span>
+                    {days[sched.day_of_week]} <span className="text-[#bdfd2c] ml-1">{toHHMM(sched.start_time)}hs</span>
                   </p>
                   <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-1">
-                    {sched.clubs?.name || 'Sede'} • ${(student.price_per_class_cents / 100).toLocaleString('es-AR')}
+                    {sched.clubs?.name || clubs.find((c: any) => c.id === sched.club_id)?.name || 'Sede'}
                   </p>
                 </div>
-                <button 
-                  onClick={() => setEditingScheduleId(sched.id)} 
-                  className="bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-slate-500 hover:text-[#bdfd2c] transition-all"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
-                </button>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowCreateForm(false)
+                      setFeedback({ kind: 'idle', message: '' })
+                      setEditingScheduleId(sched.id)
+                    }}
+                    className="bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-slate-500 hover:text-[#bdfd2c] transition-all"
+                    title="Editar"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+                  </button>
+
+                  <button
+                    type="button"
+                    disabled={isSubmitting}
+                    onClick={() => void handleDeleteSchedule(sched)}
+                    className="bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-slate-500 hover:text-rose-500 transition-all disabled:opacity-60"
+                    title="Eliminar"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                  </button>
+                </div>
               </div>
             )
           })}
+          </div>
+
+          {!showCreateForm ? (
+            <button
+              type="button"
+              onClick={() => {
+                setEditingScheduleId(null)
+                setFeedback({ kind: 'idle', message: '' })
+                setShowCreateForm(true)
+              }}
+              className="w-full bg-[#bdfd2c] text-slate-950 py-3 rounded-2xl text-[10px] font-black uppercase shadow-lg"
+            >
+              + Agregar otro turno
+            </button>
+          ) : (
+            <div ref={showCreateForm ? formRef : null}>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault()
+                  void handleCreateSchedule(new FormData(e.currentTarget))
+                }}
+                className="bg-slate-950 p-6 rounded-[2rem] border border-[#bdfd2c]/40 space-y-5 animate-in slide-in-from-top-2"
+              >
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className={labelClasses}>Día</label>
+                    <select name="day_of_week" defaultValue={1} className={inputClasses}>
+                      {days.map((d, i) => <option key={i} value={i}>{d}</option>)}
+                    </select>
+                  </div>
+                  <div>
+                    <label className={labelClasses}>Hora</label>
+                    <input type="time" name="start_time" defaultValue="09:00" required className={inputClasses} />
+                  </div>
+                </div>
+
+                <div>
+                  <label className={labelClasses}>Club</label>
+                  <select name="club_id" defaultValue={student.club_id} className={inputClasses}>
+                    {clubs.map((c: any) => <option key={c.id} value={c.id}>{c.name}</option>)}
+                  </select>
+                </div>
+
+                {feedback.kind === 'error' && (
+                  <div
+                    className="px-5 py-4 rounded-2xl border shadow-2xl text-xs font-black uppercase tracking-widest bg-rose-950/30 border-rose-900/40 text-rose-300"
+                    role="status"
+                  >
+                    {feedback.message}
+                  </div>
+                )}
+
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowCreateForm(false)
+                      setFeedback({ kind: 'idle', message: '' })
+                    }}
+                    className="flex-1 bg-slate-900 border border-slate-800 text-slate-500 py-3 rounded-xl text-[10px] font-black uppercase transition-all"
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="flex-1 bg-[#bdfd2c] text-slate-950 py-3 rounded-xl text-[10px] font-black uppercase shadow-lg disabled:opacity-50"
+                  >
+                    {isSubmitting ? '...' : 'OK'}
+                  </button>
+                </div>
+              </form>
+            </div>
+          )}
+
+          <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest pt-2">
+            Para editar precio o nombre del alumno, andá a Contactos.
+          </p>
         </div>
       </div>
     </div>,
