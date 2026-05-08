@@ -18,7 +18,7 @@ export function EditTournamentPaymentPanel({
   const [open, setOpen] = useState(false)
 
   return (
-    <div className="relative shrink-0">
+    <div className="relative shrink-0 flex items-center">
       <button
         onClick={() => setOpen(!open)}
         className="px-3 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest bg-[var(--color-bg-card-inner)] text-[var(--color-success)] border border-[var(--color-border)] hover:border-[var(--color-accent)] transition-colors"
@@ -27,7 +27,7 @@ export function EditTournamentPaymentPanel({
       </button>
 
       {open && (
-        <div className="absolute right-0 top-full mt-2 z-50 bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl p-4 shadow-xl min-w-[220px]">
+        <div className="absolute right-0 top-full mt-2 z-50 bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl p-4 shadow-xl w-[220px]">
           <div className="flex justify-between items-center mb-3">
             <span className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest">Editar pago</span>
             <button onClick={() => setOpen(false)} className="text-[var(--color-text-muted)] hover:text-[var(--color-text-body)]">✕</button>
