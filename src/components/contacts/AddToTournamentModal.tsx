@@ -40,7 +40,10 @@ export function AddToTournamentModal({
       .from('tournament_categories')
       .select('id, name, club:clubs(name)')
       .eq('tournament_id', selectedTournament)
-      .then(({ data }) => setCategories(data ?? []))
+      .then(({ data }) => {
+        setCategories(data ?? [])
+        setSelectedCategory('')
+      })
   }, [selectedTournament])
 
   const handleSubmit = async () => {
