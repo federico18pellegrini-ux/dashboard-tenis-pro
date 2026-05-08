@@ -1,6 +1,8 @@
 import { createSupabaseServerClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import { revalidatePath } from 'next/cache'
+import { buildWhatsAppTournamentLink } from '@/lib/utils/whatsapp'
 import { addCategory, addStudentToTournament, registerTournamentPayment, updateTournamentStatus } from '../actions'
 
 function formatPesos(amountCents: number) {
@@ -40,6 +42,7 @@ export default async function TournamentDetailPage({ params }: { params: Params 
           club:clubs(name),
           enrollments:tournament_students(
             student_id,
+            category_id,
             payment_status,
             payment_method,
             paid_at,
@@ -97,6 +100,20 @@ export default async function TournamentDetailPage({ params }: { params: Params 
     const amountCents = Number(formData.get('amount_cents') || 0)
     const studentName = String(formData.get('student_name') || '')
     await registerTournamentPayment(tournamentId, studentId, method, amountCents, String(tournament.name), studentName)
+  }
+
+  async function removeStudentAction(formData: FormData) {
+    'use server'
+    const studentId = String(formData.get('student_id') || '').trim()
+    const categoryId = String(formData.get('category_id') || '').trim()
+    const supabase = await createSupabaseServerClient()
+    await supabase
+      .from('tournament_students')
+      .delete()
+      .eq('tournament_id', tournamentId)
+      .eq('student_id', studentId)
+      .eq('category_id', categoryId)
+    revalidatePath(`/dashboard/torneos/${tournamentId}`)
   }
 
   async function statusAction(formData: FormData) {
@@ -290,6 +307,30 @@ export default async function TournamentDetailPage({ params }: { params: Params 
                         </div>
 
                         <div className="shrink-0 flex items-center gap-2">
+                          {!paid &&
+                            (() => {
+                              const phone = String(e?.student?.phone ?? '')
+                              const waHref = phone
+                                ? buildWhatsAppTournamentLink({
+                                    studentName: String(e?.student?.full_name ?? ''),
+                                    studentPhone: phone,
+                                    tournamentName: String(tournament.name),
+                                    categoryName: String(cat.name),
+                                    clubName: String(cat?.club?.name ?? ''),
+                                    amountCents: Number(cat.price_cents || 0),
+                                  })
+                                : null
+                              return waHref ? (
+                                <a
+                                  href={waHref}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="px-3 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest bg-[#25D366]/10 border border-[#25D366]/20 text-[#25D366] hover:bg-[#25D366] hover:text-white transition-colors"
+                                >
+                                  WA
+                                </a>
+                              ) : null
+                            })()}
                           {!paid ? (
                             <form action={payAction} className="flex items-center gap-2">
                               <input type="hidden" name="student_id" value={studentId} />
@@ -317,6 +358,16 @@ export default async function TournamentDetailPage({ params }: { params: Params 
                               Pagado
                             </span>
                           )}
+                          <form action={removeStudentAction}>
+                            <input type="hidden" name="student_id" value={studentId} />
+                            <input type="hidden" name="category_id" value={String(e?.category_id ?? '')} />
+                            <button
+                              type="submit"
+                              className="px-3 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest border border-red-600/30 text-red-500 hover:bg-red-500/10 transition-colors"
+                            >
+                              ✕
+                            </button>
+                          </form>
                         </div>
                       </div>
                     )
