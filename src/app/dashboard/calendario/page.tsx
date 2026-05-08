@@ -55,7 +55,12 @@ export default async function CalendarioPage({
 
   const { data: tournamentsRaw } = await supabase
     .from('tournaments')
-    .select('id, name, start_date, end_date, status')
+    .select(`
+    id, name, start_date, end_date, status,
+    students:tournament_students(payment_status, category_id,
+      category:tournament_categories(price_cents)
+    )
+  `)
     .lte('start_date', endOfMonth.toISOString().split('T')[0])
     .gte('end_date', startOfMonth.toISOString().split('T')[0])
 
@@ -106,9 +111,11 @@ export default async function CalendarioPage({
         dateLabel: new Date(d).toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }),
         clubAbbrev: '🏆',
         clubFull: String(tor.name ?? 'Torneo'),
-        status: String(tor.status ?? 'upcoming'),
+        status: ({ 'upcoming': 'Próximo', 'in_progress': 'En curso', 'finished': 'Finalizado' } as Record<string, string>)[String(tor.status)] ?? String(tor.status),
         studentNames: [],
-        totalCobradoCents: 0,
+        totalCobradoCents: (tor.students ?? [])
+          .filter((s: any) => s?.payment_status === 'paid')
+          .reduce((acc: number, s: any) => acc + (s?.category?.price_cents || 0), 0),
       }
       if (!classesByDay[key]) classesByDay[key] = []
       classesByDay[key].push(chip)
