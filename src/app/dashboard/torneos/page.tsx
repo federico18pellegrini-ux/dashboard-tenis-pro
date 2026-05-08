@@ -18,14 +18,14 @@ function formatDateEsAR(dateIsoOrDate: string | null | undefined) {
   return d.toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric' })
 }
 
-function computeTournamentStatus(t: any): string {
+function computeTournamentStatus(t: any): 'Próximo' | 'En curso' | 'Finalizado' {
   const raw = String(t?.status ?? 'upcoming')
-  const map: Record<string, string> = {
+  const map: Record<string, 'Próximo' | 'En curso' | 'Finalizado'> = {
     upcoming: 'Próximo',
     in_progress: 'En curso',
     finished: 'Finalizado',
   }
-  return map[raw] ?? raw
+  return map[raw] ?? 'Próximo'
 }
 
 export default async function TournamentsPage() {
