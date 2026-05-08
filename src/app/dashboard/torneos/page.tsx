@@ -58,8 +58,6 @@ export default async function TournamentsPage() {
     supabase.from('clubs').select('id, name').order('name'),
   ])
 
-  console.log('tournaments error:', tournamentsRes.error)
-  console.log('tournaments data:', tournamentsRes.data)
   const tournaments = (tournamentsRes.data ?? []) as any[]
   const clubs = (clubsRes.data ?? []) as Array<{ id: string; name: string }>
 
