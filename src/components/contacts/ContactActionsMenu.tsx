@@ -37,8 +37,8 @@ export function ContactActionsMenu({ contact, clubs = [] }: { contact: any, club
     if (buttonRef.current) {
       const rect = buttonRef.current.getBoundingClientRect()
       setCoords({ 
-        top: rect.bottom + window.scrollY, 
-        left: rect.left - 150 + window.scrollX 
+        top: rect.bottom, 
+        left: rect.left - 150 
       })
     }
     setIsOpen(!isOpen)
@@ -67,7 +67,7 @@ export function ContactActionsMenu({ contact, clubs = [] }: { contact: any, club
       <button 
         ref={buttonRef}
         onClick={toggleMenu}
-        className="p-2 text-slate-600 hover:text-[#bdfd2c] transition-colors bg-[var(--color-bg-page)] rounded-xl border border-transparent hover:border-[var(--color-border)] shadow-xl"
+        className="p-2 text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors bg-[var(--color-bg-page)] rounded-xl border border-transparent hover:border-[var(--color-border)] shadow-xl"
       >
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
           <circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/>
@@ -82,7 +82,7 @@ export function ContactActionsMenu({ contact, clubs = [] }: { contact: any, club
           style={{ top: coords.top + 8, left: coords.left }}
         >
           <button 
-            className="w-full text-left px-4 py-3 text-xs font-black text-[var(--color-text-body)] hover:bg-[var(--color-bg-card-inner)] hover:text-[#bdfd2c] transition-colors flex items-center gap-3 uppercase tracking-widest"
+            className="w-full text-left px-4 py-3 text-xs font-black text-[var(--color-text-body)] hover:bg-[var(--color-bg-card-inner)] hover:text-[var(--color-accent)] transition-colors flex items-center gap-3 uppercase tracking-widest"
             onClick={() => {
               setShowEditModal(true)
               setIsOpen(false)
@@ -94,7 +94,7 @@ export function ContactActionsMenu({ contact, clubs = [] }: { contact: any, club
 
           {!!contact?.student_id && (
             <button
-              className="w-full text-left px-4 py-3 text-xs font-black text-[var(--color-text-body)] hover:bg-[var(--color-bg-card-inner)] hover:text-[#bdfd2c] transition-colors flex items-center gap-3 uppercase tracking-widest"
+              className="w-full text-left px-4 py-3 text-xs font-black text-[var(--color-text-body)] hover:bg-[var(--color-bg-card-inner)] hover:text-[var(--color-accent)] transition-colors flex items-center gap-3 uppercase tracking-widest"
               onClick={() => {
                 setShowAddToClassModal(true)
                 setIsOpen(false)
