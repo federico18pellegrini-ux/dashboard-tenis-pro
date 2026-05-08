@@ -85,6 +85,11 @@ export default async function CajaPage({
   const clubById = new Map<string, { id: string; name: string }>(clubs.map((c: any) => [c.id, { id: c.id, name: c.name }]))
 
   const tournamentIncomesCents = tournamentPayments.reduce((acc: number, p: any) => acc + (p.amount_cents || 0), 0)
+  const tournamentExpensesCents = expenses
+    .filter((e: any) => String(e?.category ?? '').startsWith('torneo_'))
+    .reduce((acc: number, e: any) => acc + (e.amount_cents || 0), 0)
+
+  const tournamentNetCents = tournamentIncomesCents - tournamentExpensesCents
   const totalIncomesCents = classPayments.reduce((acc: number, p: any) => acc + (p.paid_amount || 0), 0) + tournamentPayments.reduce((acc: number, p: any) => acc + (p.amount_cents || 0), 0)
   const totalExpensesCents = expenses.reduce((acc: number, e: any) => acc + (e.amount_cents || 0), 0)
   const netCents = totalIncomesCents - totalExpensesCents
@@ -235,11 +240,13 @@ export default async function CajaPage({
                 </div>
                 <div className="flex justify-between items-center text-xs">
                   <span className="font-black text-[var(--color-text-muted)] uppercase tracking-widest">Gastado</span>
-                  <span className="font-black text-red-600">-$0</span>
+                  <span className="font-black text-red-600">-${formatMoney(tournamentExpensesCents)}</span>
                 </div>
                 <div className="border-t border-black/10 pt-2 flex justify-between items-center text-xs">
                   <span className="font-black text-[var(--color-text-muted)] uppercase tracking-widest">Ganancia</span>
-                  <span className="font-black text-[var(--color-accent)]">${formatMoney(tournamentIncomesCents)}</span>
+                  <span className={`font-black ${tournamentNetCents >= 0 ? 'text-[var(--color-accent)]' : 'text-red-600'}`}>
+                    {tournamentNetCents >= 0 ? '$' : '-$'}{formatMoney(Math.abs(tournamentNetCents))}
+                  </span>
                 </div>
               </div>
             </div>
