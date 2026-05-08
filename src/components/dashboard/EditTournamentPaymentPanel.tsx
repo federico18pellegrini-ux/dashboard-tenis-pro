@@ -80,6 +80,20 @@ export function EditTournamentPaymentPanel({
               <button type="submit" className="w-full bg-[var(--color-accent)] text-white py-2 rounded-xl text-[10px] font-black uppercase tracking-widest">
                 Guardar
               </button>
+              <button
+                type="button"
+                onClick={async () => {
+                  const formData = new FormData()
+                  formData.set('student_id', studentId)
+                  formData.set('category_id', categoryId)
+                  formData.set('unpay', 'true')
+                  await editPaymentAction(formData)
+                  setOpen(false)
+                }}
+                className="w-full border border-red-500/30 text-red-500 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-red-500/10 transition-colors"
+              >
+                Marcar como no pagado
+              </button>
             </form>
           </div>,
           document.body,

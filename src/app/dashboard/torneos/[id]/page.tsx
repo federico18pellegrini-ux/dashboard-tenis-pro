@@ -6,6 +6,7 @@ import { buildWhatsAppTournamentLink } from '@/lib/utils/whatsapp'
 import { AddStudentToCategoryPanel } from '@/components/dashboard/AddStudentToCategoryPanel'
 import { CloseDetailsButton } from '@/components/dashboard/CloseDetailsButton'
 import { EditTournamentPaymentPanel } from '@/components/dashboard/EditTournamentPaymentPanel'
+import { ChangeTournamentStatusPanel } from '@/components/dashboard/ChangeTournamentStatusPanel'
 import { addCategory, registerTournamentPayment, updateTournamentStatus } from '../actions'
 
 function formatPesos(amountCents: number) {
@@ -116,20 +117,36 @@ export default async function TournamentDetailPage({ params }: { params: Params 
     'use server'
     const studentId = String(formData.get('student_id') || '').trim()
     const categoryId = String(formData.get('category_id') || '').trim()
-    const method = String(formData.get('method') || 'cash')
-    const amountCents = Number(formData.get('amount_cents') || 0)
+    const unpay = formData.get('unpay') === 'true'
     const supabase = await createSupabaseServerClient()
-    await supabase
-      .from('tournament_students')
-      .update({ payment_method: method })
-      .eq('tournament_id', tournamentId)
-      .eq('student_id', studentId)
-      .eq('category_id', categoryId)
-    await supabase
-      .from('payments')
-      .update({ payment_method: method, amount_cents: amountCents })
-      .eq('student_id', studentId)
-      .eq('type', 'tournament')
+
+    if (unpay) {
+      await supabase
+        .from('tournament_students')
+        .update({ payment_status: 'pending', payment_method: null, paid_at: null })
+        .eq('tournament_id', tournamentId)
+        .eq('student_id', studentId)
+        .eq('category_id', categoryId)
+      await supabase
+        .from('payments')
+        .delete()
+        .eq('student_id', studentId)
+        .eq('type', 'tournament')
+    } else {
+      const method = String(formData.get('method') || 'cash')
+      const amountCents = Number(formData.get('amount_cents') || 0) * 100
+      await supabase
+        .from('tournament_students')
+        .update({ payment_method: method })
+        .eq('tournament_id', tournamentId)
+        .eq('student_id', studentId)
+        .eq('category_id', categoryId)
+      await supabase
+        .from('payments')
+        .update({ payment_method: method, amount_cents: amountCents })
+        .eq('student_id', studentId)
+        .eq('type', 'tournament')
+    }
     revalidatePath(`/dashboard/torneos/${tournamentId}`)
   }
 
@@ -222,28 +239,7 @@ export default async function TournamentDetailPage({ params }: { params: Params 
                 </div>
               </details>
 
-              <details className="group">
-                <summary className="cursor-pointer list-none inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] border border-[var(--color-border)] px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl">
-                  Cambiar estado
-                </summary>
-                <div className="relative mt-3 bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-3xl p-5 shadow-2xl max-w-xl">
-                  <CloseDetailsButton />
-                  <form action={statusAction} className="space-y-3">
-                    <select
-                      name="status"
-                      defaultValue={String(tournament.status ?? 'upcoming')}
-                      className="w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-xl p-3 text-xs text-[var(--color-text-heading)] font-bold outline-none focus:border-[var(--color-accent)] transition-all"
-                    >
-                      <option value="upcoming">Próximo</option>
-                      <option value="in_progress">En curso</option>
-                      <option value="finished">Finalizado</option>
-                    </select>
-                    <button className="w-full bg-[var(--color-accent-secondary)] text-[var(--color-text-heading)] py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl">
-                      Actualizar estado
-                    </button>
-                  </form>
-                </div>
-              </details>
+              <ChangeTournamentStatusPanel currentStatus={String(tournament.status ?? 'upcoming')} updateStatusAction={statusAction} />
             </div>
           </div>
         </header>
