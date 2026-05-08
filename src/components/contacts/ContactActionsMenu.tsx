@@ -6,11 +6,13 @@ import { EditStudentModal } from './EditStudentModal'
 import { deleteContact } from '@/lib/actions/contacts' // Corregido el path si usas la nueva estructura
 import { useRouter } from 'next/navigation'
 import { AddToClassModal } from '@/components/contacts/AddToClassModal'
+import { AddToTournamentModal } from '@/components/contacts/AddToTournamentModal'
 
 export function ContactActionsMenu({ contact, clubs = [] }: { contact: any, clubs: any[] }) {
   const [isOpen, setIsOpen] = useState(false)
   const [showEditModal, setShowEditModal] = useState(false)
   const [showAddToClassModal, setShowAddToClassModal] = useState(false)
+  const [showAddToTournamentModal, setShowAddToTournamentModal] = useState(false)
   const [mounted, setMounted] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
   const [coords, setCoords] = useState({ top: 0, left: 0 })
@@ -107,6 +109,19 @@ export function ContactActionsMenu({ contact, clubs = [] }: { contact: any, club
             </button>
           )}
 
+          {!!contact?.student_id && (
+            <button
+              className="w-full text-left px-4 py-3 text-xs font-black text-[var(--color-text-body)] hover:bg-[var(--color-bg-card-inner)] hover:text-[var(--color-accent)] transition-colors flex items-center gap-3 uppercase tracking-widest"
+              onClick={() => {
+                setShowAddToTournamentModal(true)
+                setIsOpen(false)
+              }}
+            >
+              <span>🏆</span>
+              + Agregar a torneo
+            </button>
+          )}
+
           <div className="border-t border-[var(--color-border)] mt-2 pt-2">
             <button 
               onClick={handleDelete}
@@ -137,6 +152,14 @@ export function ContactActionsMenu({ contact, clubs = [] }: { contact: any, club
           studentId={contact.student_id}
           studentName={contact.full_name ?? 'Alumno'}
           onClose={() => setShowAddToClassModal(false)}
+        />
+      )}
+
+      {showAddToTournamentModal && (
+        <AddToTournamentModal
+          studentId={contact.student_id}
+          studentName={contact.full_name ?? 'Alumno'}
+          onClose={() => setShowAddToTournamentModal(false)}
         />
       )}
     </>
