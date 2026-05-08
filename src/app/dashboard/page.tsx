@@ -153,6 +153,13 @@ export default async function DashboardPage({
                   <span aria-hidden>📅</span>
                   <span className="hidden sm:inline">Calendario</span>
                 </Link>
+                <Link
+                  href="/dashboard/torneos"
+                  className="inline-flex items-center gap-1.5 bg-[var(--color-bg-card-inner)] dark:bg-[var(--color-bg-card)] border border-black/10 px-2.5 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl"
+                >
+                  <span aria-hidden>🏆</span>
+                  <span className="hidden sm:inline">Torneos</span>
+                </Link>
               </nav>
             </div>
 
