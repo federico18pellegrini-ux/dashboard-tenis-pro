@@ -63,11 +63,11 @@ export function CajaExpensesSection({
   }
 
   return (
-    <section className="bg-slate-900 rounded-[2.5rem] border border-slate-800 shadow-2xl overflow-hidden">
-      <div className="p-6 md:p-8 border-b border-slate-800 flex items-center justify-between bg-slate-950/20 gap-3">
+    <section className="bg-[var(--color-bg-card)] rounded-[2.5rem] border border-[var(--color-border)] shadow-2xl overflow-hidden">
+      <div className="p-6 md:p-8 border-b border-[var(--color-border)] flex items-center justify-between bg-[var(--color-bg-page)]/20 gap-3">
         <div className="min-w-0">
           <h2 className="text-sm md:text-xs font-black text-white uppercase tracking-[0.15em] italic truncate">Detalle de Gastos</h2>
-          <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mt-1">{expenses.length} MOVIMIENTOS</p>
+          <p className="text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-widest mt-1">{expenses.length} MOVIMIENTOS</p>
         </div>
         <button
           type="button"
@@ -81,7 +81,7 @@ export function CajaExpensesSection({
             }))
             downloadCsv('gastos.csv', rows)
           }}
-          className="shrink-0 bg-transparent border border-slate-800 text-slate-300 px-3 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest hover:border-slate-700 hover:bg-slate-950/40 transition-colors"
+          className="shrink-0 bg-transparent border border-[var(--color-border)] text-[var(--color-text-body)] px-3 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest hover:border-[var(--color-accent)] hover:bg-[var(--color-bg-page)]/40 transition-colors"
         >
           Exportar Excel
         </button>
@@ -93,15 +93,15 @@ export function CajaExpensesSection({
         </div>
       ) : (
         <>
-          <div className="divide-y divide-slate-800/50">
+          <div className="divide-y divide-[var(--color-border)]">
             {visible.map((exp) => (
-              <div key={exp.id} className="p-5 md:p-6 hover:bg-slate-800/30 transition-colors">
+              <div key={exp.id} className="p-5 md:p-6 hover:bg-[var(--color-bg-card-inner)] transition-colors">
                 <div className="flex items-start justify-between gap-4">
                   <div className="min-w-0">
-                    <div className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                    <div className="text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-widest">
                       {formatDateShort(exp.expense_date)}
                     </div>
-                    <div className="mt-2 text-sm font-black text-slate-100 uppercase tracking-tight truncate">
+                    <div className="mt-2 text-sm font-black text-[var(--color-text-heading)] uppercase tracking-tight truncate">
                       {exp.description}
                     </div>
                   </div>
@@ -110,7 +110,7 @@ export function CajaExpensesSection({
                     type="button"
                     onClick={() => void handleDelete(exp.id)}
                     disabled={deletingId === exp.id}
-                    className="shrink-0 text-slate-700 hover:text-rose-500 transition-colors p-2 rounded-lg hover:bg-rose-500/10 disabled:opacity-50"
+                    className="shrink-0 text-[var(--color-text-muted)] hover:text-rose-500 transition-colors p-2 rounded-lg hover:bg-rose-500/10 disabled:opacity-50"
                     title="Borrar"
                     aria-label="Borrar"
                   >
@@ -122,10 +122,10 @@ export function CajaExpensesSection({
 
                 <div className="mt-3 flex items-center justify-between gap-4">
                   <div className="flex items-center gap-2 min-w-0">
-                    <span className="text-[9px] font-black bg-slate-950 text-rose-400 px-2.5 py-1 rounded-lg border border-rose-500/20 uppercase tracking-tighter shrink-0">
+                    <span className="text-[9px] font-black bg-[var(--color-bg-page)] text-rose-400 px-2.5 py-1 rounded-lg border border-rose-500/20 uppercase tracking-tighter shrink-0">
                       {String(exp.category || '').replace('_', ' ')}
                     </span>
-                    <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest truncate">
+                    <span className="text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-widest truncate">
                       {exp.clubs?.name || 'Global'}
                     </span>
                   </div>
@@ -138,11 +138,11 @@ export function CajaExpensesSection({
           </div>
 
           {expenses.length > 5 && (
-            <div className="p-4 md:p-6 border-t border-slate-800 flex justify-end">
+            <div className="p-4 md:p-6 border-t border-[var(--color-border)] flex justify-end">
               <button
                 type="button"
                 onClick={() => setExpanded((v) => !v)}
-                className="text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-[#bdfd2c] transition-colors"
+                className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors"
               >
                 {expanded ? 'Ver menos' : `Ver todos (${expenses.length})`}
               </button>
