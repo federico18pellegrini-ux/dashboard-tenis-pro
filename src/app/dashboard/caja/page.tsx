@@ -84,6 +84,7 @@ export default async function CajaPage({
 
   const clubById = new Map<string, { id: string; name: string }>(clubs.map((c: any) => [c.id, { id: c.id, name: c.name }]))
 
+  const tournamentIncomesCents = tournamentPayments.reduce((acc: number, p: any) => acc + (p.amount_cents || 0), 0)
   const totalIncomesCents = classPayments.reduce((acc: number, p: any) => acc + (p.paid_amount || 0), 0) + tournamentPayments.reduce((acc: number, p: any) => acc + (p.amount_cents || 0), 0)
   const totalExpensesCents = expenses.reduce((acc: number, e: any) => acc + (e.amount_cents || 0), 0)
   const netCents = totalIncomesCents - totalExpensesCents
@@ -156,6 +157,12 @@ export default async function CajaPage({
               >
                 <span aria-hidden className="text-lg leading-none">📅</span>
               </Link>
+              <Link
+                href="/dashboard/torneos"
+                className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] border border-black/10 p-3 rounded-2xl text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl"
+              >
+                <span aria-hidden className="text-base leading-none">🏆</span>
+              </Link>
             </div>
             <h1 className="flex-1 min-w-0 text-center text-2xl md:text-3xl font-black tracking-tighter text-[var(--color-text-heading)]  uppercase italic leading-none">
               Caja
@@ -219,6 +226,23 @@ export default async function CajaPage({
                 </div>
               </div>
             ))}
+            <div className="bg-[var(--color-bg-card-inner)] bg-[var(--color-bg-page)] rounded-3xl border border-black/10 p-5 md:p-6 shadow-xl">
+              <h3 className="text-xs font-black text-[var(--color-text-body)] uppercase tracking-widest mb-4">Torneos</h3>
+              <div className="space-y-2">
+                <div className="flex justify-between items-center text-xs">
+                  <span className="font-black text-[var(--color-text-muted)] uppercase tracking-widest">Cobrado</span>
+                  <span className="font-black text-[var(--color-success)]">${formatMoney(tournamentIncomesCents)}</span>
+                </div>
+                <div className="flex justify-between items-center text-xs">
+                  <span className="font-black text-[var(--color-text-muted)] uppercase tracking-widest">Gastado</span>
+                  <span className="font-black text-red-600">-$0</span>
+                </div>
+                <div className="border-t border-black/10 pt-2 flex justify-between items-center text-xs">
+                  <span className="font-black text-[var(--color-text-muted)] uppercase tracking-widest">Ganancia</span>
+                  <span className="font-black text-[var(--color-accent)]">${formatMoney(tournamentIncomesCents)}</span>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
