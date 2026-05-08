@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Padel Sartori Control",
+  title: "Panel de Control",
   description: "Sistema de gestión integral para academias de pádel",
 };
 
