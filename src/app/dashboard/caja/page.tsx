@@ -176,7 +176,7 @@ export default async function CajaPage({
         {/* Bloque 2 — Por sede */}
         <section className="bg-[var(--color-bg-card-inner)] bg-[var(--color-bg-card)] rounded-[2.5rem] border border-black/10  shadow-2xl overflow-hidden">
           <div className="p-6 md:p-8 border-b border-black/10  bg-[var(--color-bg-card-inner)]/80 bg-[var(--color-bg-page)]/20">
-            <h2 className="text-sm md:text-xs font-black text-[var(--color-text-body)] dark:text-white uppercase tracking-[0.15em] italic">Por sede — {monthLabelEsAR(month, year)}</h2>
+            <h2 className="text-sm md:text-xs font-black text-[var(--color-text-body)]  uppercase tracking-[0.15em] italic">Por sede — {monthLabelEsAR(month, year)}</h2>
           </div>
           <div className="p-6 md:p-8 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
             {perClub.map((c) => (

@@ -115,7 +115,7 @@ export function AddStudentToClassModal({
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 bg-gray-300 bg-[var(--color-bg-card-inner)] text-gray-700 dark:text-[var(--color-text-muted)] font-bold py-3 rounded-2xl text-sm"
+              className="flex-1 bg-gray-300 bg-[var(--color-bg-card-inner)] text-rose-700 dark:text-rose-400 font-bold py-3 rounded-2xl text-sm"
             >
               Cancelar
             </button>

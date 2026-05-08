@@ -71,7 +71,7 @@ export default async function ContactsPage({
               className="group bg-[var(--color-bg-card-inner)] bg-[var(--color-bg-card)] border border-black/10  p-3 rounded-2xl hover:border-[var(--color-accent)]  transition-all shadow-xl"
               aria-label="Volver al dashboard"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-[var(--color-text-muted)] text-[var(--color-text-muted)] group-hover:text-[var(--color-accent)]  transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-[var(--color-text-body)] text-[var(--color-text-body)] group-hover:text-[var(--color-accent)]  transition-colors">
                 <path d="m15 18-6-6 6-6"/>
               </svg>
             </Link>
@@ -97,7 +97,7 @@ export default async function ContactsPage({
                 <span aria-hidden className="text-base leading-none">📅</span>
               </Link>
             </div>
-            <p className="text-center text-[10px] font-black text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)] uppercase tracking-[0.2em] leading-none">
+            <p className="text-center text-[10px] font-black text-[var(--color-text-body)] dark:text-[var(--color-text-body)] uppercase tracking-[0.2em] leading-none">
               {total} TOTAL • {studentsCount} ALUMNOS • {unclassified} PENDIENTES
             </p>
           </div>
@@ -140,7 +140,7 @@ export default async function ContactsPage({
               >
                 <div className="p-5 flex items-start justify-between gap-4">
                   <div className="flex items-start gap-4 min-w-0">
-                    <div className="h-12 w-12 rounded-full bg-[var(--color-bg-card-inner)] bg-[var(--color-bg-page)] border border-black/10  flex items-center justify-center font-black text-[var(--color-text-muted)] text-[var(--color-text-muted)] shrink-0">
+                    <div className="h-12 w-12 rounded-full bg-[var(--color-bg-card-inner)] bg-[var(--color-bg-page)] border border-black/10  flex items-center justify-center font-black text-[var(--color-text-body)] text-[var(--color-text-body)] shrink-0">
                       {(contact.full_name || '?')
                         .split(' ')
                         .filter(Boolean)
@@ -166,7 +166,7 @@ export default async function ContactsPage({
                           </span>
                         </a>
                       ) : (
-                        <p className="mt-2 text-xs font-bold text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)] uppercase tracking-widest">
+                        <p className="mt-2 text-xs font-bold text-[var(--color-text-body)] dark:text-[var(--color-text-body)] uppercase tracking-widest">
                           Sin teléfono
                         </p>
                       )}
@@ -200,7 +200,7 @@ export default async function ContactsPage({
           })}
 
           {contacts.length === 0 && (
-            <div className="p-10 text-center text-xs text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)] font-bold uppercase tracking-widest border border-black/10  rounded-3xl bg-[var(--color-bg-card-inner)]/50 bg-[var(--color-bg-card)]/20">
+            <div className="p-10 text-center text-xs text-[var(--color-text-body)] dark:text-[var(--color-text-body)] font-bold uppercase tracking-widest border border-black/10  rounded-3xl bg-[var(--color-bg-card-inner)]/50 bg-[var(--color-bg-card)]/20">
               No hay contactos para este filtro
             </div>
           )}

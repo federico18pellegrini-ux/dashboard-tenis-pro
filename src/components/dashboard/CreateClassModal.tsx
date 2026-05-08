@@ -125,7 +125,7 @@ export function CreateClassModal({
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-[10px] font-black text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)] uppercase tracking-widest ml-1">Sede</label>
+              <label className="text-[10px] font-black text-[var(--color-text-body)] uppercase tracking-widest ml-1">Sede</label>
               <select
                 value={clubId}
                 onChange={(e) => setClubId(e.target.value)}
@@ -141,7 +141,7 @@ export function CreateClassModal({
               </select>
             </div>
             <div>
-              <label className="text-[10px] font-black text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)] uppercase tracking-widest ml-1">Fecha</label>
+              <label className="text-[10px] font-black text-[var(--color-text-body)] uppercase tracking-widest ml-1">Fecha</label>
               <input
                 type="date"
                 value={date}
@@ -155,7 +155,7 @@ export function CreateClassModal({
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-[10px] font-black text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)] uppercase tracking-widest ml-1">Hora inicio</label>
+              <label className="text-[10px] font-black text-[var(--color-text-body)] uppercase tracking-widest ml-1">Hora inicio</label>
               <select
                 value={startTime}
                 onChange={(e) => setStartTime(e.target.value)}
@@ -170,7 +170,7 @@ export function CreateClassModal({
               </select>
             </div>
             <div>
-              <label className="text-[10px] font-black text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)] uppercase tracking-widest ml-1">Hora fin</label>
+              <label className="text-[10px] font-black text-[var(--color-text-body)] uppercase tracking-widest ml-1">Hora fin</label>
               <select
                 value={endTime}
                 onChange={(e) => setEndTime(e.target.value)}
@@ -187,7 +187,7 @@ export function CreateClassModal({
           </div>
 
           <div>
-            <label className="text-[10px] font-black text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)] uppercase tracking-widest ml-1">Alumnos</label>
+            <label className="text-[10px] font-black text-[var(--color-text-body)] uppercase tracking-widest ml-1">Alumnos</label>
             <div className="mt-1 max-h-[240px] overflow-y-auto custom-scrollbar bg-gray-200 bg-[var(--color-bg-page)] border border-black/10 dark:border-[var(--color-border)] rounded-xl p-3 space-y-2">
               {sortedStudents.map((s) => (
                 <label key={s.id} className="flex items-center gap-3 text-sm text-[var(--color-text-body)] text-[var(--color-text-body)] font-bold">
@@ -201,13 +201,13 @@ export function CreateClassModal({
                 </label>
               ))}
             </div>
-            <p className="text-[10px] text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)] font-bold uppercase tracking-widest mt-2">
+            <p className="text-[10px] text-[var(--color-text-body)] font-bold uppercase tracking-widest mt-2">
               Seleccionados: {selectedIds.size}
             </p>
           </div>
 
           <div>
-            <label className="text-[10px] font-black text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)] uppercase tracking-widest ml-1">Precio por alumno ($)</label>
+            <label className="text-[10px] font-black text-[var(--color-text-body)] uppercase tracking-widest ml-1">Precio por alumno ($)</label>
             <input
               type="number"
               min={0}
@@ -230,7 +230,7 @@ export function CreateClassModal({
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 bg-gray-300 bg-[var(--color-bg-card-inner)] text-gray-700 dark:text-[var(--color-text-muted)] font-bold py-3 rounded-2xl text-sm"
+              className="flex-1 bg-gray-300 bg-[var(--color-bg-card-inner)] text-rose-700 dark:text-rose-400 font-bold py-3 rounded-2xl text-sm"
             >
               Cancelar
             </button>
