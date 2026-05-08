@@ -32,7 +32,7 @@ export default async function TournamentDetailPage({ params }: { params: Params 
       .from('tournaments')
       .select(`
         *,
-        categories:tournament_categories(
+        categories:tournament_categories!tournament_categories_tournament_id_fkey(
           id,
           name,
           club_id,

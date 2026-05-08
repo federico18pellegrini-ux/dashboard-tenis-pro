@@ -41,7 +41,7 @@ export default async function TournamentsPage() {
       .from('tournaments')
       .select(`
         *,
-        categories:tournament_categories(
+        categories:tournament_categories!tournament_categories_tournament_id_fkey(
           id,
           name,
           club_id,
@@ -58,6 +58,8 @@ export default async function TournamentsPage() {
     supabase.from('clubs').select('id, name').order('name'),
   ])
 
+  console.log('tournaments error:', tournamentsRes.error)
+  console.log('tournaments data:', tournamentsRes.data)
   const tournaments = (tournamentsRes.data ?? []) as any[]
   const clubs = (clubsRes.data ?? []) as Array<{ id: string; name: string }>
 
