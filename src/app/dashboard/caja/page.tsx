@@ -137,39 +137,36 @@ export default async function CajaPage({
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Header */}
         <header className="flex flex-col gap-4">
-          <div className="flex flex-wrap items-center gap-3">
-            <div className="flex items-center gap-2 shrink-0">
-              <Link
-                href="/dashboard"
-                className="shrink-0 group bg-[var(--color-bg-card-inner)] bg-[var(--color-bg-card)] border border-black/10  p-3 rounded-2xl hover:border-[var(--color-accent)]  transition-all shadow-xl"
-                aria-label="Volver al dashboard"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-[var(--color-text-muted)] text-[var(--color-text-muted)] group-hover:text-[var(--color-accent)]  transition-colors">
-                  <path d="m15 18-6-6 6-6"/>
-                </svg>
-              </Link>
-              <Link
-                href="/dashboard/contactos"
-                className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] border border-black/10 p-3 rounded-2xl text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl"
-                aria-label="Contactos"
-              >
-                <span aria-hidden className="text-base leading-none">👥</span>
-              </Link>
-              <Link
-                href={`/dashboard/calendario?month=${month}&year=${year}`}
-                className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] border border-black/10 p-3 rounded-2xl text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl"
-                aria-label="Calendario"
-              >
-                <span aria-hidden className="text-base leading-none">📅</span>
-              </Link>
-              <Link
-                href="/dashboard/torneos"
-                className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] border border-black/10 p-3 rounded-2xl text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl"
-              >
-                <span aria-hidden className="text-base leading-none">🏆</span>
-              </Link>
-            </div>
-            <h1 className="flex-1 min-w-0 text-center text-2xl md:text-3xl font-black tracking-tighter text-[var(--color-text-heading)]  uppercase italic leading-none">
+          <div className="flex items-center gap-3">
+            <Link
+              href="/dashboard"
+              className="inline-flex shrink-0 items-center gap-2 bg-[var(--color-bg-card-inner)] border border-black/10 px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl"
+              aria-label="Volver al dashboard"
+            >
+              ← Volver
+            </Link>
+            <Link
+              href="/dashboard/contactos"
+              className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] border border-black/10 p-3 rounded-2xl text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl"
+              aria-label="Contactos"
+            >
+              <span aria-hidden className="text-base leading-none">👥</span>
+            </Link>
+            <Link
+              href={`/dashboard/calendario?month=${month}&year=${year}`}
+              className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] border border-black/10 p-3 rounded-2xl text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl"
+              aria-label="Calendario"
+            >
+              <span aria-hidden className="text-base leading-none">📅</span>
+            </Link>
+            <Link
+              href="/dashboard/torneos"
+              className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] border border-black/10 p-3 rounded-2xl text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl"
+              aria-label="Torneos"
+            >
+              <span aria-hidden className="text-base leading-none">🏆</span>
+            </Link>
+            <h1 className="flex-1 text-center text-2xl md:text-3xl font-black tracking-tighter text-[var(--color-text-heading)] uppercase italic">
               Caja
             </h1>
           </div>

@@ -65,49 +65,43 @@ export default async function ContactsPage({
         
         {/* HEADER */}
         <header className="space-y-5">
-          <div className="flex items-center justify-start">
-            <Link 
-              href="/dashboard" 
-              className="group bg-[var(--color-bg-card-inner)] bg-[var(--color-bg-card)] border border-black/10  p-3 rounded-2xl hover:border-[var(--color-accent)]  transition-all shadow-xl"
+          <div className="flex items-center gap-3">
+            <Link
+              href="/dashboard"
+              className="inline-flex shrink-0 items-center gap-2 bg-[var(--color-bg-card-inner)] border border-black/10 px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl"
               aria-label="Volver al dashboard"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-[var(--color-text-body)] text-[var(--color-text-body)] group-hover:text-[var(--color-accent)]  transition-colors">
-                <path d="m15 18-6-6 6-6"/>
-              </svg>
+              ← Volver
             </Link>
-          </div>
-
-          <div className="flex flex-col items-stretch gap-3">
-            <h1 className="text-center text-3xl md:text-4xl font-black tracking-tighter text-[var(--color-text-heading)]  uppercase italic leading-none w-full">
+            <Link
+              href="/dashboard/caja"
+              className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] border border-black/10 p-3 rounded-2xl text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl"
+              aria-label="Caja"
+            >
+              <span aria-hidden className="text-base leading-none">💰</span>
+            </Link>
+            <Link
+              href={calHref}
+              className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] border border-black/10 p-3 rounded-2xl text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl"
+              aria-label="Calendario"
+            >
+              <span aria-hidden className="text-base leading-none">📅</span>
+            </Link>
+            <Link
+              href="/dashboard/torneos"
+              className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] border border-black/10 p-3 rounded-2xl text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl"
+              aria-label="Torneos"
+            >
+              <span aria-hidden className="text-base leading-none">🏆</span>
+            </Link>
+            <h1 className="flex-1 text-center text-2xl md:text-3xl font-black tracking-tighter text-[var(--color-text-heading)] uppercase italic">
               Contactos
             </h1>
-            <div className="flex justify-end gap-2">
-              <Link
-                href="/dashboard/caja"
-                className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] border border-black/10 p-3 rounded-2xl text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl"
-                aria-label="Caja"
-              >
-                <span aria-hidden className="text-base leading-none">💰</span>
-              </Link>
-              <Link
-                href={calHref}
-                className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] border border-black/10 p-3 rounded-2xl text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl"
-                aria-label="Calendario"
-              >
-                <span aria-hidden className="text-base leading-none">📅</span>
-              </Link>
-              <Link
-                href="/dashboard/torneos"
-                className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] border border-black/10 p-3 rounded-2xl text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl"
-              >
-                <span aria-hidden className="text-base leading-none">🏆</span>
-              </Link>
-            </div>
-            <p className="text-center text-[10px] font-black text-[var(--color-text-body)] dark:text-[var(--color-text-body)] uppercase tracking-[0.2em] leading-none">
-              {total} TOTAL • {studentsCount} ALUMNOS • {unclassified} PENDIENTES
-            </p>
           </div>
 
+          <p className="text-center text-[10px] font-black text-[var(--color-text-body)] dark:text-[var(--color-text-body)] uppercase tracking-[0.2em] leading-none">
+            {total} TOTAL • {studentsCount} ALUMNOS • {unclassified} PENDIENTES
+          </p>
         </header>
 
         {/* NAVEGACIÓN */}

@@ -126,40 +126,42 @@ export default async function CalendarioPage({
     classesByDay[k].sort((a, b) => a.scheduledAt.localeCompare(b.scheduledAt))
   }
 
-  const backHref = `/dashboard?month=${selectedMonth}&year=${selectedYear}`
-
   return (
     <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)] p-4 md:p-8 font-sans selection:bg-[#bdfd2c] selection:text-slate-950 overflow-x-hidden max-w-full">
       <div className="max-w-7xl mx-auto space-y-6">
         <header className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <div className="flex items-center gap-3 flex-wrap">
+          <div className="flex items-center gap-3 flex-1 min-w-0">
             <Link
-              href={backHref}
-              className="inline-flex items-center gap-2 bg-[var(--color-bg-card-inner)] bg-[var(--color-bg-card)] border border-black/10  px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest text-[var(--color-text-body)] text-[var(--color-text-body)] hover:border-[var(--color-accent)]  hover:text-[var(--color-accent)]  transition-colors shrink-0"
+              href="/dashboard"
+              className="inline-flex shrink-0 items-center gap-2 bg-[var(--color-bg-card-inner)] border border-black/10 px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl"
+              aria-label="Volver al dashboard"
             >
-              &lt; Volver
+              ← Volver
             </Link>
-            <h1 className="text-xl md:text-3xl font-black tracking-tighter text-[var(--color-text-heading)]  uppercase italic">
-              Calendario
-            </h1>
             <Link
               href="/dashboard/contactos"
-              className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] border border-black/10 p-2.5 rounded-xl text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl"
+              className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] border border-black/10 p-3 rounded-2xl text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl"
+              aria-label="Contactos"
             >
               <span aria-hidden className="text-base leading-none">👥</span>
             </Link>
             <Link
               href="/dashboard/caja"
-              className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] border border-black/10 p-2.5 rounded-xl text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl"
+              className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] border border-black/10 p-3 rounded-2xl text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl"
+              aria-label="Caja"
             >
               <span aria-hidden className="text-base leading-none">💰</span>
             </Link>
             <Link
               href="/dashboard/torneos"
-              className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] border border-black/10 p-2.5 rounded-xl text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl"
+              className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] border border-black/10 p-3 rounded-2xl text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl"
+              aria-label="Torneos"
             >
               <span aria-hidden className="text-base leading-none">🏆</span>
             </Link>
+            <h1 className="flex-1 text-center text-2xl md:text-3xl font-black tracking-tighter text-[var(--color-text-heading)] uppercase italic">
+              Calendario
+            </h1>
           </div>
           <div className="shrink-0">
             <MonthSelector currentMonth={selectedMonth} currentYear={selectedYear} />
