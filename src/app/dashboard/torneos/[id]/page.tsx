@@ -3,7 +3,8 @@ import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { revalidatePath } from 'next/cache'
 import { buildWhatsAppTournamentLink } from '@/lib/utils/whatsapp'
-import { addCategory, addStudentToTournament, registerTournamentPayment, updateTournamentStatus } from '../actions'
+import { AddStudentToCategoryPanel } from '@/components/dashboard/AddStudentToCategoryPanel'
+import { addCategory, registerTournamentPayment, updateTournamentStatus } from '../actions'
 
 function formatPesos(amountCents: number) {
   return new Intl.NumberFormat('es-AR', {
@@ -84,13 +85,6 @@ export default async function TournamentDetailPage({ params }: { params: Params 
     const pricePesos = Number(formData.get('price_pesos') || 0)
     const priceCents = Math.round((Number.isFinite(pricePesos) ? pricePesos : 0) * 100)
     await addCategory(tournamentId, name, clubId, priceCents)
-  }
-
-  async function addStudentAction(formData: FormData) {
-    'use server'
-    const studentId = String(formData.get('student_id') || '').trim()
-    const categoryId = String(formData.get('category_id') || '').trim()
-    await addStudentToTournament(tournamentId, studentId, categoryId)
   }
 
   async function payAction(formData: FormData) {
@@ -250,33 +244,11 @@ export default async function TournamentDetailPage({ params }: { params: Params 
                     </p>
                   </div>
 
-                  <details className="shrink-0">
-                    <summary className="cursor-pointer list-none inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] border border-[var(--color-border)] px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl whitespace-nowrap">
-                      + Agregar Alumno
-                    </summary>
-                    <div className="mt-3 bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-3xl p-5 shadow-2xl w-[min(560px,calc(100vw-2rem))]">
-                      <form action={addStudentAction} className="space-y-3">
-                        <input type="hidden" name="category_id" value={String(cat.id)} />
-                        <label className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest block mb-1.5 ml-1">
-                          Alumno
-                        </label>
-                        <select
-                          name="student_id"
-                          required
-                          className="w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-xl p-3 text-xs text-[var(--color-text-heading)] font-bold outline-none focus:border-[var(--color-accent)] transition-all"
-                        >
-                          {students.map((s) => (
-                            <option key={s.id} value={s.id}>
-                              {s.full_name}
-                            </option>
-                          ))}
-                        </select>
-                        <button className="w-full bg-[var(--color-accent-secondary)] text-[var(--color-text-heading)] py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl">
-                          Agregar
-                        </button>
-                      </form>
-                    </div>
-                  </details>
+                  <AddStudentToCategoryPanel
+                    tournamentId={tournamentId}
+                    categoryId={String(cat.id)}
+                    students={students}
+                  />
                 </div>
 
                 <div className="divide-y divide-[var(--color-border)]">

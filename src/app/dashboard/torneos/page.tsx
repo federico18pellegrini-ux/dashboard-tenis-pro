@@ -116,6 +116,24 @@ export default async function TournamentsPage() {
                 <path d="m15 18-6-6 6-6" />
               </svg>
             </Link>
+            <Link
+              href="/dashboard/contactos"
+              className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] border border-black/10 p-2.5 rounded-xl text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl"
+            >
+              <span aria-hidden className="text-base leading-none">👥</span>
+            </Link>
+            <Link
+              href="/dashboard/caja"
+              className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] border border-black/10 p-2.5 rounded-xl text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl"
+            >
+              <span aria-hidden className="text-base leading-none">💰</span>
+            </Link>
+            <Link
+              href={`/dashboard/calendario?month=${new Date().getMonth() + 1}&year=${new Date().getFullYear()}`}
+              className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] border border-black/10 p-2.5 rounded-xl text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl"
+            >
+              <span aria-hidden className="text-base leading-none">📅</span>
+            </Link>
           </div>
 
           <div className="flex flex-col items-stretch gap-3">
