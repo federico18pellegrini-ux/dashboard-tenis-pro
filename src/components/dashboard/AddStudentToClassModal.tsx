@@ -85,7 +85,7 @@ export function AddStudentToClassModal({
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="max-h-[280px] overflow-y-auto custom-scrollbar bg-gray-200 bg-[var(--color-bg-page)] border border-black/10 dark:border-slate-800 rounded-xl p-3 space-y-2">
+          <div className="max-h-[280px] overflow-y-auto custom-scrollbar bg-gray-200 bg-[var(--color-bg-page)] border border-black/10 dark:border-[var(--color-border)] rounded-xl p-3 space-y-2">
             {filteredStudents.length === 0 ? (
               <div className="text-xs text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)] font-bold uppercase tracking-widest">
                 No hay alumnos disponibles para agregar
@@ -115,14 +115,14 @@ export function AddStudentToClassModal({
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 bg-gray-300 bg-[var(--color-bg-card-inner)] text-gray-700 dark:text-slate-400 font-bold py-3 rounded-2xl text-sm"
+              className="flex-1 bg-gray-300 bg-[var(--color-bg-card-inner)] text-gray-700 dark:text-[var(--color-text-muted)] font-bold py-3 rounded-2xl text-sm"
             >
               Cancelar
             </button>
             <button
               type="submit"
               disabled={isSubmitting || filteredStudents.length === 0}
-              className="flex-1 bg-white bg-[var(--color-bg-page)] border border-black/10 dark:border-slate-800 text-[var(--color-text-body)] text-[var(--color-text-heading)] font-black py-3 rounded-2xl text-sm uppercase tracking-widest hover:border-gray-400 dark:hover:border-slate-700 disabled:opacity-50"
+              className="flex-1 bg-white bg-[var(--color-bg-page)] border border-black/10 dark:border-[var(--color-border)] text-[var(--color-text-body)] text-[var(--color-text-heading)] font-black py-3 rounded-2xl text-sm uppercase tracking-widest hover:border-gray-400 dark:hover:border-[var(--color-border)] disabled:opacity-50"
             >
               {isSubmitting ? 'AGREGANDO...' : 'Agregar'}
             </button>

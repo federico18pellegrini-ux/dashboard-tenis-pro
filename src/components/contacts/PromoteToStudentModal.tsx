@@ -53,32 +53,32 @@ export function PromoteToStudentModal({ contact, clubs }: { contact: any, clubs:
 
   const modalContent = (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-md" onClick={() => setIsOpen(false)} />
+      <div className="absolute inset-0 bg-[var(--color-bg-page)]/80 backdrop-blur-md" onClick={() => setIsOpen(false)} />
       
-      <div className="relative bg-slate-900 border border-slate-800 p-6 md:p-8 rounded-[2rem] w-full max-w-lg shadow-2xl overflow-y-auto max-h-[90vh] animate-in fade-in zoom-in-95 duration-200 custom-scrollbar">
+      <div className="relative bg-[var(--color-bg-card)] border border-[var(--color-border)] p-6 md:p-8 rounded-[2rem] w-full max-w-lg shadow-2xl overflow-y-auto max-h-[90vh] animate-in fade-in zoom-in-95 duration-200 custom-scrollbar">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-black tracking-tighter text-[var(--color-text-heading)]  uppercase italic">Convertir Alumno</h2>
-          <button onClick={() => setIsOpen(false)} className="text-slate-500 hover:text-white transition-colors">
+          <button onClick={() => setIsOpen(false)} className="text-[var(--color-text-muted)] hover:text-white transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
           </button>
         </div>
 
         <form action={handleAction} className="space-y-5">
           <div>
-            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Nombre Completo</label>
-            <input type="text" name="full_name" defaultValue={contact.full_name} required className="w-full bg-slate-950 border border-slate-800 rounded-2xl p-4 text-sm font-bold text-white mt-1" />
+            <label className="text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-widest ml-1">Nombre Completo</label>
+            <input type="text" name="full_name" defaultValue={contact.full_name} required className="w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-2xl p-4 text-sm font-bold text-white mt-1" />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Sede</label>
-              <select name="club_id" className="w-full bg-slate-950 border border-slate-800 rounded-2xl p-4 text-sm font-bold text-white mt-1">
+              <label className="text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-widest ml-1">Sede</label>
+              <select name="club_id" className="w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-2xl p-4 text-sm font-bold text-white mt-1">
                 {clubs.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
               </select>
             </div>
             <div>
-              <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Nivel</label>
-              <select name="level" className="w-full bg-slate-950 border border-slate-800 rounded-2xl p-4 text-sm font-bold text-white mt-1">
+              <label className="text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-widest ml-1">Nivel</label>
+              <select name="level" className="w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-2xl p-4 text-sm font-bold text-white mt-1">
                 <option value="principiante">Principiante</option>
                 <option value="intermedio">Intermedio</option>
                 <option value="avanzado">Avanzado</option>
@@ -87,9 +87,9 @@ export function PromoteToStudentModal({ contact, clubs }: { contact: any, clubs:
           </div>
 
           {/* MÚLTIPLES HORARIOS */}
-          <div className="bg-slate-950/50 p-5 rounded-[1.5rem] border border-slate-800 space-y-4">
+          <div className="bg-[var(--color-bg-page)]/50 p-5 rounded-[1.5rem] border border-[var(--color-border)] space-y-4">
             <div className="flex justify-between items-center">
-              <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Horarios Fijos</p>
+              <p className="text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-widest">Horarios Fijos</p>
               <button 
                 type="button" 
                 onClick={addSchedule} 
@@ -103,7 +103,7 @@ export function PromoteToStudentModal({ contact, clubs }: { contact: any, clubs:
                {schedules.map((s, i) => (
                  <div key={i} className="flex gap-2 items-center animate-in fade-in">
                    <select 
-                      className="flex-1 bg-slate-900 border border-slate-800 rounded-xl p-3 text-xs text-white" 
+                      className="flex-1 bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-xl p-3 text-xs text-white" 
                       value={s.day_of_week} 
                       onChange={(e) => {
                         const newSchedules = [...schedules]; 
@@ -118,7 +118,7 @@ export function PromoteToStudentModal({ contact, clubs }: { contact: any, clubs:
                    </select>
                    <input 
                       type="time" 
-                      className="bg-slate-900 border border-slate-800 rounded-xl p-3 text-xs text-white" 
+                      className="bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-xl p-3 text-xs text-white" 
                       value={s.start_time} 
                       onChange={(e) => {
                         const newSchedules = [...schedules]; 
@@ -137,8 +137,8 @@ export function PromoteToStudentModal({ contact, clubs }: { contact: any, clubs:
           </div>
 
           <div>
-            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Precio por Clase ($)</label>
-            <input type="number" name="price" required className="w-full bg-slate-950 border border-slate-800 rounded-2xl p-4 text-sm font-bold text-white mt-1" placeholder="Ej: 12000" />
+            <label className="text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-widest ml-1">Precio por Clase ($)</label>
+            <input type="number" name="price" required className="w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-2xl p-4 text-sm font-bold text-white mt-1" placeholder="Ej: 12000" />
             <p className="text-[10px] text-slate-600 mt-1 ml-1">* El sistema calculará el total mensual según las clases del mes.</p>
           </div>
 

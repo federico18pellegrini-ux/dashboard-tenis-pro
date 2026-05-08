@@ -75,7 +75,7 @@ export function ClassStatusButton({
         type="button"
         disabled={!!loading}
         onClick={() => void setStatus('scheduled')}
-        className="bg-slate-950 border border-slate-800 text-slate-300 px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest hover:border-slate-700 disabled:opacity-50"
+        className="bg-[var(--color-bg-page)] border border-[var(--color-border)] text-[var(--color-text-body)] px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest hover:border-[var(--color-border)] disabled:opacity-50"
         title="Reabrir (volver a programada)"
       >
         Reabrir

@@ -143,26 +143,26 @@ export function AssignContactToSlotModal(props: {
   const badgeClass = (status: string) =>
     status === 'student'
       ? 'bg-emerald-950/30 border-emerald-900/40 text-emerald-300'
-      : 'bg-slate-950 border-slate-800 text-slate-300'
+      : 'bg-[var(--color-bg-page)] border-[var(--color-border)] text-[var(--color-text-body)]'
 
   return createPortal(
     <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-slate-950/90 backdrop-blur-md" onClick={onClose} />
+      <div className="absolute inset-0 bg-[var(--color-bg-page)]/90 backdrop-blur-md" onClick={onClose} />
 
-      <div className="relative bg-slate-900 border border-slate-800 p-8 rounded-[2.5rem] w-full max-w-lg shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
-        <div className="flex justify-between items-start mb-6 pb-6 border-b border-slate-800/60">
+      <div className="relative bg-[var(--color-bg-card)] border border-[var(--color-border)] p-8 rounded-[2.5rem] w-full max-w-lg shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+        <div className="flex justify-between items-start mb-6 pb-6 border-b border-[var(--color-border)]/60">
           <div>
             <h2 className="text-xl font-black text-white uppercase tracking-tighter leading-none italic">
               Asignar alumno
             </h2>
-            <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-2">
+            <p className="text-[10px] text-[var(--color-text-muted)] font-bold uppercase tracking-widest mt-2">
               {dayLabel} a las {startTime} en {clubName}
             </p>
           </div>
 
           <button
             onClick={onClose}
-            className="text-slate-600 hover:text-rose-500 transition-colors p-2 bg-slate-950 rounded-xl border border-slate-800"
+            className="text-slate-600 hover:text-rose-500 transition-colors p-2 bg-[var(--color-bg-page)] rounded-xl border border-[var(--color-border)]"
             aria-label="Cerrar"
           >
             <svg
@@ -184,14 +184,14 @@ export function AssignContactToSlotModal(props: {
 
         <div className="space-y-4">
           <div>
-            <label className="text-[9px] font-black text-slate-500 uppercase tracking-widest block mb-1.5 ml-1">
+            <label className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest block mb-1.5 ml-1">
               Buscar contacto
             </label>
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Nombre o teléfono…"
-              className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white font-bold outline-none focus:border-[#bdfd2c] transition-all"
+              className="w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-xl p-3 text-xs text-white font-bold outline-none focus:border-[#bdfd2c] transition-all"
             />
           </div>
 
@@ -209,12 +209,12 @@ export function AssignContactToSlotModal(props: {
             </div>
           )}
 
-          <div className="bg-slate-950/30 border border-slate-800/60 rounded-[2rem] overflow-hidden">
+          <div className="bg-[var(--color-bg-page)]/30 border border-[var(--color-border)]/60 rounded-[2rem] overflow-hidden">
             <div className="max-h-[320px] overflow-y-auto custom-scrollbar divide-y divide-slate-800/60">
               {isLoading ? (
-                <div className="p-5 text-xs text-slate-500 font-bold">Buscando…</div>
+                <div className="p-5 text-xs text-[var(--color-text-muted)] font-bold">Buscando…</div>
               ) : contacts.length === 0 ? (
-                <div className="p-5 text-xs text-slate-500 font-bold">Sin resultados.</div>
+                <div className="p-5 text-xs text-[var(--color-text-muted)] font-bold">Sin resultados.</div>
               ) : (
                 contacts.map((c) => (
                   <button
@@ -222,17 +222,17 @@ export function AssignContactToSlotModal(props: {
                     type="button"
                     onClick={() => handleAssign(c)}
                     disabled={isAssigningId === c.id}
-                    className="w-full text-left p-5 flex items-center justify-between hover:bg-slate-900/40 transition-colors disabled:opacity-60"
+                    className="w-full text-left p-5 flex items-center justify-between hover:bg-[var(--color-bg-card)]/40 transition-colors disabled:opacity-60"
                   >
                     <div className="flex items-center gap-4">
-                      <div className="h-11 w-11 rounded-full bg-slate-950 border border-slate-800 flex items-center justify-center text-slate-300 font-black text-xs">
+                      <div className="h-11 w-11 rounded-full bg-[var(--color-bg-page)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-body)] font-black text-xs">
                         {initials(c.full_name)}
                       </div>
                       <div>
-                        <div className="text-sm font-black text-slate-100 uppercase tracking-tight leading-none">
+                        <div className="text-sm font-black text-[var(--color-text-heading)] uppercase tracking-tight leading-none">
                           {c.full_name}
                         </div>
-                        <div className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-1">
+                        <div className="text-[10px] text-[var(--color-text-muted)] font-bold uppercase tracking-widest mt-1">
                           {formatPhoneForDisplay(c.phone)}
                         </div>
                       </div>
@@ -254,8 +254,8 @@ export function AssignContactToSlotModal(props: {
               )}
             </div>
 
-            <div className="p-4 border-t border-slate-800/60 flex items-center justify-between">
-              <div className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">¿No está en la lista?</div>
+            <div className="p-4 border-t border-[var(--color-border)]/60 flex items-center justify-between">
+              <div className="text-[10px] text-[var(--color-text-muted)] font-bold uppercase tracking-widest">¿No está en la lista?</div>
 
               {/* Abre el modal existente */}
               <div className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-heading)] ">

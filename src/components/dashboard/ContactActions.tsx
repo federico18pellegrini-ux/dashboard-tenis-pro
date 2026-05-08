@@ -49,19 +49,19 @@ export function ContactActions({ contactId }: { contactId: string }) {
           <div className="fixed inset-0 z-10" onClick={() => setIsOpen(false)} />
           
           {/* Menú Flotante Dark Premium */}
-          <div className="absolute right-0 mt-8 w-56 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl z-20 py-2 animate-in fade-in zoom-in duration-150">
-            <button className="w-full flex items-center gap-3 px-4 py-3 text-[10px] font-black uppercase tracking-widest text-slate-300 hover:bg-slate-800 transition-colors">
+          <div className="absolute right-0 mt-8 w-56 bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl shadow-2xl z-20 py-2 animate-in fade-in zoom-in duration-150">
+            <button className="w-full flex items-center gap-3 px-4 py-3 text-[10px] font-black uppercase tracking-widest text-[var(--color-text-body)] hover:bg-[var(--color-bg-card-inner)] transition-colors">
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
               Editar Datos
             </button>
             
-            <button className="w-full flex items-center gap-3 px-4 py-3 text-[10px] font-black uppercase tracking-widest text-slate-300 hover:bg-slate-800 transition-colors">
+            <button className="w-full flex items-center gap-3 px-4 py-3 text-[10px] font-black uppercase tracking-widest text-[var(--color-text-body)] hover:bg-[var(--color-bg-card-inner)] transition-colors">
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></svg>
               Archivar
             </button>
 
             {/* Separador y Acción Crítica */}
-            <div className="border-t border-slate-800 mt-2 pt-2">
+            <div className="border-t border-[var(--color-border)] mt-2 pt-2">
               <button 
                 onClick={handleDelete}
                 disabled={isDeleting}

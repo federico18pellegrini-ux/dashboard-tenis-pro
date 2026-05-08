@@ -135,7 +135,7 @@ export function AvailabilityManager({ clubs }: { clubs: ClubSlots[] }) {
     <div className="space-y-8">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div className="space-y-1">
-          <p className="text-xs text-slate-500 font-bold max-w-2xl">
+          <p className="text-xs text-[var(--color-text-muted)] font-bold max-w-2xl">
             Marcá los horarios que trabajás en cada club. Las celdas vacías van a aparecer en la grilla principal como
             &quot;slots libres&quot; donde podés asignar alumnos.
           </p>
@@ -154,7 +154,7 @@ export function AvailabilityManager({ clubs }: { clubs: ClubSlots[] }) {
             'px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all shadow-xl border',
             hasUnsavedChanges
               ? 'bg-[var(--color-accent-secondary)] text-white  border-green-700 dark:border-[#bdfd2c]/30 hover:bg-green-800 dark:hover:bg-[#a5e620]'
-              : 'bg-slate-900 text-slate-500 border-slate-800',
+              : 'bg-[var(--color-bg-card)] text-[var(--color-text-muted)] border-[var(--color-border)]',
             (isSaving || !hasUnsavedChanges) ? 'opacity-60 cursor-not-allowed' : '',
           ].join(' ')}
         >

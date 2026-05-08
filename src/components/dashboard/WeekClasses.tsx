@@ -235,7 +235,7 @@ export function WeekClasses({
                                   href={waHref}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="border border-gray-400 dark:border-slate-700 text-gray-700 text-[var(--color-text-body)] px-2.5 py-1 rounded-lg text-[11px] font-black uppercase tracking-widest hover:bg-gray-200 dark:hover:bg-slate-950/40 transition-colors"
+                                  className="border border-gray-400 dark:border-[var(--color-border)] text-gray-700 text-[var(--color-text-body)] px-2.5 py-1 rounded-lg text-[11px] font-black uppercase tracking-widest hover:bg-gray-200 dark:hover:bg-[var(--color-bg-page)]/40 transition-colors"
                                   title="Enviar recordatorio por WhatsApp"
                                 >
                                   WA
@@ -303,7 +303,7 @@ export function WeekClasses({
                           existingStudentIds: (c.students ?? []).map((s) => s.student_id),
                         })
                       }
-                      className="border border-gray-400 dark:border-slate-700 text-gray-700 text-[var(--color-text-body)] px-2.5 py-1 rounded-lg text-[11px] font-black uppercase tracking-widest hover:bg-gray-200 dark:hover:bg-slate-950/40 transition-colors"
+                      className="border border-gray-400 dark:border-[var(--color-border)] text-gray-700 text-[var(--color-text-body)] px-2.5 py-1 rounded-lg text-[11px] font-black uppercase tracking-widest hover:bg-gray-200 dark:hover:bg-[var(--color-bg-page)]/40 transition-colors"
                       title="Agregar alumno"
                     >
                       + Alumno
@@ -325,7 +325,7 @@ export function WeekClasses({
                       type="button"
                       disabled={!!statusLoading && statusLoading.classId === c.id}
                       onClick={() => void setClassStatus(c.id, 'scheduled')}
-                      className="flex-1 min-w-[120px] border border-gray-400 dark:border-slate-700 text-gray-700 text-[var(--color-text-body)] px-2.5 py-1 rounded-lg text-[11px] font-black uppercase tracking-widest hover:bg-gray-200 dark:hover:bg-slate-950/40 transition-colors disabled:opacity-50"
+                      className="flex-1 min-w-[120px] border border-gray-400 dark:border-[var(--color-border)] text-gray-700 text-[var(--color-text-body)] px-2.5 py-1 rounded-lg text-[11px] font-black uppercase tracking-widest hover:bg-gray-200 dark:hover:bg-[var(--color-bg-page)]/40 transition-colors disabled:opacity-50"
                     >
                       Reabrir
                     </button>
@@ -337,7 +337,7 @@ export function WeekClasses({
                           existingStudentIds: (c.students ?? []).map((s) => s.student_id),
                         })
                       }
-                      className="border border-gray-400 dark:border-slate-700 text-gray-700 text-[var(--color-text-body)] px-2.5 py-1 rounded-lg text-[11px] font-black uppercase tracking-widest hover:bg-gray-200 dark:hover:bg-slate-950/40 transition-colors"
+                      className="border border-gray-400 dark:border-[var(--color-border)] text-gray-700 text-[var(--color-text-body)] px-2.5 py-1 rounded-lg text-[11px] font-black uppercase tracking-widest hover:bg-gray-200 dark:hover:bg-[var(--color-bg-page)]/40 transition-colors"
                       title="Agregar alumno"
                     >
                       + Alumno

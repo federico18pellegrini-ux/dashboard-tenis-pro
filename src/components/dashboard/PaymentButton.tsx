@@ -35,7 +35,7 @@ export function PaymentButton({
       disabled={loading}
       className={`text-[10px] px-2 py-1 rounded font-bold transition-all shadow-sm ${
         loading 
-          ? 'bg-slate-200 text-slate-400 cursor-wait' 
+          ? 'bg-slate-200 text-[var(--color-text-muted)] cursor-wait' 
           : 'bg-emerald-600 text-white hover:bg-emerald-700 active:transform active:scale-95'
       }`}
     >

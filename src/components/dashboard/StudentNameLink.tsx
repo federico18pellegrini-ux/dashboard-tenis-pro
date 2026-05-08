@@ -25,7 +25,7 @@ export function StudentNameLink({ student, clubs = [] }: StudentNameLinkProps) {
           e.preventDefault()
           setIsModalOpen(true)
         }}
-        className="text-xs font-black text-slate-100 mb-5 uppercase leading-tight italic tracking-tight hover:text-[#bdfd2c] transition-colors text-left w-full group"
+        className="text-xs font-black text-[var(--color-text-heading)] mb-5 uppercase leading-tight italic tracking-tight hover:text-[#bdfd2c] transition-colors text-left w-full group"
       >
         <span className="border-b border-transparent group-hover:border-[#bdfd2c]">
           {student.full_name}

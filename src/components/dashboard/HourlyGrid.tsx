@@ -12,7 +12,7 @@ const CLUB_COLORS: Record<string, string> = {
 }
 
 function clubTagStyles(clubId: string) {
-  return CLUB_COLORS[clubId] ?? 'border-slate-700 bg-slate-950 text-slate-200'
+  return CLUB_COLORS[clubId] ?? 'border-[var(--color-border)] bg-[var(--color-bg-page)] text-[var(--color-text-body)]'
 }
 
 export type HourlyGridClub = {
@@ -190,7 +190,7 @@ export function HourlyGrid({
     const visibleEntries = isAllClubs && entries.length > 3 ? entries.slice(0, 3) : entries
 
     const outerCellClasses = [
-      'border-b border-l border-slate-800/80 bg-slate-950/20 p-2 min-h-[56px]',
+      'border-b border-l border-[var(--color-border)]/80 bg-[var(--color-bg-page)]/20 p-2 min-h-[56px]',
     ].join(' ')
 
     return (
@@ -214,7 +214,7 @@ export function HourlyGrid({
                   type="button"
                   onClick={() => openStudentModal(row)}
                   className={[
-                    'w-full flex items-center justify-between gap-2 rounded-xl border px-2 py-1 transition-colors hover:bg-slate-900/60',
+                    'w-full flex items-center justify-between gap-2 rounded-xl border px-2 py-1 transition-colors hover:bg-[var(--color-bg-card)]/60',
                     'text-[10px] font-black text-slate-50',
                     clubTagStyles(row.club_id),
                   ].join(' ')}
@@ -241,7 +241,7 @@ export function HourlyGrid({
                 type="button"
                 onClick={() => openStudentModal(row)}
                 className={[
-                  'w-full text-left rounded-xl border px-2 py-1.5 transition-colors hover:bg-slate-900/60',
+                  'w-full text-left rounded-xl border px-2 py-1.5 transition-colors hover:bg-[var(--color-bg-card)]/60',
                   clubTagStyles(row.club_id),
                 ].join(' ')}
               >
@@ -256,7 +256,7 @@ export function HourlyGrid({
                         {st.full_name}
                       </div>
                     )}
-                    <div className="mt-0.5 text-[8px] font-black uppercase tracking-widest text-slate-400/90 truncate">
+                    <div className="mt-0.5 text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)]/90 truncate">
                       {clubName}
                     </div>
                   </div>
@@ -269,7 +269,7 @@ export function HourlyGrid({
           })}
         </div>
         {overflowMore > 0 && (
-          <div className="mt-1 rounded-lg border border-slate-800 bg-slate-950/80 px-2 py-0.5 text-center text-[9px] font-black uppercase tracking-widest text-slate-500">
+          <div className="mt-1 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-page)]/80 px-2 py-0.5 text-center text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">
             +{overflowMore} más
           </div>
         )}
@@ -279,7 +279,7 @@ export function HourlyGrid({
 
   return (
     <div className="space-y-4 pb-20">
-      <div className="rounded-[2.5rem] border border-slate-800 bg-slate-900/40 overflow-hidden shadow-2xl">
+      <div className="rounded-[2.5rem] border border-[var(--color-border)] bg-[var(--color-bg-card)]/40 overflow-hidden shadow-2xl">
         <div className="overflow-x-auto">
           <div
             className="min-w-[900px] grid"
@@ -287,13 +287,13 @@ export function HourlyGrid({
               gridTemplateColumns: `72px repeat(${DAY_COLUMNS.length}, minmax(0, 1fr))`,
             }}
           >
-            <div className="sticky left-0 z-20 bg-slate-950 border-b border-r border-slate-800 p-3 text-[10px] font-black uppercase tracking-widest text-slate-500">
+            <div className="sticky left-0 z-20 bg-[var(--color-bg-page)] border-b border-r border-[var(--color-border)] p-3 text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">
               Hora
             </div>
             {DAY_COLUMNS.map((d) => (
               <div
                 key={d.dow}
-                className="border-b border-slate-800 p-3 text-center text-[10px] font-black uppercase tracking-[0.2em] text-slate-400"
+                className="border-b border-[var(--color-border)] p-3 text-center text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-muted)]"
               >
                 {d.label}
               </div>
@@ -303,7 +303,7 @@ export function HourlyGrid({
               const hhmm = hourNumToHHMM(hour)
               return (
                 <div key={hour} className="contents">
-                  <div className="sticky left-0 z-10 bg-slate-950 border-r border-b border-slate-800 p-3 text-[10px] font-black text-slate-500 tabular-nums">
+                  <div className="sticky left-0 z-10 bg-[var(--color-bg-page)] border-r border-b border-[var(--color-border)] p-3 text-[10px] font-black text-[var(--color-text-muted)] tabular-nums">
                     {hhmm}
                   </div>
 
@@ -319,7 +319,7 @@ export function HourlyGrid({
                         return (
                           <div
                             key={`${hour}-${dow}-all-empty`}
-                            className="border-b border-l border-slate-800/80 bg-slate-950/35 p-2 min-h-[56px]"
+                            className="border-b border-l border-[var(--color-border)]/80 bg-[var(--color-bg-page)]/35 p-2 min-h-[56px]"
                             title="Filtrá por sede para asignar"
                           />
                         )
@@ -346,7 +346,7 @@ export function HourlyGrid({
 
                     if (working) {
                       return (
-                        <div key={`${hour}-${dow}-free`} className="border-b border-l border-slate-800/80 p-2 min-h-[56px]">
+                        <div key={`${hour}-${dow}-free`} className="border-b border-l border-[var(--color-border)]/80 p-2 min-h-[56px]">
                           <button
                             type="button"
                             title="Asignar alumno"
@@ -360,7 +360,7 @@ export function HourlyGrid({
                             }
                             className={[
                               'group relative w-full h-full min-h-[48px] rounded-2xl border border-dashed transition-colors',
-                              'border-[#bdfd2c]/55 bg-slate-950/25 hover:bg-[#bdfd2c]/10',
+                              'border-[#bdfd2c]/55 bg-[var(--color-bg-page)]/25 hover:bg-[#bdfd2c]/10',
                             ].join(' ')}
                           >
                             <span className="absolute inset-0 flex items-center justify-center text-[var(--color-text-heading)]/80 /70 text-lg font-black opacity-0 group-hover:opacity-100 transition-opacity">
@@ -374,7 +374,7 @@ export function HourlyGrid({
                     return (
                       <div
                         key={`${hour}-${dow}-off`}
-                        className="border-b border-l border-slate-800/80 bg-slate-950/55 p-2 min-h-[56px]"
+                        className="border-b border-l border-[var(--color-border)]/80 bg-[var(--color-bg-page)]/55 p-2 min-h-[56px]"
                         title="Fuera de horario laboral"
                       />
                     )

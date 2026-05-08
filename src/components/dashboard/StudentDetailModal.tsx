@@ -161,43 +161,43 @@ export function StudentDetailModal({
 
   if (!isOpen || !mounted) return null
 
-  const inputClasses = "w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white font-bold outline-none focus:border-[#bdfd2c] transition-all"
-  const labelClasses = "text-[9px] font-black text-slate-500 uppercase tracking-widest block mb-1.5 ml-1"
+  const inputClasses = "w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-xl p-3 text-xs text-white font-bold outline-none focus:border-[#bdfd2c] transition-all"
+  const labelClasses = "text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest block mb-1.5 ml-1"
 
   return createPortal(
     <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4">
       <div 
-        className="absolute inset-0 bg-slate-950/90 backdrop-blur-md" 
+        className="absolute inset-0 bg-[var(--color-bg-page)]/90 backdrop-blur-md" 
         onClick={onClose} 
       />
       
-      <div className="relative bg-slate-900 border border-slate-800 p-8 rounded-[2.5rem] w-full max-w-md shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+      <div className="relative bg-[var(--color-bg-card)] border border-[var(--color-border)] p-8 rounded-[2.5rem] w-full max-w-md shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
         
         {/* HEADER */}
-        <div className="flex justify-between items-start mb-8 pb-6 border-b border-slate-800/60">
+        <div className="flex justify-between items-start mb-8 pb-6 border-b border-[var(--color-border)]/60">
           <div className="flex items-center gap-4">
-            <div className="h-14 w-14 rounded-full bg-slate-950 border border-[#bdfd2c]/30 flex items-center justify-center font-black text-[var(--color-accent)]  text-xl italic">
+            <div className="h-14 w-14 rounded-full bg-[var(--color-bg-page)] border border-[#bdfd2c]/30 flex items-center justify-center font-black text-[var(--color-accent)]  text-xl italic">
               {student.full_name.split(' ').map(n => n[0]).join('')}
             </div>
             <div>
               <h2 className="text-xl font-black text-white uppercase tracking-tighter leading-none mb-2 italic">
                 {student.full_name}
               </h2>
-              <p className="text-xs text-slate-500 font-bold tracking-[0.15em]">
+              <p className="text-xs text-[var(--color-text-muted)] font-bold tracking-[0.15em]">
                 {formatPhoneForDisplay(student.phone)}
               </p>
             </div>
           </div>
           <button 
             onClick={onClose} 
-            className="text-slate-600 hover:text-rose-500 transition-colors p-2 bg-slate-950 rounded-xl border border-slate-800"
+            className="text-slate-600 hover:text-rose-500 transition-colors p-2 bg-[var(--color-bg-page)] rounded-xl border border-[var(--color-border)]"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
           </button>
         </div>
 
         <div className="space-y-5 overflow-y-auto max-h-[55vh] pr-2 custom-scrollbar">
-          <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.25em]">
+          <h3 className="text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-[0.25em]">
             Horarios fijos
           </h3>
 
@@ -214,7 +214,7 @@ export function StudentDetailModal({
                       e.preventDefault()
                       void handleEditSchedule(sched.id, new FormData(e.currentTarget))
                     }}
-                    className="bg-slate-950 p-6 rounded-[2rem] border border-[#bdfd2c]/40 space-y-5 animate-in slide-in-from-top-2"
+                    className="bg-[var(--color-bg-page)] p-6 rounded-[2rem] border border-[#bdfd2c]/40 space-y-5 animate-in slide-in-from-top-2"
                   >
                     <div className="grid grid-cols-2 gap-4">
                       <div>
@@ -252,7 +252,7 @@ export function StudentDetailModal({
                           setEditingScheduleId(null)
                           setFeedback({ kind: 'idle', message: '' })
                         }}
-                        className="flex-1 bg-slate-900 border border-slate-800 text-slate-500 py-3 rounded-xl text-[10px] font-black uppercase transition-all"
+                        className="flex-1 bg-[var(--color-bg-card)] border border-[var(--color-border)] text-[var(--color-text-muted)] py-3 rounded-xl text-[10px] font-black uppercase transition-all"
                       >
                         Cerrar
                       </button>
@@ -272,13 +272,13 @@ export function StudentDetailModal({
             return (
               <div 
                 key={sched.id} 
-                className="bg-slate-900/50 p-5 rounded-2xl border border-slate-800/60 flex justify-between items-center group"
+                className="bg-[var(--color-bg-card)]/50 p-5 rounded-2xl border border-[var(--color-border)]/60 flex justify-between items-center group"
               >
                 <div>
-                  <p className="text-sm font-black text-slate-100 italic uppercase">
+                  <p className="text-sm font-black text-[var(--color-text-heading)] italic uppercase">
                     {days[sched.day_of_week]} <span className="text-[var(--color-text-heading)]  ml-1">{toHHMM(sched.start_time)}hs</span>
                   </p>
-                  <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-1">
+                  <p className="text-[10px] text-[var(--color-text-muted)] font-bold uppercase tracking-widest mt-1">
                     {sched.clubs?.name || clubs.find((c: any) => c.id === sched.club_id)?.name || 'Sede'}
                   </p>
                 </div>
@@ -290,7 +290,7 @@ export function StudentDetailModal({
                       setFeedback({ kind: 'idle', message: '' })
                       setEditingScheduleId(sched.id)
                     }}
-                    className="bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-slate-500 hover:text-[#bdfd2c] transition-all"
+                    className="bg-[var(--color-bg-page)] border border-[var(--color-border)] p-2.5 rounded-xl text-[var(--color-text-muted)] hover:text-[#bdfd2c] transition-all"
                     title="Editar"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
@@ -300,7 +300,7 @@ export function StudentDetailModal({
                     type="button"
                     disabled={isSubmitting}
                     onClick={() => void handleDeleteSchedule(sched)}
-                    className="bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-slate-500 hover:text-rose-500 transition-all disabled:opacity-60"
+                    className="bg-[var(--color-bg-page)] border border-[var(--color-border)] p-2.5 rounded-xl text-[var(--color-text-muted)] hover:text-rose-500 transition-all disabled:opacity-60"
                     title="Eliminar"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
@@ -330,7 +330,7 @@ export function StudentDetailModal({
                   e.preventDefault()
                   void handleCreateSchedule(new FormData(e.currentTarget))
                 }}
-                className="bg-slate-950 p-6 rounded-[2rem] border border-[#bdfd2c]/40 space-y-5 animate-in slide-in-from-top-2"
+                className="bg-[var(--color-bg-page)] p-6 rounded-[2rem] border border-[#bdfd2c]/40 space-y-5 animate-in slide-in-from-top-2"
               >
                 <div className="grid grid-cols-2 gap-4">
                   <div>
@@ -368,7 +368,7 @@ export function StudentDetailModal({
                       setShowCreateForm(false)
                       setFeedback({ kind: 'idle', message: '' })
                     }}
-                    className="flex-1 bg-slate-900 border border-slate-800 text-slate-500 py-3 rounded-xl text-[10px] font-black uppercase transition-all"
+                    className="flex-1 bg-[var(--color-bg-card)] border border-[var(--color-border)] text-[var(--color-text-muted)] py-3 rounded-xl text-[10px] font-black uppercase transition-all"
                   >
                     Cancelar
                   </button>
@@ -384,7 +384,7 @@ export function StudentDetailModal({
             </div>
           )}
 
-          <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest pt-2">
+          <p className="text-[10px] text-[var(--color-text-muted)] font-bold uppercase tracking-widest pt-2">
             Para editar precio o nombre del alumno, andá a Contactos.
           </p>
         </div>

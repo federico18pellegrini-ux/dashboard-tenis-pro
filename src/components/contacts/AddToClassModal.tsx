@@ -98,15 +98,15 @@ export function AddToClassModal({
 
   return createPortal(
     <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-md" onClick={onClose} />
+      <div className="absolute inset-0 bg-[var(--color-bg-page)]/80 backdrop-blur-md" onClick={onClose} />
 
-      <div className="relative bg-slate-900 border border-slate-800 p-6 rounded-[2.5rem] w-full max-w-lg shadow-2xl space-y-4 overflow-y-auto max-h-[90vh] custom-scrollbar">
+      <div className="relative bg-[var(--color-bg-card)] border border-[var(--color-border)] p-6 rounded-[2.5rem] w-full max-w-lg shadow-2xl space-y-4 overflow-y-auto max-h-[90vh] custom-scrollbar">
         <div className="flex justify-between items-center gap-3">
           <div className="min-w-0">
             <h2 className="text-lg font-black text-[var(--color-text-heading)]  uppercase italic tracking-tighter truncate">Agregar a clase</h2>
-            <p className="text-xs font-bold text-slate-500 truncate">{studentName}</p>
+            <p className="text-xs font-bold text-[var(--color-text-muted)] truncate">{studentName}</p>
           </div>
-          <button onClick={onClose} className="text-slate-500 hover:text-white shrink-0" aria-label="Cerrar">
+          <button onClick={onClose} className="text-[var(--color-text-muted)] hover:text-white shrink-0" aria-label="Cerrar">
             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
               <path d="M18 6 6 18" />
               <path d="m6 6 12 12" />
@@ -121,9 +121,9 @@ export function AddToClassModal({
         )}
 
         {loading ? (
-          <div className="text-xs font-bold text-slate-500 uppercase tracking-widest py-6">Cargando clases…</div>
+          <div className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-widest py-6">Cargando clases…</div>
         ) : formatted.length === 0 ? (
-          <div className="text-xs font-bold text-slate-500 uppercase tracking-widest py-6">
+          <div className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-widest py-6">
             No hay clases disponibles este mes
           </div>
         ) : (
@@ -132,14 +132,14 @@ export function AddToClassModal({
               <label
                 key={c.id}
                 className={`flex items-center justify-between gap-3 p-4 rounded-2xl border transition-colors cursor-pointer ${
-                  selectedClassId === c.id ? 'border-[#bdfd2c] bg-slate-950/30' : 'border-slate-800 bg-slate-950/10 hover:bg-slate-950/20'
+                  selectedClassId === c.id ? 'border-[#bdfd2c] bg-[var(--color-bg-page)]/30' : 'border-[var(--color-border)] bg-[var(--color-bg-page)]/10 hover:bg-[var(--color-bg-page)]/20'
                 }`}
               >
                 <div className="min-w-0">
-                  <div className="text-xs font-black text-slate-100 uppercase tracking-tight truncate">
+                  <div className="text-xs font-black text-[var(--color-text-heading)] uppercase tracking-tight truncate">
                     {c.date} · {c.startTime}–{c.endTime}
                   </div>
-                  <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest truncate">
+                  <div className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest truncate">
                     {c.club?.name ?? 'Sede'} · {String(c.status ?? 'scheduled').toUpperCase()}
                   </div>
                 </div>
@@ -159,7 +159,7 @@ export function AddToClassModal({
           <button
             type="button"
             onClick={onClose}
-            className="flex-1 border border-slate-800 text-slate-300 px-4 py-3 rounded-2xl text-sm font-black uppercase tracking-widest hover:bg-slate-950/40 transition-colors"
+            className="flex-1 border border-[var(--color-border)] text-[var(--color-text-body)] px-4 py-3 rounded-2xl text-sm font-black uppercase tracking-widest hover:bg-[var(--color-bg-page)]/40 transition-colors"
           >
             Cancelar
           </button>

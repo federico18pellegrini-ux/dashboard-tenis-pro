@@ -67,7 +67,7 @@ export function ContactActionsMenu({ contact, clubs = [] }: { contact: any, club
       <button 
         ref={buttonRef}
         onClick={toggleMenu}
-        className="p-2 text-slate-600 hover:text-[#bdfd2c] transition-colors bg-slate-950 rounded-xl border border-transparent hover:border-slate-800 shadow-xl"
+        className="p-2 text-slate-600 hover:text-[#bdfd2c] transition-colors bg-[var(--color-bg-page)] rounded-xl border border-transparent hover:border-[var(--color-border)] shadow-xl"
       >
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
           <circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/>
@@ -78,11 +78,11 @@ export function ContactActionsMenu({ contact, clubs = [] }: { contact: any, club
       {isOpen && mounted && createPortal(
         <div 
           ref={menuRef}
-          className="fixed z-[9999] w-48 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl py-2 animate-in fade-in zoom-in-95 duration-100 overflow-hidden"
+          className="fixed z-[9999] w-48 bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl shadow-2xl py-2 animate-in fade-in zoom-in-95 duration-100 overflow-hidden"
           style={{ top: coords.top + 8, left: coords.left }}
         >
           <button 
-            className="w-full text-left px-4 py-3 text-xs font-black text-slate-300 hover:bg-slate-800 hover:text-[#bdfd2c] transition-colors flex items-center gap-3 uppercase tracking-widest"
+            className="w-full text-left px-4 py-3 text-xs font-black text-[var(--color-text-body)] hover:bg-[var(--color-bg-card-inner)] hover:text-[#bdfd2c] transition-colors flex items-center gap-3 uppercase tracking-widest"
             onClick={() => {
               setShowEditModal(true)
               setIsOpen(false)
@@ -94,7 +94,7 @@ export function ContactActionsMenu({ contact, clubs = [] }: { contact: any, club
 
           {!!contact?.student_id && (
             <button
-              className="w-full text-left px-4 py-3 text-xs font-black text-slate-300 hover:bg-slate-800 hover:text-[#bdfd2c] transition-colors flex items-center gap-3 uppercase tracking-widest"
+              className="w-full text-left px-4 py-3 text-xs font-black text-[var(--color-text-body)] hover:bg-[var(--color-bg-card-inner)] hover:text-[#bdfd2c] transition-colors flex items-center gap-3 uppercase tracking-widest"
               onClick={() => {
                 setShowAddToClassModal(true)
                 setIsOpen(false)
@@ -107,7 +107,7 @@ export function ContactActionsMenu({ contact, clubs = [] }: { contact: any, club
             </button>
           )}
 
-          <div className="border-t border-slate-800 mt-2 pt-2">
+          <div className="border-t border-[var(--color-border)] mt-2 pt-2">
             <button 
               onClick={handleDelete}
               disabled={isDeleting}

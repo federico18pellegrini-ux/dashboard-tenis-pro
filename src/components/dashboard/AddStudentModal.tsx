@@ -68,8 +68,8 @@ export function AddStudentModal({ clubs }: { clubs: Club[] }) {
 
   if (!mounted) return null
 
-  const inputClasses = "w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white font-bold outline-none focus:border-[#bdfd2c] transition-all"
-  const labelClasses = "text-[9px] font-black text-slate-500 uppercase tracking-widest block mb-1.5 ml-1"
+  const inputClasses = "w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-xl p-3 text-xs text-white font-bold outline-none focus:border-[#bdfd2c] transition-all"
+  const labelClasses = "text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest block mb-1.5 ml-1"
 
   return (
     <>
@@ -83,10 +83,10 @@ export function AddStudentModal({ clubs }: { clubs: Club[] }) {
 
       {isOpen && createPortal(
         <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-slate-950/90 backdrop-blur-md" onClick={() => setIsOpen(false)} />
+          <div className="absolute inset-0 bg-[var(--color-bg-page)]/90 backdrop-blur-md" onClick={() => setIsOpen(false)} />
           
-          <div className="relative bg-slate-900 border border-slate-800 p-8 rounded-[2.5rem] w-full max-w-lg shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
-            <h2 className="text-xl font-black text-white uppercase italic tracking-tighter mb-8 border-b border-slate-800 pb-4">Alta de Alumno</h2>
+          <div className="relative bg-[var(--color-bg-card)] border border-[var(--color-border)] p-8 rounded-[2.5rem] w-full max-w-lg shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+            <h2 className="text-xl font-black text-white uppercase italic tracking-tighter mb-8 border-b border-[var(--color-border)] pb-4">Alta de Alumno</h2>
             
             <form action={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-2 gap-4">
@@ -116,15 +116,15 @@ export function AddStudentModal({ clubs }: { clubs: Club[] }) {
               </div>
 
               {/* SECCIÓN DINÁMICA DE HORARIOS */}
-              <div className="space-y-3 border-t border-slate-800/60 pt-6">
+              <div className="space-y-3 border-t border-[var(--color-border)]/60 pt-6">
                 <div className="flex justify-between items-center mb-2">
-                  <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Agenda Semanal</h3>
+                  <h3 className="text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-[0.2em]">Agenda Semanal</h3>
                   <button type="button" onClick={addDayRow} className="text-[var(--color-text-heading)]  text-[9px] font-black uppercase tracking-widest hover:underline">+ Agregar Día</button>
                 </div>
 
                 <div className="max-h-[200px] overflow-y-auto pr-2 custom-scrollbar space-y-3">
                   {schedules.map((s, index) => (
-                    <div key={index} className="grid grid-cols-12 gap-2 items-center bg-slate-950 p-3 rounded-2xl border border-slate-800 group transition-all hover:border-slate-700">
+                    <div key={index} className="grid grid-cols-12 gap-2 items-center bg-[var(--color-bg-page)] p-3 rounded-2xl border border-[var(--color-border)] group transition-all hover:border-[var(--color-border)]">
                       <div className="col-span-5">
                         <select 
                           value={s.day_of_week} 
@@ -167,7 +167,7 @@ export function AddStudentModal({ clubs }: { clubs: Club[] }) {
                 <button 
                   type="button" 
                   onClick={() => setIsOpen(false)}
-                  className="flex-1 bg-slate-800 text-slate-400 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:text-white transition-all"
+                  className="flex-1 bg-[var(--color-bg-card-inner)] text-[var(--color-text-muted)] py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:text-white transition-all"
                 >
                   Cancelar
                 </button>

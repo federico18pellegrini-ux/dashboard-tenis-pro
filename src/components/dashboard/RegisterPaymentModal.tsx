@@ -131,7 +131,7 @@ export function RegisterPaymentModal({
               value={amountPesos}
               onChange={(e) => setAmountPesos(e.target.value)}
               required
-              className="w-full bg-white bg-[var(--color-bg-page)] border border-black/10 dark:border-slate-800 rounded-xl p-3 text-sm text-[var(--color-text-body)] dark:text-white font-bold mt-1 outline-none"
+              className="w-full bg-white bg-[var(--color-bg-page)] border border-black/10 dark:border-[var(--color-border)] rounded-xl p-3 text-sm text-[var(--color-text-body)] dark:text-white font-bold mt-1 outline-none"
             />
             <p className="text-[10px] text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)] font-bold uppercase tracking-widest mt-2">
               Total: <span className="text-[var(--color-text-body)] text-[var(--color-text-body)]">{formatPesos(previewCents)}</span>
@@ -143,7 +143,7 @@ export function RegisterPaymentModal({
             <select
               value={method}
               onChange={(e) => setMethod(e.target.value as any)}
-              className="w-full bg-white bg-[var(--color-bg-page)] border border-black/10 dark:border-slate-800 rounded-xl p-3 text-sm text-[var(--color-text-body)] dark:text-white font-bold mt-1 outline-none"
+              className="w-full bg-white bg-[var(--color-bg-page)] border border-black/10 dark:border-[var(--color-border)] rounded-xl p-3 text-sm text-[var(--color-text-body)] dark:text-white font-bold mt-1 outline-none"
             >
               <option value="cash">Efectivo</option>
               <option value="transfer">Transferencia</option>
@@ -161,7 +161,7 @@ export function RegisterPaymentModal({
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 bg-gray-300 bg-[var(--color-bg-card-inner)] text-gray-700 dark:text-slate-400 font-bold py-3 rounded-2xl text-sm"
+              className="flex-1 bg-gray-300 bg-[var(--color-bg-card-inner)] text-gray-700 dark:text-[var(--color-text-muted)] font-bold py-3 rounded-2xl text-sm"
             >
               Cancelar
             </button>

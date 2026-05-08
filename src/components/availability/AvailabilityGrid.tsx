@@ -45,8 +45,8 @@ export function AvailabilityGrid({
   onToggle: (day_of_week: number, start_time: string) => void
 }) {
   return (
-    <section className="bg-slate-900 rounded-[2.5rem] border border-slate-800 shadow-2xl overflow-hidden">
-      <div className="p-6 border-b border-slate-800 bg-slate-950/20 flex items-center justify-between gap-4">
+    <section className="bg-[var(--color-bg-card)] rounded-[2.5rem] border border-[var(--color-border)] shadow-2xl overflow-hidden">
+      <div className="p-6 border-b border-[var(--color-border)] bg-[var(--color-bg-page)]/20 flex items-center justify-between gap-4">
         <h2 className="text-xs font-black text-white uppercase tracking-[0.15em] italic">{club.name}</h2>
         {changedCount > 0 && (
           <span className="text-[10px] font-black text-amber-400 uppercase tracking-widest">
@@ -58,7 +58,7 @@ export function AvailabilityGrid({
       <div className="overflow-x-auto">
         <table className="w-full border-collapse">
           <thead>
-            <tr className="text-[10px] font-black text-slate-500 uppercase tracking-widest bg-slate-950/40 border-b border-slate-800">
+            <tr className="text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-widest bg-[var(--color-bg-page)]/40 border-b border-[var(--color-border)]">
               <th className="px-6 py-4 text-left w-[72px]">Hora</th>
               {DAYS.map((d) => (
                 <th key={d.value} className="px-3 py-4 text-center min-w-[70px]">
@@ -69,8 +69,8 @@ export function AvailabilityGrid({
           </thead>
           <tbody className="divide-y divide-slate-800/50">
             {HOURS.map((h) => (
-              <tr key={h.start_time} className="hover:bg-slate-800/20 transition-colors">
-                <td className="px-6 py-3 text-xs font-black text-slate-400 uppercase tracking-widest whitespace-nowrap">
+              <tr key={h.start_time} className="hover:bg-[var(--color-bg-card-inner)]/20 transition-colors">
+                <td className="px-6 py-3 text-xs font-black text-[var(--color-text-muted)] uppercase tracking-widest whitespace-nowrap">
                   {h.label}
                 </td>
                 {DAYS.map((d) => {
@@ -85,7 +85,7 @@ export function AvailabilityGrid({
                           'w-10 h-10 rounded-xl border transition-all shadow-inner',
                           active
                             ? 'bg-[var(--color-accent-secondary)] border-green-700  dark:border-[#bdfd2c]/40 text-white dark:text-slate-950'
-                            : 'bg-slate-800/40 border-slate-700 text-slate-300 hover:border-slate-600',
+                            : 'bg-[var(--color-bg-card-inner)]/40 border-[var(--color-border)] text-[var(--color-text-body)] hover:border-slate-600',
                         ].join(' ')}
                         aria-pressed={active}
                         aria-label={`${club.name} ${d.label} ${h.label}`}

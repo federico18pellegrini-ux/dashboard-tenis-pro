@@ -130,7 +130,7 @@ export function CreateClassModal({
                 value={clubId}
                 onChange={(e) => setClubId(e.target.value)}
                 required
-                className="w-full bg-white bg-[var(--color-bg-page)] border border-black/10 dark:border-slate-800 rounded-xl p-3 text-sm text-[var(--color-text-body)] dark:text-white font-bold mt-1 outline-none"
+                className="w-full bg-white bg-[var(--color-bg-page)] border border-black/10 dark:border-[var(--color-border)] rounded-xl p-3 text-sm text-[var(--color-text-body)] dark:text-white font-bold mt-1 outline-none"
               >
                 <option value="">Seleccionar...</option>
                 {clubs.map((c) => (
@@ -148,7 +148,7 @@ export function CreateClassModal({
                 onChange={(e) => setDate(e.target.value)}
                 onClick={(e) => (e.target as HTMLInputElement).showPicker?.()}
                 required
-                className="w-full bg-white bg-[var(--color-bg-page)] border border-black/10 dark:border-slate-800 rounded-xl p-3 text-sm text-[var(--color-text-body)] dark:text-white font-bold mt-1 outline-none"
+                className="w-full bg-white bg-[var(--color-bg-page)] border border-black/10 dark:border-[var(--color-border)] rounded-xl p-3 text-sm text-[var(--color-text-body)] dark:text-white font-bold mt-1 outline-none"
               />
             </div>
           </div>
@@ -160,7 +160,7 @@ export function CreateClassModal({
                 value={startTime}
                 onChange={(e) => setStartTime(e.target.value)}
                 required
-                className="w-full bg-white bg-[var(--color-bg-page)] border border-black/10 dark:border-slate-800 rounded-xl p-3 text-sm text-[var(--color-text-body)] dark:text-white font-bold mt-1 outline-none"
+                className="w-full bg-white bg-[var(--color-bg-page)] border border-black/10 dark:border-[var(--color-border)] rounded-xl p-3 text-sm text-[var(--color-text-body)] dark:text-white font-bold mt-1 outline-none"
               >
                 {timeOptions.map((t) => (
                   <option key={t} value={t}>
@@ -175,7 +175,7 @@ export function CreateClassModal({
                 value={endTime}
                 onChange={(e) => setEndTime(e.target.value)}
                 required
-                className="w-full bg-white bg-[var(--color-bg-page)] border border-black/10 dark:border-slate-800 rounded-xl p-3 text-sm text-[var(--color-text-body)] dark:text-white font-bold mt-1 outline-none"
+                className="w-full bg-white bg-[var(--color-bg-page)] border border-black/10 dark:border-[var(--color-border)] rounded-xl p-3 text-sm text-[var(--color-text-body)] dark:text-white font-bold mt-1 outline-none"
               >
                 {timeOptions.map((t) => (
                   <option key={t} value={t}>
@@ -188,7 +188,7 @@ export function CreateClassModal({
 
           <div>
             <label className="text-[10px] font-black text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)] uppercase tracking-widest ml-1">Alumnos</label>
-            <div className="mt-1 max-h-[240px] overflow-y-auto custom-scrollbar bg-gray-200 bg-[var(--color-bg-page)] border border-black/10 dark:border-slate-800 rounded-xl p-3 space-y-2">
+            <div className="mt-1 max-h-[240px] overflow-y-auto custom-scrollbar bg-gray-200 bg-[var(--color-bg-page)] border border-black/10 dark:border-[var(--color-border)] rounded-xl p-3 space-y-2">
               {sortedStudents.map((s) => (
                 <label key={s.id} className="flex items-center gap-3 text-sm text-[var(--color-text-body)] text-[var(--color-text-body)] font-bold">
                   <input
@@ -216,7 +216,7 @@ export function CreateClassModal({
               value={pricePesos}
               onChange={(e) => setPricePesos(e.target.value)}
               required
-              className="w-full bg-white bg-[var(--color-bg-page)] border border-black/10 dark:border-slate-800 rounded-xl p-3 text-sm text-[var(--color-text-body)] dark:text-white font-bold mt-1 outline-none"
+              className="w-full bg-white bg-[var(--color-bg-page)] border border-black/10 dark:border-[var(--color-border)] rounded-xl p-3 text-sm text-[var(--color-text-body)] dark:text-white font-bold mt-1 outline-none"
             />
           </div>
 
@@ -230,7 +230,7 @@ export function CreateClassModal({
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 bg-gray-300 bg-[var(--color-bg-card-inner)] text-gray-700 dark:text-slate-400 font-bold py-3 rounded-2xl text-sm"
+              className="flex-1 bg-gray-300 bg-[var(--color-bg-card-inner)] text-gray-700 dark:text-[var(--color-text-muted)] font-bold py-3 rounded-2xl text-sm"
             >
               Cancelar
             </button>
