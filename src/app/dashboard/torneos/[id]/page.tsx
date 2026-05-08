@@ -160,7 +160,7 @@ export default async function TournamentDetailPage({ params }: { params: Params 
               {String(tournament.name ?? 'Torneo')}
             </h1>
             <p className="text-center text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-[0.2em] leading-none">
-              {formatDateEsAR(tournament.start_date)} → {formatDateEsAR(tournament.end_date)} • Estado: {String(tournament.status ?? 'Próximo')}
+              {formatDateEsAR(tournament.start_date)} → {formatDateEsAR(tournament.end_date)} • Estado: {({'upcoming': 'PRÓXIMO', 'in_progress': 'EN CURSO', 'finished': 'FINALIZADO'} as Record<string, string>)[String(tournament.status)] ?? String(tournament.status).toUpperCase()}
             </p>
 
             <div className="flex flex-wrap justify-center gap-2 pt-2">
@@ -231,12 +231,12 @@ export default async function TournamentDetailPage({ params }: { params: Params 
                   <form action={statusAction} className="space-y-3">
                     <select
                       name="status"
-                      defaultValue={String(tournament.status ?? 'Próximo')}
+                      defaultValue={String(tournament.status ?? 'upcoming')}
                       className="w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-xl p-3 text-xs text-[var(--color-text-heading)] font-bold outline-none focus:border-[var(--color-accent)] transition-all"
                     >
-                      <option value="Próximo">Próximo</option>
-                      <option value="En curso">En curso</option>
-                      <option value="Finalizado">Finalizado</option>
+                      <option value="upcoming">Próximo</option>
+                      <option value="in_progress">En curso</option>
+                      <option value="finished">Finalizado</option>
                     </select>
                     <button className="w-full bg-[var(--color-accent-secondary)] text-[var(--color-text-heading)] py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl">
                       Actualizar estado

@@ -27,7 +27,7 @@ export function EditTournamentPaymentPanel({
       </button>
 
       {open && (
-        <div className="absolute right-0 mt-2 z-10 bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl p-4 shadow-xl min-w-[220px]">
+        <div className="absolute right-0 top-full mt-2 z-50 bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl p-4 shadow-xl min-w-[220px]">
           <div className="flex justify-between items-center mb-3">
             <span className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest">Editar pago</span>
             <button onClick={() => setOpen(false)} className="text-[var(--color-text-muted)] hover:text-[var(--color-text-body)]">✕</button>
