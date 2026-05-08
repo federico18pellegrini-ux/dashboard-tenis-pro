@@ -39,12 +39,10 @@ export default async function TournamentDetailPage({ params }: { params: Params 
           price_cents,
           club:clubs(name),
           enrollments:tournament_students(
-            id,
             student_id,
             payment_status,
             payment_method,
             paid_at,
-            paid_amount_cents,
             student:students(full_name, phone)
           )
         )
@@ -275,7 +273,7 @@ export default async function TournamentDetailPage({ params }: { params: Params 
                     const paid = String(e?.payment_status ?? '').toLowerCase() === 'paid'
 
                     return (
-                      <div key={String(e.id)} className="p-5 flex items-center justify-between gap-3">
+                      <div key={String(e.student_id)} className="p-5 flex items-center justify-between gap-3">
                         <div className="min-w-0">
                           <p className="text-sm font-black text-[var(--color-text-body)] uppercase tracking-tight truncate">
                             {studentName}
