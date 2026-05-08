@@ -135,6 +135,24 @@ export default async function CalendarioPage({
             <h1 className="text-xl md:text-3xl font-black tracking-tighter text-[var(--color-text-heading)]  uppercase italic">
               Calendario
             </h1>
+            <Link
+              href="/dashboard/contactos"
+              className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] border border-black/10 p-2.5 rounded-xl text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl"
+            >
+              <span aria-hidden className="text-base leading-none">👥</span>
+            </Link>
+            <Link
+              href="/dashboard/caja"
+              className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] border border-black/10 p-2.5 rounded-xl text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl"
+            >
+              <span aria-hidden className="text-base leading-none">💰</span>
+            </Link>
+            <Link
+              href="/dashboard/torneos"
+              className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] border border-black/10 p-2.5 rounded-xl text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl"
+            >
+              <span aria-hidden className="text-base leading-none">🏆</span>
+            </Link>
           </div>
           <div className="shrink-0">
             <MonthSelector currentMonth={selectedMonth} currentYear={selectedYear} />
