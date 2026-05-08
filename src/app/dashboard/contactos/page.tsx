@@ -96,6 +96,12 @@ export default async function ContactsPage({
               >
                 <span aria-hidden className="text-base leading-none">📅</span>
               </Link>
+              <Link
+                href="/dashboard/torneos"
+                className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] border border-black/10 p-3 rounded-2xl text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl"
+              >
+                <span aria-hidden className="text-base leading-none">🏆</span>
+              </Link>
             </div>
             <p className="text-center text-[10px] font-black text-[var(--color-text-body)] dark:text-[var(--color-text-body)] uppercase tracking-[0.2em] leading-none">
               {total} TOTAL • {studentsCount} ALUMNOS • {unclassified} PENDIENTES
