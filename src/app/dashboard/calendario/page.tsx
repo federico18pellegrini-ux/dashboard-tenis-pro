@@ -102,7 +102,7 @@ export default async function CalendarioPage({
             >
               &lt; Volver
             </Link>
-            <h1 className="text-xl md:text-3xl font-black tracking-tighter text-gray-950  uppercase italic">
+            <h1 className="text-xl md:text-3xl font-black tracking-tighter text-[var(--color-text-heading)]  uppercase italic">
               Calendario
             </h1>
           </div>

@@ -139,7 +139,7 @@ export default async function CajaPage({
                 <span aria-hidden className="text-lg leading-none">📅</span>
               </Link>
             </div>
-            <h1 className="flex-1 min-w-0 text-center text-2xl md:text-3xl font-black tracking-tighter text-gray-950  uppercase italic leading-none">
+            <h1 className="flex-1 min-w-0 text-center text-2xl md:text-3xl font-black tracking-tighter text-[var(--color-text-heading)]  uppercase italic leading-none">
               Caja
             </h1>
           </div>

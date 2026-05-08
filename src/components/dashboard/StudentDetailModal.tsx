@@ -276,7 +276,7 @@ export function StudentDetailModal({
               >
                 <div>
                   <p className="text-sm font-black text-slate-100 italic uppercase">
-                    {days[sched.day_of_week]} <span className="text-gray-950  ml-1">{toHHMM(sched.start_time)}hs</span>
+                    {days[sched.day_of_week]} <span className="text-[var(--color-text-heading)]  ml-1">{toHHMM(sched.start_time)}hs</span>
                   </p>
                   <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-1">
                     {sched.clubs?.name || clubs.find((c: any) => c.id === sched.club_id)?.name || 'Sede'}

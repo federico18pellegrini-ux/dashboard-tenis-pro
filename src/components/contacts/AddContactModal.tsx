@@ -38,7 +38,7 @@ export function AddContactModal() {
   return (
     <div className="fixed inset-0 bg-slate-950/90 backdrop-blur-sm z-[11000] flex items-center justify-center p-4">
       <div className="bg-slate-900 border border-slate-800 p-8 rounded-[2.5rem] w-full max-w-md space-y-6 shadow-2xl animate-in fade-in zoom-in-95 duration-200">
-        <h2 className="text-2xl font-black tracking-tighter text-gray-950  uppercase italic">Nuevo Prospecto</h2>
+        <h2 className="text-2xl font-black tracking-tighter text-[var(--color-text-heading)]  uppercase italic">Nuevo Prospecto</h2>
         <form action={handleSubmit} className="space-y-4">
           <div>
             <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Nombre Completo</label>

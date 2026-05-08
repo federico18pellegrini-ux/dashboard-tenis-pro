@@ -57,7 +57,7 @@ export function PromoteToStudentModal({ contact, clubs }: { contact: any, clubs:
       
       <div className="relative bg-slate-900 border border-slate-800 p-6 md:p-8 rounded-[2rem] w-full max-w-lg shadow-2xl overflow-y-auto max-h-[90vh] animate-in fade-in zoom-in-95 duration-200 custom-scrollbar">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-black tracking-tighter text-gray-950  uppercase italic">Convertir Alumno</h2>
+          <h2 className="text-2xl font-black tracking-tighter text-[var(--color-text-heading)]  uppercase italic">Convertir Alumno</h2>
           <button onClick={() => setIsOpen(false)} className="text-slate-500 hover:text-white transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
           </button>
@@ -93,7 +93,7 @@ export function PromoteToStudentModal({ contact, clubs }: { contact: any, clubs:
               <button 
                 type="button" 
                 onClick={addSchedule} 
-                className="text-[10px] font-black text-gray-950  hover:underline"
+                className="text-[10px] font-black text-[var(--color-text-heading)]  hover:underline"
               >
                 + AÑADIR DÍA
               </button>

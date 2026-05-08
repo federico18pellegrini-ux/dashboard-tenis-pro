@@ -82,7 +82,7 @@ export default async function LoginPage({
 
           {message && (
             <div className="bg-[#bdfd2c]/10 border border-[#bdfd2c]/20 py-3 rounded-xl">
-              <p className="text-[10px] text-gray-950  text-center font-black uppercase tracking-wider">{message}</p>
+              <p className="text-[10px] text-[var(--color-text-heading)]  text-center font-black uppercase tracking-wider">{message}</p>
             </div>
           )}
 

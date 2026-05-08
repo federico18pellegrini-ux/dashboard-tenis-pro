@@ -116,7 +116,7 @@ export function CreateClassModal({
 
       <div className="relative bg-[var(--color-bg-card-inner)] bg-[var(--color-bg-card)] border border-black/10  p-8 rounded-[2rem] w-full max-w-lg shadow-2xl overflow-y-auto max-h-[90vh]">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-black text-gray-950  uppercase italic tracking-tighter">Nueva clase</h2>
+          <h2 className="text-xl font-black text-[var(--color-text-heading)]  uppercase italic tracking-tighter">Nueva clase</h2>
           <button onClick={onClose} className="text-[var(--color-text-muted)] text-[var(--color-text-muted)] hover:text-[var(--color-text-body)] dark:hover:text-white transition-colors" aria-label="Cerrar">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
           </button>
@@ -190,7 +190,7 @@ export function CreateClassModal({
             <label className="text-[10px] font-black text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)] uppercase tracking-widest ml-1">Alumnos</label>
             <div className="mt-1 max-h-[240px] overflow-y-auto custom-scrollbar bg-gray-200 bg-[var(--color-bg-page)] border border-black/10 dark:border-slate-800 rounded-xl p-3 space-y-2">
               {sortedStudents.map((s) => (
-                <label key={s.id} className="flex items-center gap-3 text-sm text-gray-800 text-[var(--color-text-body)] font-bold">
+                <label key={s.id} className="flex items-center gap-3 text-sm text-[var(--color-text-body)] text-[var(--color-text-body)] font-bold">
                   <input
                     type="checkbox"
                     checked={selectedIds.has(s.id)}

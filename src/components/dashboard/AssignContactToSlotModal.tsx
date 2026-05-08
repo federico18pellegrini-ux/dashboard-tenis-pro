@@ -258,7 +258,7 @@ export function AssignContactToSlotModal(props: {
               <div className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">¿No está en la lista?</div>
 
               {/* Abre el modal existente */}
-              <div className="text-[10px] font-black uppercase tracking-widest text-gray-950 ">
+              <div className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-heading)] ">
                 <AddContactModal />
               </div>
             </div>

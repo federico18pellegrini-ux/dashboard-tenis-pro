@@ -363,7 +363,7 @@ export function HourlyGrid({
                               'border-[#bdfd2c]/55 bg-slate-950/25 hover:bg-[#bdfd2c]/10',
                             ].join(' ')}
                           >
-                            <span className="absolute inset-0 flex items-center justify-center text-gray-950/80 /70 text-lg font-black opacity-0 group-hover:opacity-100 transition-opacity">
+                            <span className="absolute inset-0 flex items-center justify-center text-[var(--color-text-heading)]/80 /70 text-lg font-black opacity-0 group-hover:opacity-100 transition-opacity">
                               +
                             </span>
                           </button>

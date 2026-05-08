@@ -71,7 +71,7 @@ export default async function DisponibilidadPage() {
               </svg>
             </Link>
             <div className="space-y-1">
-              <h1 className="text-4xl font-black tracking-tighter text-gray-950  uppercase italic leading-none">
+              <h1 className="text-4xl font-black tracking-tighter text-[var(--color-text-heading)]  uppercase italic leading-none">
                 Disponibilidad
               </h1>
             </div>

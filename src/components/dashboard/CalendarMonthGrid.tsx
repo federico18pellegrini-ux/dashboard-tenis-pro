@@ -169,7 +169,7 @@ export function CalendarMonthGrid({
             width: popoverPos.width,
           }}
         >
-          <p className="text-xs font-black text-gray-950  uppercase tracking-tight">{openClass.dateLabel}</p>
+          <p className="text-xs font-black text-[var(--color-text-heading)]  uppercase tracking-tight">{openClass.dateLabel}</p>
           <p className="mt-1 text-[11px] font-bold text-slate-300">{openClass.timeRangeLabel}</p>
           {openClass.status === 'cancelled_by_coach' || openClass.status === 'cancelled_by_student' ? (
             <span className="mt-2 inline-block rounded-md bg-red-100 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-red-700 dark:bg-rose-950/80 dark:text-rose-200">

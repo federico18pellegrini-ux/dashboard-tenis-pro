@@ -121,7 +121,7 @@ export default async function DashboardPage({
           <div className="w-full max-w-full space-y-4">
             {/* Fila 1 (mobile): título */}
             <div className="flex items-center justify-between gap-3">
-              <h1 className="text-lg md:text-4xl font-black tracking-tighter text-gray-950  uppercase italic leading-none">
+              <h1 className="text-lg md:text-4xl font-black tracking-tighter text-[var(--color-text-heading)]  uppercase italic leading-none">
                 Padel Sartori Control
               </h1>
             </div>

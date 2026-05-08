@@ -78,7 +78,7 @@ export default async function ContactsPage({
           </div>
 
           <div className="flex flex-col items-stretch gap-3">
-            <h1 className="text-center text-3xl md:text-4xl font-black tracking-tighter text-gray-950  uppercase italic leading-none w-full">
+            <h1 className="text-center text-3xl md:text-4xl font-black tracking-tighter text-[var(--color-text-heading)]  uppercase italic leading-none w-full">
               Contactos
             </h1>
             <div className="flex justify-end gap-2">

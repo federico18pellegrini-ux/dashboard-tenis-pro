@@ -119,7 +119,7 @@ export function AddStudentModal({ clubs }: { clubs: Club[] }) {
               <div className="space-y-3 border-t border-slate-800/60 pt-6">
                 <div className="flex justify-between items-center mb-2">
                   <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Agenda Semanal</h3>
-                  <button type="button" onClick={addDayRow} className="text-gray-950  text-[9px] font-black uppercase tracking-widest hover:underline">+ Agregar Día</button>
+                  <button type="button" onClick={addDayRow} className="text-[var(--color-text-heading)]  text-[9px] font-black uppercase tracking-widest hover:underline">+ Agregar Día</button>
                 </div>
 
                 <div className="max-h-[200px] overflow-y-auto pr-2 custom-scrollbar space-y-3">
@@ -146,7 +146,7 @@ export function AddStudentModal({ clubs }: { clubs: Club[] }) {
                         <select 
                           value={s.club_id} 
                           onChange={(e) => updateSchedule(index, 'club_id', e.target.value)}
-                          className="w-full bg-transparent text-[11px] font-bold text-gray-950  outline-none"
+                          className="w-full bg-transparent text-[11px] font-bold text-[var(--color-text-heading)]  outline-none"
                         >
                           {clubs.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                         </select>

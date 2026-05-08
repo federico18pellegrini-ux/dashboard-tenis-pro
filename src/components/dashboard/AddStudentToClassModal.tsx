@@ -92,7 +92,7 @@ export function AddStudentToClassModal({
               </div>
             ) : (
               filteredStudents.map((s) => (
-                <label key={s.id} className="flex items-center gap-3 text-sm text-gray-800 text-[var(--color-text-body)] font-bold">
+                <label key={s.id} className="flex items-center gap-3 text-sm text-[var(--color-text-body)] text-[var(--color-text-body)] font-bold">
                   <input
                     type="checkbox"
                     checked={selectedIds.has(s.id)}

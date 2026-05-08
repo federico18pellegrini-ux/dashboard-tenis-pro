@@ -150,7 +150,7 @@ export function WeekClasses({
     <section className="bg-[var(--color-bg-card-inner)]/80 bg-[var(--color-bg-card)]/40 rounded-[2.5rem] border border-black/10  shadow-2xl overflow-hidden">
       <div className="p-6 border-b border-black/10  bg-gray-200/80 bg-[var(--color-bg-page)]/40 flex items-center justify-between">
         <div>
-          <h2 className="text-xs font-black text-gray-950  uppercase tracking-[0.15em] italic">
+          <h2 className="text-xs font-black text-[var(--color-text-heading)]  uppercase tracking-[0.15em] italic">
             Clases del mes <span className="text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)]">({count})</span>
           </h2>
           <div className="mt-1 text-[10px] font-black uppercase tracking-widest text-[var(--color-accent)] dark:text-[var(--color-accent)]">
@@ -212,7 +212,7 @@ export function WeekClasses({
                             key={rowKey}
                             className="flex items-center justify-between gap-3 py-2 border-b border-black/10  last:border-b-0"
                           >
-                            <div className="min-w-0 text-[13px] font-bold text-gray-800 text-[var(--color-text-body)] truncate">
+                            <div className="min-w-0 text-[13px] font-bold text-[var(--color-text-body)] text-[var(--color-text-body)] truncate">
                               {s.full_name}
                             </div>
                             <div className="shrink-0 flex items-center gap-2">
@@ -254,7 +254,7 @@ export function WeekClasses({
                           key={rowKey}
                           className="flex items-center justify-between gap-3 py-2 border-b border-black/10  last:border-b-0"
                         >
-                          <div className="min-w-0 text-[13px] font-bold text-gray-800 text-[var(--color-text-body)] truncate">
+                          <div className="min-w-0 text-[13px] font-bold text-[var(--color-text-body)] text-[var(--color-text-body)] truncate">
                             {s.full_name}
                           </div>
                           <button

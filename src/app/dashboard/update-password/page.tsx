@@ -63,7 +63,7 @@ export default function UpdatePasswordPage() {
           </button>
           
           {message && (
-            <p className={`text-[10px] text-center font-black uppercase mt-4 tracking-wider ${message.includes('Error') ? 'text-rose-500' : 'text-gray-950 '}`}>
+            <p className={`text-[10px] text-center font-black uppercase mt-4 tracking-wider ${message.includes('Error') ? 'text-rose-500' : 'text-[var(--color-text-heading)] '}`}>
               {message}
             </p>
           )}
