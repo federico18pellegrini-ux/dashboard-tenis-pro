@@ -34,9 +34,10 @@ export default async function CalendarioPage({
   startOfMonth.setHours(0, 0, 0, 0)
   const endOfMonth = new Date(selectedYear, selectedMonth, 0, 23, 59, 59, 999)
 
-  const { data: classesRaw } = await supabase
-    .from('classes')
-    .select(`
+  const [{ data: classesRaw }, { data: tournamentsRaw }, { data: studentsRaw }, { data: clubsRaw }] = await Promise.all([
+    supabase
+      .from('classes')
+      .select(`
       id,
       scheduled_at,
       duration_minutes,
@@ -49,20 +50,25 @@ export default async function CalendarioPage({
         student:students(full_name)
       )
     `)
-    .gte('scheduled_at', startOfMonth.toISOString())
-    .lte('scheduled_at', endOfMonth.toISOString())
-    .order('scheduled_at', { ascending: true })
-
-  const { data: tournamentsRaw } = await supabase
-    .from('tournaments')
-    .select(`
+      .gte('scheduled_at', startOfMonth.toISOString())
+      .lte('scheduled_at', endOfMonth.toISOString())
+      .order('scheduled_at', { ascending: true }),
+    supabase
+      .from('tournaments')
+      .select(`
     id, name, start_date, end_date, status,
     students:tournament_students(payment_status, category_id,
       category:tournament_categories(price_cents)
     )
   `)
-    .lte('start_date', endOfMonth.toISOString().split('T')[0])
-    .gte('end_date', startOfMonth.toISOString().split('T')[0])
+      .lte('start_date', endOfMonth.toISOString().split('T')[0])
+      .gte('end_date', startOfMonth.toISOString().split('T')[0]),
+    supabase.from('students').select('id, full_name').order('full_name'),
+    supabase.from('clubs').select('id, name').order('name'),
+  ])
+
+  const studentsList = (studentsRaw ?? []) as Array<{ id: string; full_name: string }>
+  const clubsList = (clubsRaw ?? []) as Array<{ id: string; name: string }>
 
   const classesByDay: Record<string, CalendarClassChip[]> = {}
 
@@ -168,7 +174,13 @@ export default async function CalendarioPage({
           </div>
         </header>
 
-        <CalendarMonthGrid year={selectedYear} month={selectedMonth} classesByDay={classesByDay} />
+        <CalendarMonthGrid
+          year={selectedYear}
+          month={selectedMonth}
+          classesByDay={classesByDay}
+          students={studentsList}
+          clubs={clubsList}
+        />
       </div>
     </div>
   )

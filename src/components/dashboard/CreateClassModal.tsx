@@ -35,17 +35,23 @@ export function CreateClassModal({
   clubs,
   students,
   onClose,
+  defaultDate,
 }: {
   clubs: Club[]
   students: Student[]
   onClose: () => void
+  defaultDate?: string
 }) {
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const [clubId, setClubId] = useState<string>(clubs[0]?.id ?? '')
-  const [date, setDate] = useState<string>(() => new Date().toISOString().split('T')[0])
+  const [date, setDate] = useState<string>(() => defaultDate ?? new Date().toISOString().split('T')[0])
+
+  useEffect(() => {
+    if (defaultDate) setDate(defaultDate)
+  }, [defaultDate])
   const [startTime, setStartTime] = useState('09:00')
   const [endTime, setEndTime] = useState('11:00')
   const [pricePesos, setPricePesos] = useState<string>('')

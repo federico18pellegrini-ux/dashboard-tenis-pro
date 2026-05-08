@@ -1,6 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { CreateClassModal } from '@/components/dashboard/CreateClassModal'
 
 export type CalendarClassChip = {
   id: string
@@ -49,15 +50,20 @@ export function CalendarMonthGrid({
   year,
   month,
   classesByDay,
+  students,
+  clubs,
 }: {
   year: number
   month: number
   classesByDay: Record<string, CalendarClassChip[]>
+  students?: Array<{ id: string; full_name: string }>
+  clubs?: Array<{ id: string; name: string }>
 }) {
   const cells = useMemo(() => buildWeekCells(year, month), [year, month])
   const today = new Date()
   const todayKey = dayKeyLocal(today)
 
+  const [newClassDate, setNewClassDate] = useState<string | null>(null)
   const [openId, setOpenId] = useState<string | null>(null)
   const [popoverPos, setPopoverPos] = useState<{ top: number; left: number; width: number } | null>(null)
   const popoverRef = useRef<HTMLDivElement>(null)
@@ -117,9 +123,12 @@ export function CalendarMonthGrid({
           return (
             <div
               key={idx}
+              onClick={() => {
+                if (inMonth) setNewClassDate(key)
+              }}
               className={`min-h-[72px] md:min-h-[100px] p-0.5 md:p-1.5 flex flex-col gap-0.5 border-b border-r border-[var(--color-border)]/50 last:border-r-0 ${
                 inMonth ? 'bg-[var(--color-bg-card)]/20' : 'bg-[var(--color-bg-page)]/40'
-              } ${idx % 7 === 6 ? 'border-r-0' : ''}`}
+              } ${idx % 7 === 6 ? 'border-r-0' : ''} ${inMonth ? 'cursor-pointer' : ''}`}
             >
               <div className="flex justify-end shrink-0 mb-0.5">
                 <span
@@ -217,6 +226,15 @@ export function CalendarMonthGrid({
             Cerrar
           </button>
         </div>
+      )}
+
+      {newClassDate && (
+        <CreateClassModal
+          students={students ?? []}
+          clubs={clubs ?? []}
+          onClose={() => setNewClassDate(null)}
+          defaultDate={newClassDate}
+        />
       )}
     </div>
   )
