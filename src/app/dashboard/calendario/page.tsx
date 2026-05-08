@@ -98,7 +98,7 @@ export default async function CalendarioPage({
           <div className="flex items-center gap-3 flex-wrap">
             <Link
               href={backHref}
-              className="inline-flex items-center gap-2 bg-gray-100 dark:bg-slate-900 border border-black/10 dark:border-white/10 px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest text-gray-800 dark:text-slate-300 hover:border-green-600 dark:hover:border-[#bdfd2c] hover:text-green-700 dark:hover:text-[#bdfd2c] transition-colors shrink-0"
+              className="inline-flex items-center gap-2 bg-[var(--color-bg-card-inner)] dark:bg-slate-900 border border-black/10 dark:border-white/10 px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest text-[var(--color-text-body)] dark:text-slate-300 hover:border-[var(--color-accent)] dark:hover:border-[#bdfd2c] hover:text-[var(--color-accent)] dark:hover:text-[#bdfd2c] transition-colors shrink-0"
             >
               &lt; Volver
             </Link>

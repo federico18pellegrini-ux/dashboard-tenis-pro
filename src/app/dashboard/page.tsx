@@ -134,21 +134,21 @@ export default async function DashboardPage({
               <nav className="shrink-0 flex items-center gap-2">
                 <Link
                   href="/dashboard/contactos"
-                  className="inline-flex items-center gap-1.5 bg-gray-100 dark:bg-slate-900 border border-black/10 dark:border-white/10 px-2.5 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest text-gray-900 dark:text-slate-200 hover:border-green-600 dark:hover:border-[#bdfd2c] hover:text-green-700 dark:hover:text-[#bdfd2c] transition-colors shadow-xl"
+                  className="inline-flex items-center gap-1.5 bg-[var(--color-bg-card-inner)] dark:bg-slate-900 border border-black/10 dark:border-white/10 px-2.5 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest text-[var(--color-text-body)] dark:text-slate-200 hover:border-[var(--color-accent)] dark:hover:border-[#bdfd2c] hover:text-[var(--color-accent)] dark:hover:text-[#bdfd2c] transition-colors shadow-xl"
                 >
                   <span aria-hidden>👥</span>
                   <span className="hidden sm:inline">Contactos</span>
                 </Link>
                 <Link
                   href="/dashboard/caja"
-                  className="inline-flex items-center gap-1.5 bg-gray-100 dark:bg-slate-900 border border-black/10 dark:border-white/10 px-2.5 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest text-gray-900 dark:text-slate-200 hover:border-green-600 dark:hover:border-[#bdfd2c] hover:text-green-700 dark:hover:text-[#bdfd2c] transition-colors shadow-xl"
+                  className="inline-flex items-center gap-1.5 bg-[var(--color-bg-card-inner)] dark:bg-slate-900 border border-black/10 dark:border-white/10 px-2.5 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest text-[var(--color-text-body)] dark:text-slate-200 hover:border-[var(--color-accent)] dark:hover:border-[#bdfd2c] hover:text-[var(--color-accent)] dark:hover:text-[#bdfd2c] transition-colors shadow-xl"
                 >
                   <span aria-hidden>💰</span>
                   <span className="hidden sm:inline">Caja</span>
                 </Link>
                 <Link
                   href={`/dashboard/calendario?month=${month}&year=${year}`}
-                  className="inline-flex items-center gap-1.5 bg-gray-100 dark:bg-slate-900 border border-black/10 dark:border-white/10 px-2.5 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest text-gray-900 dark:text-slate-200 hover:border-green-600 dark:hover:border-[#bdfd2c] hover:text-green-700 dark:hover:text-[#bdfd2c] transition-colors shadow-xl"
+                  className="inline-flex items-center gap-1.5 bg-[var(--color-bg-card-inner)] dark:bg-slate-900 border border-black/10 dark:border-white/10 px-2.5 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest text-[var(--color-text-body)] dark:text-slate-200 hover:border-[var(--color-accent)] dark:hover:border-[#bdfd2c] hover:text-[var(--color-accent)] dark:hover:text-[#bdfd2c] transition-colors shadow-xl"
                 >
                   <span aria-hidden>📅</span>
                   <span className="hidden sm:inline">Calendario</span>
@@ -186,7 +186,7 @@ export default async function DashboardPage({
               <section className="lg:col-span-2 bg-slate-900 rounded-[2.5rem] border border-slate-800 shadow-2xl overflow-hidden flex flex-col h-[450px]">
                 <div className="p-6 border-b border-slate-800 flex justify-between items-center bg-slate-950/40">
                   <h2 className="text-xs font-black text-white uppercase tracking-[0.15em] italic">Deuda Vencida</h2>
-                  <span className="text-[10px] font-black bg-slate-950 border border-slate-800 text-green-600 dark:text-[#ADFF2F] px-4 py-2 rounded-xl uppercase tracking-widest">{debtors.length} PENDIENTES</span>
+                  <span className="text-[10px] font-black bg-slate-950 border border-slate-800 text-[var(--color-accent)] dark:text-[#ADFF2F] px-4 py-2 rounded-xl uppercase tracking-widest">{debtors.length} PENDIENTES</span>
                 </div>
                 <div className="divide-y divide-slate-800/50 overflow-y-auto custom-scrollbar">
                   {debtors.map((debtor) => {
@@ -236,11 +236,11 @@ export default async function DashboardPage({
 
             {/* TABS DE SEDES */}
             <div className="flex gap-2 overflow-x-auto pb-4 no-scrollbar border-b border-slate-800/60">
-              <Link href="/dashboard" className={`px-8 py-3 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] transition-all ${!club ? 'bg-green-700 text-white dark:bg-[#bdfd2c] dark:text-slate-950 shadow-lg' : 'bg-slate-900 text-slate-500 hover:text-slate-300'}`}>
+              <Link href="/dashboard" className={`px-8 py-3 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] transition-all ${!club ? 'bg-[var(--color-accent)] text-white dark:bg-[#bdfd2c] dark:text-slate-950 shadow-lg' : 'bg-slate-900 text-slate-500 hover:text-slate-300'}`}>
                 TODAS LAS SEDES
               </Link>
               {clubs.map((c) => (
-                <Link key={c.id} href={`/dashboard?club=${encodeURIComponent(c.name)}`} className={`px-8 py-3 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] whitespace-nowrap transition-all ${club === c.name ? 'bg-green-700 text-white dark:bg-[#bdfd2c] dark:text-slate-950 shadow-lg' : 'bg-slate-900 text-slate-500 hover:text-slate-300'}`}>
+                <Link key={c.id} href={`/dashboard?club=${encodeURIComponent(c.name)}`} className={`px-8 py-3 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] whitespace-nowrap transition-all ${club === c.name ? 'bg-[var(--color-accent)] text-white dark:bg-[#bdfd2c] dark:text-slate-950 shadow-lg' : 'bg-slate-900 text-slate-500 hover:text-slate-300'}`}>
                   {c.name}
                 </Link>
               ))}

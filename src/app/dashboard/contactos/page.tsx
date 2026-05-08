@@ -68,10 +68,10 @@ export default async function ContactsPage({
           <div className="flex items-center justify-start">
             <Link 
               href="/dashboard" 
-              className="group bg-gray-100 dark:bg-slate-900 border border-black/10 dark:border-white/10 p-3 rounded-2xl hover:border-green-600 dark:hover:border-[#bdfd2c] transition-all shadow-xl"
+              className="group bg-[var(--color-bg-card-inner)] dark:bg-slate-900 border border-black/10 dark:border-white/10 p-3 rounded-2xl hover:border-[var(--color-accent)] dark:hover:border-[#bdfd2c] transition-all shadow-xl"
               aria-label="Volver al dashboard"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-gray-500 dark:text-slate-500 group-hover:text-green-700 dark:group-hover:text-[#bdfd2c] transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-[var(--color-text-muted)] dark:text-slate-500 group-hover:text-[var(--color-accent)] dark:group-hover:text-[#bdfd2c] transition-colors">
                 <path d="m15 18-6-6 6-6"/>
               </svg>
             </Link>
@@ -84,20 +84,20 @@ export default async function ContactsPage({
             <div className="flex justify-end gap-2">
               <Link
                 href="/dashboard/caja"
-                className="inline-flex items-center justify-center bg-gray-100 dark:bg-slate-900 border border-black/10 dark:border-white/10 px-3 py-2 rounded-xl text-gray-900 dark:text-slate-200 hover:border-green-600 dark:hover:border-[#bdfd2c] hover:text-green-700 dark:hover:text-[#bdfd2c] transition-colors shadow-xl"
+                className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] dark:bg-slate-900 border border-black/10 dark:border-white/10 px-3 py-2 rounded-xl text-[var(--color-text-body)] dark:text-slate-200 hover:border-[var(--color-accent)] dark:hover:border-[#bdfd2c] hover:text-[var(--color-accent)] dark:hover:text-[#bdfd2c] transition-colors shadow-xl"
                 aria-label="Caja"
               >
                 <span aria-hidden className="text-base leading-none">💰</span>
               </Link>
               <Link
                 href={calHref}
-                className="inline-flex items-center justify-center bg-gray-100 dark:bg-slate-900 border border-black/10 dark:border-white/10 px-3 py-2 rounded-xl text-gray-900 dark:text-slate-200 hover:border-green-600 dark:hover:border-[#bdfd2c] hover:text-green-700 dark:hover:text-[#bdfd2c] transition-colors shadow-xl"
+                className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] dark:bg-slate-900 border border-black/10 dark:border-white/10 px-3 py-2 rounded-xl text-[var(--color-text-body)] dark:text-slate-200 hover:border-[var(--color-accent)] dark:hover:border-[#bdfd2c] hover:text-[var(--color-accent)] dark:hover:text-[#bdfd2c] transition-colors shadow-xl"
                 aria-label="Calendario"
               >
                 <span aria-hidden className="text-base leading-none">📅</span>
               </Link>
             </div>
-            <p className="text-center text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-[0.2em] leading-none">
+            <p className="text-center text-[10px] font-black text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)] uppercase tracking-[0.2em] leading-none">
               {total} TOTAL • {studentsCount} ALUMNOS • {unclassified} PENDIENTES
             </p>
           </div>
@@ -111,7 +111,7 @@ export default async function ContactsPage({
         <div className="flex flex-nowrap gap-2 overflow-x-auto no-scrollbar pb-2 border-b border-black/10 dark:border-white/10">
           <Link
             href="/dashboard/contactos?status=student"
-            className="px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap bg-green-700 text-white dark:bg-[#bdfd2c] dark:text-slate-950 shadow-lg dark:shadow-[0_0_20px_rgba(189,253,44,0.2)]"
+            className="px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap bg-[var(--color-accent)] text-white dark:bg-[#bdfd2c] dark:text-slate-950 shadow-lg dark:shadow-[0_0_20px_rgba(189,253,44,0.2)]"
           >
             Alumnos
           </Link>
@@ -136,11 +136,11 @@ export default async function ContactsPage({
             return (
               <div
                 key={contact.id}
-                className="bg-gray-100/80 dark:bg-slate-900/30 rounded-3xl border border-black/10 dark:border-white/10 shadow-2xl overflow-hidden"
+                className="bg-[var(--color-bg-card-inner)]/80 dark:bg-slate-900/30 rounded-3xl border border-black/10 dark:border-white/10 shadow-2xl overflow-hidden"
               >
                 <div className="p-5 flex items-start justify-between gap-4">
                   <div className="flex items-start gap-4 min-w-0">
-                    <div className="h-12 w-12 rounded-full bg-gray-200 dark:bg-slate-950 border border-black/10 dark:border-white/10 flex items-center justify-center font-black text-gray-500 dark:text-slate-500 shrink-0">
+                    <div className="h-12 w-12 rounded-full bg-[var(--color-bg-card-inner)] dark:bg-slate-950 border border-black/10 dark:border-white/10 flex items-center justify-center font-black text-[var(--color-text-muted)] dark:text-slate-500 shrink-0">
                       {(contact.full_name || '?')
                         .split(' ')
                         .filter(Boolean)
@@ -149,7 +149,7 @@ export default async function ContactsPage({
                         .join('') || '?'}
                     </div>
                     <div className="min-w-0">
-                      <p className="text-sm font-black text-gray-900 dark:text-slate-100 uppercase tracking-tight leading-tight truncate">
+                      <p className="text-sm font-black text-[var(--color-text-body)] dark:text-slate-100 uppercase tracking-tight leading-tight truncate">
                         {contact.full_name}
                       </p>
 
@@ -160,13 +160,13 @@ export default async function ContactsPage({
                           rel="noopener noreferrer"
                           className="inline-flex items-center gap-2 mt-2 text-xs uppercase tracking-widest hover:opacity-90 transition-opacity"
                         >
-                          <span className="text-green-700 dark:text-green-400 font-medium">WA</span>
+                          <span className="text-[var(--color-accent)] dark:text-[var(--color-accent)] font-medium">WA</span>
                           <span className="text-gray-700 dark:text-gray-300 font-bold normal-case tracking-normal">
                             {formatPhoneForDisplay(contact.phone)}
                           </span>
                         </a>
                       ) : (
-                        <p className="mt-2 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">
+                        <p className="mt-2 text-xs font-bold text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)] uppercase tracking-widest">
                           Sin teléfono
                         </p>
                       )}
@@ -174,12 +174,12 @@ export default async function ContactsPage({
                       {(levelLabel || clubName) && (
                         <div className="mt-2 flex flex-wrap gap-2">
                           {levelLabel && (
-                            <span className="text-xs font-bold bg-gray-200 dark:bg-slate-950/60 text-gray-800 dark:text-slate-300 px-2.5 py-1 rounded-lg border border-black/10 dark:border-white/10">
+                            <span className="text-xs font-bold bg-[var(--color-bg-card-inner)] dark:bg-slate-950/60 text-[var(--color-text-body)] dark:text-slate-300 px-2.5 py-1 rounded-lg border border-black/10 dark:border-white/10">
                               {levelLabel}
                             </span>
                           )}
                           {clubName && (
-                            <span className="text-xs font-bold bg-gray-200 dark:bg-slate-950/60 text-gray-800 dark:text-slate-300 px-2.5 py-1 rounded-lg border border-black/10 dark:border-white/10">
+                            <span className="text-xs font-bold bg-[var(--color-bg-card-inner)] dark:bg-slate-950/60 text-[var(--color-text-body)] dark:text-slate-300 px-2.5 py-1 rounded-lg border border-black/10 dark:border-white/10">
                               {clubName}
                             </span>
                           )}
@@ -200,7 +200,7 @@ export default async function ContactsPage({
           })}
 
           {contacts.length === 0 && (
-            <div className="p-10 text-center text-xs text-gray-500 dark:text-gray-400 font-bold uppercase tracking-widest border border-black/10 dark:border-white/10 rounded-3xl bg-gray-100/50 dark:bg-slate-900/20">
+            <div className="p-10 text-center text-xs text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)] font-bold uppercase tracking-widest border border-black/10 dark:border-white/10 rounded-3xl bg-[var(--color-bg-card-inner)]/50 dark:bg-slate-900/20">
               No hay contactos para este filtro
             </div>
           )}
