@@ -112,7 +112,7 @@ export default async function CalendarioPage({
         clubAbbrev: '🏆',
         clubFull: String(tor.name ?? 'Torneo'),
         status: ({ 'upcoming': 'Próximo', 'in_progress': 'En curso', 'finished': 'Finalizado' } as Record<string, string>)[String(tor.status)] ?? String(tor.status),
-        studentNames: [],
+        studentNames: Array((tor.students ?? []).length).fill("inscripto"),
         totalCobradoCents: (tor.students ?? [])
           .filter((s: any) => s?.payment_status === 'paid')
           .reduce((acc: number, s: any) => acc + (s?.category?.price_cents || 0), 0),
