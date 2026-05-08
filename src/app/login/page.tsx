@@ -82,14 +82,14 @@ export default async function LoginPage({
 
           {message && (
             <div className="bg-[#bdfd2c]/10 border border-[#bdfd2c]/20 py-3 rounded-xl">
-              <p className="text-[10px] text-gray-950 dark:text-[#ADFF2F] text-center font-black uppercase tracking-wider">{message}</p>
+              <p className="text-[10px] text-gray-950  text-center font-black uppercase tracking-wider">{message}</p>
             </div>
           )}
 
           <div className="space-y-4 pt-2">
             <button
               formAction={login}
-              className="w-full flex justify-center py-5 px-4 rounded-2xl shadow-[0_10px_30px_rgba(189,253,44,0.15)] text-sm font-black text-white dark:text-slate-950 bg-[var(--color-accent-secondary)] hover:bg-green-800 dark:bg-[#bdfd2c] dark:hover:bg-[#aef026] hover:scale-[1.02] active:scale-95 transition-all uppercase tracking-widest"
+              className="w-full flex justify-center py-5 px-4 rounded-2xl shadow-[0_10px_30px_rgba(189,253,44,0.15)] text-sm font-black text-white dark:text-slate-950 bg-[var(--color-accent-secondary)] hover:bg-green-800  dark:hover:bg-[#aef026] hover:scale-[1.02] active:scale-95 transition-all uppercase tracking-widest"
             >
               Entrar al Panel
             </button>

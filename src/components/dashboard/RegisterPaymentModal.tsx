@@ -109,14 +109,14 @@ export function RegisterPaymentModal({
 
   return createPortal(
     <div className="fixed inset-0 z-[11000] flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-black/40 dark:bg-slate-950/90 backdrop-blur-sm" onClick={onClose} />
+      <div className="absolute inset-0 bg-black/40 bg-[var(--color-bg-page)]/90 backdrop-blur-sm" onClick={onClose} />
 
-      <div className="relative bg-[var(--color-bg-card-inner)] dark:bg-slate-900 border border-black/10 dark:border-white/10 p-8 rounded-[2rem] w-full max-w-md shadow-2xl overflow-y-auto max-h-[90vh]">
+      <div className="relative bg-[var(--color-bg-card-inner)] bg-[var(--color-bg-card)] border border-black/10  p-8 rounded-[2rem] w-full max-w-md shadow-2xl overflow-y-auto max-h-[90vh]">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-black text-[var(--color-accent)] dark:text-emerald-400 uppercase italic tracking-tighter">
             {isEdit ? 'Editar pago' : 'Registrar pago'} — {studentName}
           </h2>
-          <button onClick={onClose} className="text-[var(--color-text-muted)] dark:text-slate-500 hover:text-[var(--color-text-body)] dark:hover:text-white transition-colors" aria-label="Cerrar">
+          <button onClick={onClose} className="text-[var(--color-text-muted)] text-[var(--color-text-muted)] hover:text-[var(--color-text-body)] dark:hover:text-white transition-colors" aria-label="Cerrar">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
           </button>
         </div>
@@ -131,10 +131,10 @@ export function RegisterPaymentModal({
               value={amountPesos}
               onChange={(e) => setAmountPesos(e.target.value)}
               required
-              className="w-full bg-white dark:bg-slate-950 border border-black/10 dark:border-slate-800 rounded-xl p-3 text-sm text-[var(--color-text-body)] dark:text-white font-bold mt-1 outline-none"
+              className="w-full bg-white bg-[var(--color-bg-page)] border border-black/10 dark:border-slate-800 rounded-xl p-3 text-sm text-[var(--color-text-body)] dark:text-white font-bold mt-1 outline-none"
             />
             <p className="text-[10px] text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)] font-bold uppercase tracking-widest mt-2">
-              Total: <span className="text-[var(--color-text-body)] dark:text-slate-200">{formatPesos(previewCents)}</span>
+              Total: <span className="text-[var(--color-text-body)] text-[var(--color-text-body)]">{formatPesos(previewCents)}</span>
             </p>
           </div>
 
@@ -143,7 +143,7 @@ export function RegisterPaymentModal({
             <select
               value={method}
               onChange={(e) => setMethod(e.target.value as any)}
-              className="w-full bg-white dark:bg-slate-950 border border-black/10 dark:border-slate-800 rounded-xl p-3 text-sm text-[var(--color-text-body)] dark:text-white font-bold mt-1 outline-none"
+              className="w-full bg-white bg-[var(--color-bg-page)] border border-black/10 dark:border-slate-800 rounded-xl p-3 text-sm text-[var(--color-text-body)] dark:text-white font-bold mt-1 outline-none"
             >
               <option value="cash">Efectivo</option>
               <option value="transfer">Transferencia</option>
@@ -161,7 +161,7 @@ export function RegisterPaymentModal({
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 bg-gray-300 dark:bg-slate-800 text-gray-700 dark:text-slate-400 font-bold py-3 rounded-2xl text-sm"
+              className="flex-1 bg-gray-300 bg-[var(--color-bg-card-inner)] text-gray-700 dark:text-slate-400 font-bold py-3 rounded-2xl text-sm"
             >
               Cancelar
             </button>

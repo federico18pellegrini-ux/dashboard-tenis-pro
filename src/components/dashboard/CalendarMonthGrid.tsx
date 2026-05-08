@@ -127,7 +127,7 @@ export function CalendarMonthGrid({
                     !inMonth ? 'text-slate-600' : 'text-slate-300'
                   } ${
                     isToday && inMonth
-                      ? 'rounded-full bg-[var(--color-accent-secondary)] text-white dark:bg-[#bdfd2c] dark:text-slate-950 shadow-[0_0_12px_rgba(189,253,44,0.35)]'
+                      ? 'rounded-full bg-[var(--color-accent-secondary)] text-white  shadow-[0_0_12px_rgba(189,253,44,0.35)]'
                       : ''
                   }`}
                 >
@@ -169,14 +169,14 @@ export function CalendarMonthGrid({
             width: popoverPos.width,
           }}
         >
-          <p className="text-xs font-black text-gray-950 dark:text-[#ADFF2F] uppercase tracking-tight">{openClass.dateLabel}</p>
+          <p className="text-xs font-black text-gray-950  uppercase tracking-tight">{openClass.dateLabel}</p>
           <p className="mt-1 text-[11px] font-bold text-slate-300">{openClass.timeRangeLabel}</p>
           {openClass.status === 'cancelled_by_coach' || openClass.status === 'cancelled_by_student' ? (
             <span className="mt-2 inline-block rounded-md bg-red-100 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-red-700 dark:bg-rose-950/80 dark:text-rose-200">
               CANCELADA
             </span>
           ) : openClass.status === 'completed' ? (
-            <span className="mt-2 inline-block rounded-md bg-gray-200 px-2.5 py-1 text-[10px] font-black uppercase text-gray-700 dark:bg-slate-600 dark:text-slate-200">
+            <span className="mt-2 inline-block rounded-md bg-gray-200 px-2.5 py-1 text-[10px] font-black uppercase text-gray-700 dark:bg-slate-600 text-[var(--color-text-body)]">
               COMPLETADA
             </span>
           ) : null}

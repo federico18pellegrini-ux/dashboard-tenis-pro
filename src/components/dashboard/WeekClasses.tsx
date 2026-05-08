@@ -147,10 +147,10 @@ export function WeekClasses({
 
   return (
     <>
-    <section className="bg-[var(--color-bg-card-inner)]/80 dark:bg-slate-900/40 rounded-[2.5rem] border border-black/10 dark:border-white/10 shadow-2xl overflow-hidden">
-      <div className="p-6 border-b border-black/10 dark:border-white/10 bg-gray-200/80 dark:bg-slate-950/40 flex items-center justify-between">
+    <section className="bg-[var(--color-bg-card-inner)]/80 bg-[var(--color-bg-card)]/40 rounded-[2.5rem] border border-black/10  shadow-2xl overflow-hidden">
+      <div className="p-6 border-b border-black/10  bg-gray-200/80 bg-[var(--color-bg-page)]/40 flex items-center justify-between">
         <div>
-          <h2 className="text-xs font-black text-gray-950 dark:text-[#ADFF2F] uppercase tracking-[0.15em] italic">
+          <h2 className="text-xs font-black text-gray-950  uppercase tracking-[0.15em] italic">
             Clases del mes <span className="text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)]">({count})</span>
           </h2>
           <div className="mt-1 text-[10px] font-black uppercase tracking-widest text-[var(--color-accent)] dark:text-[var(--color-accent)]">
@@ -166,11 +166,11 @@ export function WeekClasses({
       ) : (
         <div className="p-4 md:p-6 space-y-4">
           {formatted.map((c) => (
-            <div key={c.id} className="bg-[var(--color-bg-card-inner)]/90 dark:bg-slate-900/40 border border-black/10 dark:border-white/10 rounded-3xl shadow-xl overflow-hidden">
+            <div key={c.id} className="bg-[var(--color-bg-card-inner)]/90 bg-[var(--color-bg-card)]/40 border border-black/10  rounded-3xl shadow-xl overflow-hidden">
               {/* Header */}
-              <div className="px-3.5 py-3 flex items-start justify-between gap-3 border-b border-black/10 dark:border-white/10">
+              <div className="px-3.5 py-3 flex items-start justify-between gap-3 border-b border-black/10 ">
                 <div className="min-w-0">
-                  <div className="text-[13px] font-medium text-[var(--color-text-body)] dark:text-slate-100 capitalize truncate">
+                  <div className="text-[13px] font-medium text-[var(--color-text-body)] text-[var(--color-text-heading)] capitalize truncate">
                     {c.classDate}
                   </div>
                   <div className="text-[12px] text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)] font-bold truncate">
@@ -210,9 +210,9 @@ export function WeekClasses({
                         return (
                           <div
                             key={rowKey}
-                            className="flex items-center justify-between gap-3 py-2 border-b border-black/10 dark:border-white/10 last:border-b-0"
+                            className="flex items-center justify-between gap-3 py-2 border-b border-black/10  last:border-b-0"
                           >
-                            <div className="min-w-0 text-[13px] font-bold text-gray-800 dark:text-slate-200 truncate">
+                            <div className="min-w-0 text-[13px] font-bold text-gray-800 text-[var(--color-text-body)] truncate">
                               {s.full_name}
                             </div>
                             <div className="shrink-0 flex items-center gap-2">
@@ -235,7 +235,7 @@ export function WeekClasses({
                                   href={waHref}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="border border-gray-400 dark:border-slate-700 text-gray-700 dark:text-slate-300 px-2.5 py-1 rounded-lg text-[11px] font-black uppercase tracking-widest hover:bg-gray-200 dark:hover:bg-slate-950/40 transition-colors"
+                                  className="border border-gray-400 dark:border-slate-700 text-gray-700 text-[var(--color-text-body)] px-2.5 py-1 rounded-lg text-[11px] font-black uppercase tracking-widest hover:bg-gray-200 dark:hover:bg-slate-950/40 transition-colors"
                                   title="Enviar recordatorio por WhatsApp"
                                 >
                                   WA
@@ -252,9 +252,9 @@ export function WeekClasses({
                       return (
                         <div
                           key={rowKey}
-                          className="flex items-center justify-between gap-3 py-2 border-b border-black/10 dark:border-white/10 last:border-b-0"
+                          className="flex items-center justify-between gap-3 py-2 border-b border-black/10  last:border-b-0"
                         >
-                          <div className="min-w-0 text-[13px] font-bold text-gray-800 dark:text-slate-200 truncate">
+                          <div className="min-w-0 text-[13px] font-bold text-gray-800 text-[var(--color-text-body)] truncate">
                             {s.full_name}
                           </div>
                           <button
@@ -284,7 +284,7 @@ export function WeekClasses({
               </div>
 
               {/* Footer */}
-              <div className="px-3.5 py-3 bg-gray-200/60 dark:bg-slate-950/30 border-t border-black/10 dark:border-white/10">
+              <div className="px-3.5 py-3 bg-gray-200/60 bg-[var(--color-bg-page)]/30 border-t border-black/10 ">
                 {c.status === 'scheduled' ? (
                   <div className="flex items-center gap-2 flex-wrap">
                     <button
@@ -303,7 +303,7 @@ export function WeekClasses({
                           existingStudentIds: (c.students ?? []).map((s) => s.student_id),
                         })
                       }
-                      className="border border-gray-400 dark:border-slate-700 text-gray-700 dark:text-slate-300 px-2.5 py-1 rounded-lg text-[11px] font-black uppercase tracking-widest hover:bg-gray-200 dark:hover:bg-slate-950/40 transition-colors"
+                      className="border border-gray-400 dark:border-slate-700 text-gray-700 text-[var(--color-text-body)] px-2.5 py-1 rounded-lg text-[11px] font-black uppercase tracking-widest hover:bg-gray-200 dark:hover:bg-slate-950/40 transition-colors"
                       title="Agregar alumno"
                     >
                       + Alumno
@@ -325,7 +325,7 @@ export function WeekClasses({
                       type="button"
                       disabled={!!statusLoading && statusLoading.classId === c.id}
                       onClick={() => void setClassStatus(c.id, 'scheduled')}
-                      className="flex-1 min-w-[120px] border border-gray-400 dark:border-slate-700 text-gray-700 dark:text-slate-300 px-2.5 py-1 rounded-lg text-[11px] font-black uppercase tracking-widest hover:bg-gray-200 dark:hover:bg-slate-950/40 transition-colors disabled:opacity-50"
+                      className="flex-1 min-w-[120px] border border-gray-400 dark:border-slate-700 text-gray-700 text-[var(--color-text-body)] px-2.5 py-1 rounded-lg text-[11px] font-black uppercase tracking-widest hover:bg-gray-200 dark:hover:bg-slate-950/40 transition-colors disabled:opacity-50"
                     >
                       Reabrir
                     </button>
@@ -337,7 +337,7 @@ export function WeekClasses({
                           existingStudentIds: (c.students ?? []).map((s) => s.student_id),
                         })
                       }
-                      className="border border-gray-400 dark:border-slate-700 text-gray-700 dark:text-slate-300 px-2.5 py-1 rounded-lg text-[11px] font-black uppercase tracking-widest hover:bg-gray-200 dark:hover:bg-slate-950/40 transition-colors"
+                      className="border border-gray-400 dark:border-slate-700 text-gray-700 text-[var(--color-text-body)] px-2.5 py-1 rounded-lg text-[11px] font-black uppercase tracking-widest hover:bg-gray-200 dark:hover:bg-slate-950/40 transition-colors"
                       title="Agregar alumno"
                     >
                       + Alumno

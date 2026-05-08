@@ -57,13 +57,13 @@ export default function UpdatePasswordPage() {
           
           <button 
             type="submit"
-            className="w-full py-4 rounded-2xl font-black text-white dark:text-slate-950 bg-[var(--color-accent-secondary)] hover:bg-green-800 dark:bg-[#bdfd2c] dark:hover:bg-[#a5e620] uppercase tracking-widest hover:scale-[1.02] active:scale-95 transition-all shadow-[0_10px_20px_rgba(189,253,44,0.1)]"
+            className="w-full py-4 rounded-2xl font-black text-white dark:text-slate-950 bg-[var(--color-accent-secondary)] hover:bg-green-800  dark:hover:bg-[#a5e620] uppercase tracking-widest hover:scale-[1.02] active:scale-95 transition-all shadow-[0_10px_20px_rgba(189,253,44,0.1)]"
           >
             Actualizar Clave
           </button>
           
           {message && (
-            <p className={`text-[10px] text-center font-black uppercase mt-4 tracking-wider ${message.includes('Error') ? 'text-rose-500' : 'text-gray-950 dark:text-[#ADFF2F]'}`}>
+            <p className={`text-[10px] text-center font-black uppercase mt-4 tracking-wider ${message.includes('Error') ? 'text-rose-500' : 'text-gray-950 '}`}>
               {message}
             </p>
           )}

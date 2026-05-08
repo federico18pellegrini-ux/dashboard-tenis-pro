@@ -51,7 +51,7 @@ export function MonthSelector({
       
       <div className="px-4 py-1 flex flex-col items-center min-w-[140px]">
         <span className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] leading-none mb-1">Visualizando</span>
-        <span className="text-sm font-black uppercase italic tracking-tighter text-gray-950 dark:text-[#ADFF2F]">
+        <span className="text-sm font-black uppercase italic tracking-tighter text-gray-950 ">
           {months[currentMonth - 1]} {currentYear}
         </span>
       </div>

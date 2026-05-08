@@ -117,29 +117,29 @@ export default async function CajaPage({
             <div className="flex items-center gap-2 shrink-0">
               <Link
                 href="/dashboard"
-                className="shrink-0 group bg-[var(--color-bg-card-inner)] dark:bg-slate-900 border border-black/10 dark:border-white/10 p-3 rounded-2xl hover:border-[var(--color-accent)] dark:hover:border-[#bdfd2c] transition-all shadow-xl"
+                className="shrink-0 group bg-[var(--color-bg-card-inner)] bg-[var(--color-bg-card)] border border-black/10  p-3 rounded-2xl hover:border-[var(--color-accent)]  transition-all shadow-xl"
                 aria-label="Volver al dashboard"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-[var(--color-text-muted)] dark:text-slate-500 group-hover:text-[var(--color-accent)] dark:group-hover:text-[#bdfd2c] transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-[var(--color-text-muted)] text-[var(--color-text-muted)] group-hover:text-[var(--color-accent)]  transition-colors">
                   <path d="m15 18-6-6 6-6"/>
                 </svg>
               </Link>
               <Link
                 href="/dashboard/contactos"
-                className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] dark:bg-slate-900 border border-black/10 dark:border-white/10 p-3 rounded-2xl text-[var(--color-text-body)] dark:text-slate-200 hover:border-[var(--color-accent)] dark:hover:border-[#bdfd2c] hover:text-[var(--color-accent)] dark:hover:text-[#bdfd2c] transition-colors shadow-xl"
+                className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] bg-[var(--color-bg-card)] border border-black/10  p-3 rounded-2xl text-[var(--color-text-body)] text-[var(--color-text-body)] hover:border-[var(--color-accent)]  hover:text-[var(--color-accent)]  transition-colors shadow-xl"
                 aria-label="Contactos"
               >
                 <span aria-hidden className="text-lg leading-none">👥</span>
               </Link>
               <Link
                 href={`/dashboard/calendario?month=${month}&year=${year}`}
-                className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] dark:bg-slate-900 border border-black/10 dark:border-white/10 p-3 rounded-2xl text-[var(--color-text-body)] dark:text-slate-200 hover:border-[var(--color-accent)] dark:hover:border-[#bdfd2c] hover:text-[var(--color-accent)] dark:hover:text-[#bdfd2c] transition-colors shadow-xl"
+                className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] bg-[var(--color-bg-card)] border border-black/10  p-3 rounded-2xl text-[var(--color-text-body)] text-[var(--color-text-body)] hover:border-[var(--color-accent)]  hover:text-[var(--color-accent)]  transition-colors shadow-xl"
                 aria-label="Calendario"
               >
                 <span aria-hidden className="text-lg leading-none">📅</span>
               </Link>
             </div>
-            <h1 className="flex-1 min-w-0 text-center text-2xl md:text-3xl font-black tracking-tighter text-gray-950 dark:text-[#ADFF2F] uppercase italic leading-none">
+            <h1 className="flex-1 min-w-0 text-center text-2xl md:text-3xl font-black tracking-tighter text-gray-950  uppercase italic leading-none">
               Caja
             </h1>
           </div>
@@ -156,15 +156,15 @@ export default async function CajaPage({
 
         {/* Bloque 1 — 3 números grandes */}
         <section className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-          <div className="bg-[var(--color-bg-card-inner)] dark:bg-slate-900 rounded-[2.5rem] border border-black/10 dark:border-white/10 shadow-2xl p-6 md:p-8">
+          <div className="bg-[var(--color-bg-card-inner)] bg-[var(--color-bg-card)] rounded-[2.5rem] border border-black/10  shadow-2xl p-6 md:p-8">
             <p className="text-[10px] font-black text-[var(--color-success)] dark:text-emerald-400 uppercase tracking-[0.25em] mb-3">Cobrado</p>
             <p className="text-4xl md:text-5xl font-black text-[var(--color-success)] dark:text-emerald-300 italic tracking-tighter">${formatMoney(totalIncomesCents)}</p>
           </div>
-          <div className="bg-[var(--color-bg-card-inner)] dark:bg-slate-900 rounded-[2.5rem] border border-black/10 dark:border-white/10 shadow-2xl p-6 md:p-8">
+          <div className="bg-[var(--color-bg-card-inner)] bg-[var(--color-bg-card)] rounded-[2.5rem] border border-black/10  shadow-2xl p-6 md:p-8">
             <p className="text-[10px] font-black text-red-600 dark:text-rose-400 uppercase tracking-[0.25em] mb-3">Gastado</p>
             <p className="text-4xl md:text-5xl font-black text-red-600 dark:text-rose-300 italic tracking-tighter">-${formatMoney(totalExpensesCents)}</p>
           </div>
-          <div className="bg-[var(--color-bg-card-inner)] dark:bg-slate-900 rounded-[2.5rem] border border-black/10 dark:border-white/10 shadow-2xl p-6 md:p-8">
+          <div className="bg-[var(--color-bg-card-inner)] bg-[var(--color-bg-card)] rounded-[2.5rem] border border-black/10  shadow-2xl p-6 md:p-8">
             <p className="text-[10px] font-black text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)] uppercase tracking-[0.25em] mb-3">Ganancia</p>
             <p className={`text-4xl md:text-5xl font-black italic tracking-tighter ${netCents >= 0 ? 'text-[var(--color-accent)] dark:text-[var(--color-accent)]' : 'text-red-600 dark:text-rose-300'}`}>
               {netCents >= 0 ? '$' : '-$'}
@@ -174,14 +174,14 @@ export default async function CajaPage({
         </section>
 
         {/* Bloque 2 — Por sede */}
-        <section className="bg-[var(--color-bg-card-inner)] dark:bg-slate-900 rounded-[2.5rem] border border-black/10 dark:border-white/10 shadow-2xl overflow-hidden">
-          <div className="p-6 md:p-8 border-b border-black/10 dark:border-white/10 bg-[var(--color-bg-card-inner)]/80 dark:bg-slate-950/20">
+        <section className="bg-[var(--color-bg-card-inner)] bg-[var(--color-bg-card)] rounded-[2.5rem] border border-black/10  shadow-2xl overflow-hidden">
+          <div className="p-6 md:p-8 border-b border-black/10  bg-[var(--color-bg-card-inner)]/80 bg-[var(--color-bg-page)]/20">
             <h2 className="text-sm md:text-xs font-black text-[var(--color-text-body)] dark:text-white uppercase tracking-[0.15em] italic">Por sede — {monthLabelEsAR(month, year)}</h2>
           </div>
           <div className="p-6 md:p-8 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
             {perClub.map((c) => (
-              <div key={c.clubName} className="bg-[var(--color-bg-card-inner)] dark:bg-slate-950 rounded-3xl border border-black/10 dark:border-white/10 p-5 md:p-6 shadow-xl">
-                <h3 className="text-xs font-black text-[var(--color-text-body)] dark:text-slate-300 uppercase tracking-widest mb-4">{c.clubName}</h3>
+              <div key={c.clubName} className="bg-[var(--color-bg-card-inner)] bg-[var(--color-bg-page)] rounded-3xl border border-black/10  p-5 md:p-6 shadow-xl">
+                <h3 className="text-xs font-black text-[var(--color-text-body)] text-[var(--color-text-body)] uppercase tracking-widest mb-4">{c.clubName}</h3>
                 <div className="space-y-2">
                   <div className="flex justify-between items-center text-xs">
                     <span className="text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)] font-bold uppercase">Cobrado</span>
@@ -191,7 +191,7 @@ export default async function CajaPage({
                     <span className="text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)] font-bold uppercase">Gastado</span>
                     <span className="text-red-600 dark:text-rose-300 font-black">-${formatMoney(c.expensesCents)}</span>
                   </div>
-                  <div className="pt-3 mt-3 border-t border-black/10 dark:border-white/10 flex justify-between items-center text-xs">
+                  <div className="pt-3 mt-3 border-t border-black/10  flex justify-between items-center text-xs">
                     <span className="text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)] font-bold uppercase">Ganancia</span>
                     <span className={`font-black ${c.netCents >= 0 ? 'text-[var(--color-accent)] dark:text-[var(--color-accent)]' : 'text-red-600 dark:text-rose-300'}`}>
                       {c.netCents >= 0 ? '$' : '-$'}

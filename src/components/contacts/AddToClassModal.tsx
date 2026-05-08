@@ -103,7 +103,7 @@ export function AddToClassModal({
       <div className="relative bg-slate-900 border border-slate-800 p-6 rounded-[2.5rem] w-full max-w-lg shadow-2xl space-y-4 overflow-y-auto max-h-[90vh] custom-scrollbar">
         <div className="flex justify-between items-center gap-3">
           <div className="min-w-0">
-            <h2 className="text-lg font-black text-gray-950 dark:text-[#ADFF2F] uppercase italic tracking-tighter truncate">Agregar a clase</h2>
+            <h2 className="text-lg font-black text-gray-950  uppercase italic tracking-tighter truncate">Agregar a clase</h2>
             <p className="text-xs font-bold text-slate-500 truncate">{studentName}</p>
           </div>
           <button onClick={onClose} className="text-slate-500 hover:text-white shrink-0" aria-label="Cerrar">
@@ -167,7 +167,7 @@ export function AddToClassModal({
             type="button"
             onClick={() => void handleConfirm()}
             disabled={!selectedClassId || saving}
-            className="flex-1 bg-[var(--color-accent-secondary)] hover:bg-green-800 dark:bg-[#bdfd2c] dark:hover:bg-[#a5e620] text-white dark:text-slate-950 px-4 py-3 rounded-2xl text-sm font-black uppercase tracking-widest shadow-xl hover:scale-[1.01] active:scale-95 transition-all disabled:opacity-50"
+            className="flex-1 bg-[var(--color-accent-secondary)] hover:bg-green-800  dark:hover:bg-[#a5e620] text-white dark:text-slate-950 px-4 py-3 rounded-2xl text-sm font-black uppercase tracking-widest shadow-xl hover:scale-[1.01] active:scale-95 transition-all disabled:opacity-50"
           >
             {saving ? 'Agregando…' : 'Confirmar'}
           </button>

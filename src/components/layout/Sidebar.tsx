@@ -14,7 +14,7 @@ import Image from 'next/image'
     <h2 className="text-sm font-black text-white uppercase italic tracking-tighter">
       Padel Sartori
     </h2>
-    <span className="text-[8px] font-bold text-gray-950 dark:text-[#ADFF2F] uppercase tracking-[0.3em]">
+    <span className="text-[8px] font-bold text-gray-950  uppercase tracking-[0.3em]">
       Control Panel
     </span>
   </div>
