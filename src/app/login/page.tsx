@@ -1,21 +1,5 @@
 import { login, resetPasswordAction } from './actions'
 
-// Componente de Logo Vectorizado con estilo Neon
-const Logo = ({ className = "w-12 h-12" }: { className?: string }) => (
-  <svg 
-    viewBox="0 0 100 100" 
-    className={className}
-    fill="none" 
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    {/* Isotipo: Círculo de Padel con efecto de red */}
-    <circle cx="50" cy="50" r="42" stroke="#bdfd2c" strokeWidth="4" strokeDasharray="4 2" className="opacity-50" />
-    <circle cx="50" cy="50" r="38" stroke="#bdfd2c" strokeWidth="6" />
-    <path d="M35 50 C 35 35, 65 35, 65 50 C 65 65, 35 65, 35 50" stroke="#bdfd2c" strokeWidth="4" />
-    <path d="M50 30 L50 70 M30 50 L70 50" stroke="#bdfd2c" strokeWidth="2" opacity="0.5" />
-  </svg>
-)
-
 export default async function LoginPage({
   searchParams,
 }: {
@@ -31,11 +15,8 @@ export default async function LoginPage({
         
         {/* Header con Logo */}
         <div className="text-center flex flex-col items-center">
-          <div className="mb-6 relative">
-            <div className="absolute inset-0 bg-[var(--color-accent)] blur-[30px] opacity-20 animate-pulse"></div>
-            <Logo className="w-20 h-20 relative z-10 drop-shadow-[0_0_15px_rgba(189,253,44,0.4)]" />
-          </div>
-          <h1 className="text-3xl font-black tracking-tighter text-white uppercase italic">
+          <div className="mb-6 text-6xl">🎾</div>
+          <h1 className="text-3xl font-black tracking-tighter text-[var(--color-text-heading)] uppercase italic">
             Padel Sartori
           </h1>
           <p className="text-[10px] font-bold text-[var(--color-text-muted)] mt-2 uppercase tracking-[0.2em]">
@@ -54,7 +35,7 @@ export default async function LoginPage({
                 name="email"
                 type="email"
                 required
-                className="block w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-2xl px-5 py-4 text-sm font-bold text-white focus:border-[var(--color-accent)] focus:ring-1 focus:ring-[var(--color-accent)] outline-none transition-all placeholder:text-[var(--color-text-muted)]"
+                className="block w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-2xl px-5 py-4 text-sm font-bold text-[var(--color-text-body)] focus:border-[var(--color-accent)] focus:ring-1 focus:ring-[var(--color-accent)] outline-none transition-all placeholder:text-[var(--color-text-muted)]"
                 placeholder="tu@ejemplo.com"
               />
             </div>
@@ -68,7 +49,7 @@ export default async function LoginPage({
                 name="password"
                 type="password"
                 required
-                className="block w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-2xl px-5 py-4 text-sm font-bold text-white focus:border-[var(--color-accent)] focus:ring-1 focus:ring-[var(--color-accent)] outline-none transition-all"
+                className="block w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-2xl px-5 py-4 text-sm font-bold text-[var(--color-text-body)] focus:border-[var(--color-accent)] focus:ring-1 focus:ring-[var(--color-accent)] outline-none transition-all"
               />
             </div>
           </div>
