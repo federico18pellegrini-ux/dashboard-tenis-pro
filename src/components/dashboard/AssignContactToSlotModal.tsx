@@ -152,7 +152,7 @@ export function AssignContactToSlotModal(props: {
       <div className="relative bg-[var(--color-bg-card)] border border-[var(--color-border)] p-8 rounded-[2.5rem] w-full max-w-lg shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
         <div className="flex justify-between items-start mb-6 pb-6 border-b border-[var(--color-border)]/60">
           <div>
-            <h2 className="text-xl font-black text-white uppercase tracking-tighter leading-none italic">
+            <h2 className="text-xl font-black text-[var(--color-text-heading)] uppercase tracking-tighter leading-none italic">
               Asignar alumno
             </h2>
             <p className="text-[10px] text-[var(--color-text-muted)] font-bold uppercase tracking-widest mt-2">
@@ -191,7 +191,7 @@ export function AssignContactToSlotModal(props: {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Nombre o teléfono…"
-              className="w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-xl p-3 text-xs text-white font-bold outline-none focus:border-[#bdfd2c] transition-all"
+              className="w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-xl p-3 text-xs text-[var(--color-text-heading)] font-bold outline-none focus:border-[#bdfd2c] transition-all"
             />
           </div>
 

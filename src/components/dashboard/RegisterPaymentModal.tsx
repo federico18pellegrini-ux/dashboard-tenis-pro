@@ -116,7 +116,7 @@ export function RegisterPaymentModal({
           <h2 className="text-xl font-black text-[var(--color-accent)] dark:text-emerald-400 uppercase italic tracking-tighter">
             {isEdit ? 'Editar pago' : 'Registrar pago'} — {studentName}
           </h2>
-          <button onClick={onClose} className="text-[var(--color-text-muted)] text-[var(--color-text-muted)] hover:text-[var(--color-text-body)] dark:hover:text-white transition-colors" aria-label="Cerrar">
+          <button onClick={onClose} className="text-[var(--color-text-muted)] text-[var(--color-text-muted)] hover:text-[var(--color-text-body)] dark:hover:text-[var(--color-text-heading)] transition-colors" aria-label="Cerrar">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
           </button>
         </div>
@@ -131,7 +131,7 @@ export function RegisterPaymentModal({
               value={amountPesos}
               onChange={(e) => setAmountPesos(e.target.value)}
               required
-              className="w-full bg-white bg-[var(--color-bg-page)] border border-black/10 dark:border-[var(--color-border)] rounded-xl p-3 text-sm text-[var(--color-text-body)] dark:text-white font-bold mt-1 outline-none"
+              className="w-full bg-white bg-[var(--color-bg-page)] border border-black/10 dark:border-[var(--color-border)] rounded-xl p-3 text-sm text-[var(--color-text-body)] dark:text-[var(--color-text-heading)] font-bold mt-1 outline-none"
             />
             <p className="text-[10px] text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)] font-bold uppercase tracking-widest mt-2">
               Total: <span className="text-[var(--color-text-body)] text-[var(--color-text-body)]">{formatPesos(previewCents)}</span>
@@ -143,7 +143,7 @@ export function RegisterPaymentModal({
             <select
               value={method}
               onChange={(e) => setMethod(e.target.value as any)}
-              className="w-full bg-white bg-[var(--color-bg-page)] border border-black/10 dark:border-[var(--color-border)] rounded-xl p-3 text-sm text-[var(--color-text-body)] dark:text-white font-bold mt-1 outline-none"
+              className="w-full bg-white bg-[var(--color-bg-page)] border border-black/10 dark:border-[var(--color-border)] rounded-xl p-3 text-sm text-[var(--color-text-body)] dark:text-[var(--color-text-heading)] font-bold mt-1 outline-none"
             >
               <option value="cash">Efectivo</option>
               <option value="transfer">Transferencia</option>
@@ -178,7 +178,7 @@ export function RegisterPaymentModal({
             <button
               type="submit"
               disabled={isSubmitting}
-              className="flex-1 bg-emerald-600 text-white font-black py-3 rounded-2xl text-sm shadow-lg disabled:opacity-50"
+              className="flex-1 bg-emerald-600 text-[var(--color-text-heading)] font-black py-3 rounded-2xl text-sm shadow-lg disabled:opacity-50"
             >
               {isSubmitting ? (isEdit ? 'GUARDANDO...' : 'REGISTRANDO...') : (isEdit ? 'Guardar cambios' : 'Registrar pago')}
             </button>

@@ -58,7 +58,7 @@ export function AddExpenseModal({ clubs }: { clubs: any[] }) {
       <div className="relative bg-[var(--color-bg-card)] border border-[var(--color-border)] p-8 rounded-[2rem] w-full max-w-md shadow-2xl overflow-y-auto max-h-[90vh]">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-black text-rose-400 uppercase italic tracking-tighter">Nuevo Egreso</h2>
-          <button onClick={() => setIsOpen(false)} className="text-[var(--color-text-muted)] hover:text-white transition-colors">
+          <button onClick={() => setIsOpen(false)} className="text-[var(--color-text-muted)] hover:text-[var(--color-text-heading)] transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
           </button>
         </div>
@@ -67,14 +67,14 @@ export function AddExpenseModal({ clubs }: { clubs: any[] }) {
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-widest ml-1">Sede</label>
-              <select name="club_id" required className="w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-xl p-3 text-sm text-white font-bold mt-1 outline-none">
+              <select name="club_id" required className="w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-xl p-3 text-sm text-[var(--color-text-heading)] font-bold mt-1 outline-none">
                 <option value="">Seleccionar...</option>
                 {clubs.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
               </select>
             </div>
             <div>
               <label className="text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-widest ml-1">Categoría</label>
-              <select name="category" required className="w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-xl p-3 text-sm text-white font-bold mt-1 outline-none">
+              <select name="category" required className="w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-xl p-3 text-sm text-[var(--color-text-heading)] font-bold mt-1 outline-none">
                 <option value="sueldos">Sueldos</option>
                 <option value="alquiler">Alquiler Cancha</option>
                 <option value="servicios">Servicios</option>
@@ -87,11 +87,11 @@ export function AddExpenseModal({ clubs }: { clubs: any[] }) {
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-widest ml-1">Monto ($)</label>
-              <input type="number" name="amount" required placeholder="Ej: 50000" className="w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-xl p-3 text-sm text-white font-bold mt-1 outline-none" />
+              <input type="number" name="amount" required placeholder="Ej: 50000" className="w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-xl p-3 text-sm text-[var(--color-text-heading)] font-bold mt-1 outline-none" />
             </div>
             <div>
               <label className="text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-widest ml-1">Medio de Pago</label>
-              <select name="payment_method" className="w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-xl p-3 text-sm text-white font-bold mt-1 outline-none">
+              <select name="payment_method" className="w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-xl p-3 text-sm text-[var(--color-text-heading)] font-bold mt-1 outline-none">
                 <option value="Efectivo">Efectivo</option>
                 <option value="Transferencia">Transferencia</option>
                 <option value="Mercado Pago">Mercado Pago</option>
@@ -102,11 +102,11 @@ export function AddExpenseModal({ clubs }: { clubs: any[] }) {
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-widest ml-1">Fecha</label>
-              <input type="date" name="date" required defaultValue={new Date().toISOString().split('T')[0]} className="w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-xl p-3 text-sm text-white font-bold mt-1 outline-none" />
+              <input type="date" name="date" required defaultValue={new Date().toISOString().split('T')[0]} className="w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-xl p-3 text-sm text-[var(--color-text-heading)] font-bold mt-1 outline-none" />
             </div>
             <div>
               <label className="text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-widest ml-1">Pagado a</label>
-              <input type="text" name="paid_to" placeholder="Ej: Proveedor Pelotas" className="w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-xl p-3 text-sm text-white font-bold mt-1 outline-none" />
+              <input type="text" name="paid_to" placeholder="Ej: Proveedor Pelotas" className="w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-xl p-3 text-sm text-[var(--color-text-heading)] font-bold mt-1 outline-none" />
             </div>
           </div>
 
@@ -115,7 +115,7 @@ export function AddExpenseModal({ clubs }: { clubs: any[] }) {
             <input name="description" placeholder="Ej: Pago de luz abril..." className="w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-xl p-3 text-sm text-[var(--color-text-body)] mt-1 outline-none" />
           </div>
 
-          <button disabled={isSubmitting} type="submit" className="w-full bg-rose-500 text-white font-black py-4 rounded-xl text-sm uppercase tracking-widest shadow-[0_5px_15px_rgba(244,63,94,0.2)] hover:scale-[1.02] active:scale-95 transition-all mt-4">
+          <button disabled={isSubmitting} type="submit" className="w-full bg-rose-500 text-[var(--color-text-heading)] font-black py-4 rounded-xl text-sm uppercase tracking-widest shadow-[0_5px_15px_rgba(244,63,94,0.2)] hover:scale-[1.02] active:scale-95 transition-all mt-4">
             {isSubmitting ? 'PROCESANDO...' : 'ASENTAR GASTO'}
           </button>
         </form>

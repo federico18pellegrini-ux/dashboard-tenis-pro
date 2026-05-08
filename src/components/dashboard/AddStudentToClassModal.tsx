@@ -79,7 +79,7 @@ export function AddStudentToClassModal({
           <h2 className="text-xl font-black text-[var(--color-text-body)] text-[var(--color-text-heading)] uppercase italic tracking-tighter">
             Agregar alumno a la clase
           </h2>
-          <button onClick={onClose} className="text-[var(--color-text-muted)] text-[var(--color-text-muted)] hover:text-[var(--color-text-body)] dark:hover:text-white transition-colors" aria-label="Cerrar">
+          <button onClick={onClose} className="text-[var(--color-text-muted)] text-[var(--color-text-muted)] hover:text-[var(--color-text-body)] dark:hover:text-[var(--color-text-heading)] transition-colors" aria-label="Cerrar">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
           </button>
         </div>

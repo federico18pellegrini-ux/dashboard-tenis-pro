@@ -20,7 +20,7 @@ export function CreateClassLauncher({ clubs, students }: { clubs: Club[]; studen
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="bg-[var(--color-accent-secondary)] hover:bg-green-800  dark:hover:bg-[#a5e620] text-white dark:text-slate-950 px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all shadow-lg flex items-center gap-2"
+        className="bg-[var(--color-accent-secondary)] hover:bg-green-800  dark:hover:bg-[#a5e620] text-[var(--color-text-heading)] dark:text-slate-950 px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all shadow-lg flex items-center gap-2"
       >
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
         Nueva clase
@@ -117,7 +117,7 @@ export function CreateClassModal({
       <div className="relative bg-[var(--color-bg-card-inner)] bg-[var(--color-bg-card)] border border-black/10  p-8 rounded-[2rem] w-full max-w-lg shadow-2xl overflow-y-auto max-h-[90vh]">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-black text-[var(--color-text-heading)]  uppercase italic tracking-tighter">Nueva clase</h2>
-          <button onClick={onClose} className="text-[var(--color-text-muted)] text-[var(--color-text-muted)] hover:text-[var(--color-text-body)] dark:hover:text-white transition-colors" aria-label="Cerrar">
+          <button onClick={onClose} className="text-[var(--color-text-muted)] text-[var(--color-text-muted)] hover:text-[var(--color-text-body)] dark:hover:text-[var(--color-text-heading)] transition-colors" aria-label="Cerrar">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
           </button>
         </div>
@@ -130,7 +130,7 @@ export function CreateClassModal({
                 value={clubId}
                 onChange={(e) => setClubId(e.target.value)}
                 required
-                className="w-full bg-white bg-[var(--color-bg-page)] border border-black/10 dark:border-[var(--color-border)] rounded-xl p-3 text-sm text-[var(--color-text-body)] dark:text-white font-bold mt-1 outline-none"
+                className="w-full bg-white bg-[var(--color-bg-page)] border border-black/10 dark:border-[var(--color-border)] rounded-xl p-3 text-sm text-[var(--color-text-body)] dark:text-[var(--color-text-heading)] font-bold mt-1 outline-none"
               >
                 <option value="">Seleccionar...</option>
                 {clubs.map((c) => (
@@ -148,7 +148,7 @@ export function CreateClassModal({
                 onChange={(e) => setDate(e.target.value)}
                 onClick={(e) => (e.target as HTMLInputElement).showPicker?.()}
                 required
-                className="w-full bg-white bg-[var(--color-bg-page)] border border-black/10 dark:border-[var(--color-border)] rounded-xl p-3 text-sm text-[var(--color-text-body)] dark:text-white font-bold mt-1 outline-none"
+                className="w-full bg-white bg-[var(--color-bg-page)] border border-black/10 dark:border-[var(--color-border)] rounded-xl p-3 text-sm text-[var(--color-text-body)] dark:text-[var(--color-text-heading)] font-bold mt-1 outline-none"
               />
             </div>
           </div>
@@ -160,7 +160,7 @@ export function CreateClassModal({
                 value={startTime}
                 onChange={(e) => setStartTime(e.target.value)}
                 required
-                className="w-full bg-white bg-[var(--color-bg-page)] border border-black/10 dark:border-[var(--color-border)] rounded-xl p-3 text-sm text-[var(--color-text-body)] dark:text-white font-bold mt-1 outline-none"
+                className="w-full bg-white bg-[var(--color-bg-page)] border border-black/10 dark:border-[var(--color-border)] rounded-xl p-3 text-sm text-[var(--color-text-body)] dark:text-[var(--color-text-heading)] font-bold mt-1 outline-none"
               >
                 {timeOptions.map((t) => (
                   <option key={t} value={t}>
@@ -175,7 +175,7 @@ export function CreateClassModal({
                 value={endTime}
                 onChange={(e) => setEndTime(e.target.value)}
                 required
-                className="w-full bg-white bg-[var(--color-bg-page)] border border-black/10 dark:border-[var(--color-border)] rounded-xl p-3 text-sm text-[var(--color-text-body)] dark:text-white font-bold mt-1 outline-none"
+                className="w-full bg-white bg-[var(--color-bg-page)] border border-black/10 dark:border-[var(--color-border)] rounded-xl p-3 text-sm text-[var(--color-text-body)] dark:text-[var(--color-text-heading)] font-bold mt-1 outline-none"
               >
                 {timeOptions.map((t) => (
                   <option key={t} value={t}>
@@ -216,7 +216,7 @@ export function CreateClassModal({
               value={pricePesos}
               onChange={(e) => setPricePesos(e.target.value)}
               required
-              className="w-full bg-white bg-[var(--color-bg-page)] border border-black/10 dark:border-[var(--color-border)] rounded-xl p-3 text-sm text-[var(--color-text-body)] dark:text-white font-bold mt-1 outline-none"
+              className="w-full bg-white bg-[var(--color-bg-page)] border border-black/10 dark:border-[var(--color-border)] rounded-xl p-3 text-sm text-[var(--color-text-body)] dark:text-[var(--color-text-heading)] font-bold mt-1 outline-none"
             />
           </div>
 
@@ -237,7 +237,7 @@ export function CreateClassModal({
             <button
               type="submit"
               disabled={isSubmitting}
-              className="flex-1 bg-[var(--color-accent)] text-white font-black py-3 rounded-2xl text-sm shadow-lg disabled:opacity-50"
+              className="flex-1 bg-[var(--color-accent)] text-[var(--color-text-heading)] font-black py-3 rounded-2xl text-sm shadow-lg disabled:opacity-50"
             >
               {isSubmitting ? 'CREANDO...' : 'Crear clase'}
             </button>

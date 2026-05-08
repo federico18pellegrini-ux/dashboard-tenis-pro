@@ -36,7 +36,7 @@ export function PaymentButton({
       className={`text-[10px] px-2 py-1 rounded font-bold transition-all shadow-sm ${
         loading 
           ? 'bg-slate-200 text-[var(--color-text-muted)] cursor-wait' 
-          : 'bg-emerald-600 text-white hover:bg-emerald-700 active:transform active:scale-95'
+          : 'bg-emerald-600 text-[var(--color-text-heading)] hover:bg-emerald-700 active:transform active:scale-95'
       }`}
     >
       {loading ? 'PROCESANDO...' : 'PAGAR'}

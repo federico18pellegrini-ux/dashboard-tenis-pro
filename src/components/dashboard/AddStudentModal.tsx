@@ -68,14 +68,14 @@ export function AddStudentModal({ clubs }: { clubs: Club[] }) {
 
   if (!mounted) return null
 
-  const inputClasses = "w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-xl p-3 text-xs text-white font-bold outline-none focus:border-[#bdfd2c] transition-all"
+  const inputClasses = "w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-xl p-3 text-xs text-[var(--color-text-heading)] font-bold outline-none focus:border-[#bdfd2c] transition-all"
   const labelClasses = "text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest block mb-1.5 ml-1"
 
   return (
     <>
       <button 
         onClick={() => setIsOpen(true)}
-        className="bg-[var(--color-accent-secondary)] hover:bg-green-800  dark:hover:bg-[#a5e620] text-white dark:text-slate-950 px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(189,253,44,0.15)] flex items-center gap-2"
+        className="bg-[var(--color-accent-secondary)] hover:bg-green-800  dark:hover:bg-[#a5e620] text-[var(--color-text-heading)] dark:text-slate-950 px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(189,253,44,0.15)] flex items-center gap-2"
       >
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
         Nuevo Alumno
@@ -86,7 +86,7 @@ export function AddStudentModal({ clubs }: { clubs: Club[] }) {
           <div className="absolute inset-0 bg-[var(--color-bg-page)]/90 backdrop-blur-md" onClick={() => setIsOpen(false)} />
           
           <div className="relative bg-[var(--color-bg-card)] border border-[var(--color-border)] p-8 rounded-[2.5rem] w-full max-w-lg shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
-            <h2 className="text-xl font-black text-white uppercase italic tracking-tighter mb-8 border-b border-[var(--color-border)] pb-4">Alta de Alumno</h2>
+            <h2 className="text-xl font-black text-[var(--color-text-heading)] uppercase italic tracking-tighter mb-8 border-b border-[var(--color-border)] pb-4">Alta de Alumno</h2>
             
             <form action={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-2 gap-4">
@@ -129,7 +129,7 @@ export function AddStudentModal({ clubs }: { clubs: Club[] }) {
                         <select 
                           value={s.day_of_week} 
                           onChange={(e) => updateSchedule(index, 'day_of_week', parseInt(e.target.value))}
-                          className="w-full bg-transparent text-[11px] font-bold text-white outline-none"
+                          className="w-full bg-transparent text-[11px] font-bold text-[var(--color-text-heading)] outline-none"
                         >
                           {days.map(d => <option key={d.v} value={d.v}>{d.n}</option>)}
                         </select>
@@ -139,7 +139,7 @@ export function AddStudentModal({ clubs }: { clubs: Club[] }) {
                           type="time" 
                           value={s.start_time}
                           onChange={(e) => updateSchedule(index, 'start_time', e.target.value)}
-                          className="w-full bg-transparent text-[11px] font-bold text-white outline-none"
+                          className="w-full bg-transparent text-[11px] font-bold text-[var(--color-text-heading)] outline-none"
                         />
                       </div>
                       <div className="col-span-3">
@@ -167,14 +167,14 @@ export function AddStudentModal({ clubs }: { clubs: Club[] }) {
                 <button 
                   type="button" 
                   onClick={() => setIsOpen(false)}
-                  className="flex-1 bg-[var(--color-bg-card-inner)] text-[var(--color-text-muted)] py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:text-white transition-all"
+                  className="flex-1 bg-[var(--color-bg-card-inner)] text-[var(--color-text-muted)] py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:text-[var(--color-text-heading)] transition-all"
                 >
                   Cancelar
                 </button>
                 <button 
                   type="submit" 
                   disabled={isSubmitting}
-                  className="flex-1 bg-[var(--color-accent-secondary)] hover:bg-green-800  dark:hover:bg-[#a5e620] text-white dark:text-slate-950 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl disabled:opacity-50 transition-all"
+                  className="flex-1 bg-[var(--color-accent-secondary)] hover:bg-green-800  dark:hover:bg-[#a5e620] text-[var(--color-text-heading)] dark:text-slate-950 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl disabled:opacity-50 transition-all"
                 >
                   {isSubmitting ? 'GUARDANDO...' : 'CONFIRMAR ALTA'}
                 </button>

@@ -127,7 +127,7 @@ export function CalendarMonthGrid({
                     !inMonth ? 'text-slate-600' : 'text-[var(--color-text-body)]'
                   } ${
                     isToday && inMonth
-                      ? 'rounded-full bg-[var(--color-accent-secondary)] text-white  shadow-[0_0_12px_rgba(189,253,44,0.35)]'
+                      ? 'rounded-full bg-[var(--color-accent-secondary)] text-[var(--color-text-heading)]  shadow-[0_0_12px_rgba(189,253,44,0.35)]'
                       : ''
                   }`}
                 >

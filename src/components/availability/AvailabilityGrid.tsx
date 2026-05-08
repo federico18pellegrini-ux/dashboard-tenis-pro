@@ -47,7 +47,7 @@ export function AvailabilityGrid({
   return (
     <section className="bg-[var(--color-bg-card)] rounded-[2.5rem] border border-[var(--color-border)] shadow-2xl overflow-hidden">
       <div className="p-6 border-b border-[var(--color-border)] bg-[var(--color-bg-page)]/20 flex items-center justify-between gap-4">
-        <h2 className="text-xs font-black text-white uppercase tracking-[0.15em] italic">{club.name}</h2>
+        <h2 className="text-xs font-black text-[var(--color-text-heading)] uppercase tracking-[0.15em] italic">{club.name}</h2>
         {changedCount > 0 && (
           <span className="text-[10px] font-black text-amber-400 uppercase tracking-widest">
             * {changedCount} cambios sin guardar
@@ -84,7 +84,7 @@ export function AvailabilityGrid({
                         className={[
                           'w-10 h-10 rounded-xl border transition-all shadow-inner',
                           active
-                            ? 'bg-[var(--color-accent-secondary)] border-green-700  dark:border-[#bdfd2c]/40 text-white dark:text-slate-950'
+                            ? 'bg-[var(--color-accent-secondary)] border-green-700  dark:border-[#bdfd2c]/40 text-[var(--color-text-heading)] dark:text-slate-950'
                             : 'bg-[var(--color-bg-card-inner)]/40 border-[var(--color-border)] text-[var(--color-text-body)] hover:border-slate-600',
                         ].join(' ')}
                         aria-pressed={active}

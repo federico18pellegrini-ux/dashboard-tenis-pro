@@ -64,7 +64,7 @@ export function CajaClassPaymentsSection({
     <section className="bg-[var(--color-bg-card)] rounded-[2.5rem] border border-[var(--color-border)] shadow-2xl overflow-hidden">
       <div className="p-6 md:p-8 border-b border-[var(--color-border)] flex items-center justify-between bg-[var(--color-bg-page)]/20 gap-3">
         <div className="min-w-0">
-          <h2 className="text-sm md:text-xs font-black text-white uppercase tracking-[0.15em] italic truncate">{title}</h2>
+          <h2 className="text-sm md:text-xs font-black text-[var(--color-text-heading)] uppercase tracking-[0.15em] italic truncate">{title}</h2>
           <p className="text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-widest mt-1">{rows.length} MOVIMIENTOS</p>
         </div>
         <button

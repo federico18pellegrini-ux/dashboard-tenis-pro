@@ -161,7 +161,7 @@ export function StudentDetailModal({
 
   if (!isOpen || !mounted) return null
 
-  const inputClasses = "w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-xl p-3 text-xs text-white font-bold outline-none focus:border-[#bdfd2c] transition-all"
+  const inputClasses = "w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-xl p-3 text-xs text-[var(--color-text-heading)] font-bold outline-none focus:border-[#bdfd2c] transition-all"
   const labelClasses = "text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest block mb-1.5 ml-1"
 
   return createPortal(
@@ -180,7 +180,7 @@ export function StudentDetailModal({
               {student.full_name.split(' ').map(n => n[0]).join('')}
             </div>
             <div>
-              <h2 className="text-xl font-black text-white uppercase tracking-tighter leading-none mb-2 italic">
+              <h2 className="text-xl font-black text-[var(--color-text-heading)] uppercase tracking-tighter leading-none mb-2 italic">
                 {student.full_name}
               </h2>
               <p className="text-xs text-[var(--color-text-muted)] font-bold tracking-[0.15em]">
@@ -259,7 +259,7 @@ export function StudentDetailModal({
                       <button
                         type="submit"
                         disabled={isSubmitting}
-                        className="flex-1 bg-[var(--color-accent-secondary)] hover:bg-green-800  dark:hover:bg-[#a5e620] text-white dark:text-slate-950 py-3 rounded-xl text-[10px] font-black uppercase shadow-lg disabled:opacity-50"
+                        className="flex-1 bg-[var(--color-accent-secondary)] hover:bg-green-800  dark:hover:bg-[#a5e620] text-[var(--color-text-heading)] dark:text-slate-950 py-3 rounded-xl text-[10px] font-black uppercase shadow-lg disabled:opacity-50"
                       >
                         {isSubmitting ? '...' : 'OK'}
                       </button>
@@ -319,7 +319,7 @@ export function StudentDetailModal({
                 setFeedback({ kind: 'idle', message: '' })
                 setShowCreateForm(true)
               }}
-              className="w-full bg-[var(--color-accent-secondary)] hover:bg-green-800  dark:hover:bg-[#a5e620] text-white dark:text-slate-950 py-3 rounded-2xl text-[10px] font-black uppercase shadow-lg"
+              className="w-full bg-[var(--color-accent-secondary)] hover:bg-green-800  dark:hover:bg-[#a5e620] text-[var(--color-text-heading)] dark:text-slate-950 py-3 rounded-2xl text-[10px] font-black uppercase shadow-lg"
             >
               + Agregar otro turno
             </button>
@@ -375,7 +375,7 @@ export function StudentDetailModal({
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="flex-1 bg-[var(--color-accent-secondary)] hover:bg-green-800  dark:hover:bg-[#a5e620] text-white dark:text-slate-950 py-3 rounded-xl text-[10px] font-black uppercase shadow-lg disabled:opacity-50"
+                    className="flex-1 bg-[var(--color-accent-secondary)] hover:bg-green-800  dark:hover:bg-[#a5e620] text-[var(--color-text-heading)] dark:text-slate-950 py-3 rounded-xl text-[10px] font-black uppercase shadow-lg disabled:opacity-50"
                   >
                     {isSubmitting ? '...' : 'OK'}
                   </button>

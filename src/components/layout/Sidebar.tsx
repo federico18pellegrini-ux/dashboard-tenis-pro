@@ -11,7 +11,7 @@ import Image from 'next/image'
     className="object-contain"
   />
   <div>
-    <h2 className="text-sm font-black text-white uppercase italic tracking-tighter">
+    <h2 className="text-sm font-black text-[var(--color-text-heading)] uppercase italic tracking-tighter">
       Padel Sartori
     </h2>
     <span className="text-[8px] font-bold text-[var(--color-text-heading)]  uppercase tracking-[0.3em]">

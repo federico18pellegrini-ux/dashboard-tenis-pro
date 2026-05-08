@@ -30,7 +30,7 @@ export function AddContactModal() {
   }
 
   if (!isOpen) return (
-    <button onClick={() => setIsOpen(true)} className="w-full md:w-auto bg-[var(--color-accent-secondary)] hover:bg-green-800  dark:hover:bg-[#a5e620] text-white dark:text-slate-950 px-6 py-3 rounded-2xl font-black text-sm hover:scale-105 transition-all shadow-[0_10px_20px_rgba(189,253,44,0.2)] uppercase tracking-tighter">
+    <button onClick={() => setIsOpen(true)} className="w-full md:w-auto bg-[var(--color-accent-secondary)] hover:bg-green-800  dark:hover:bg-[#a5e620] text-[var(--color-text-heading)] dark:text-slate-950 px-6 py-3 rounded-2xl font-black text-sm hover:scale-105 transition-all shadow-[0_10px_20px_rgba(189,253,44,0.2)] uppercase tracking-tighter">
       + Nuevo Alumno
     </button>
   );
@@ -42,19 +42,19 @@ export function AddContactModal() {
         <form action={handleSubmit} className="space-y-4">
           <div>
             <label className="text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-widest ml-1">Nombre Completo</label>
-            <input name="full_name" required className="w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-xl p-4 text-sm font-bold text-white outline-none focus:border-[#bdfd2c] transition-all mt-1" />
+            <input name="full_name" required className="w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-xl p-4 text-sm font-bold text-[var(--color-text-heading)] outline-none focus:border-[#bdfd2c] transition-all mt-1" />
           </div>
           <div>
             <label className="text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-widest ml-1">Teléfono</label>
-            <input name="phone" required className="w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-xl p-4 text-sm font-bold text-white outline-none focus:border-[#bdfd2c] transition-all mt-1" />
+            <input name="phone" required className="w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-xl p-4 text-sm font-bold text-[var(--color-text-heading)] outline-none focus:border-[#bdfd2c] transition-all mt-1" />
           </div>
           <div>
             <label className="text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-widest ml-1">Etiquetas (separadas por coma)</label>
-            <input name="tags" className="w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-xl p-4 text-sm font-bold text-white outline-none focus:border-[#bdfd2c] transition-all mt-1" />
+            <input name="tags" className="w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-xl p-4 text-sm font-bold text-[var(--color-text-heading)] outline-none focus:border-[#bdfd2c] transition-all mt-1" />
           </div>
           <div className="flex gap-3 pt-4">
             <button type="button" onClick={() => setIsOpen(false)} className="flex-1 bg-[var(--color-bg-card-inner)] text-[var(--color-text-muted)] font-bold py-4 rounded-2xl text-sm">CANCELAR</button>
-            <button type="submit" disabled={loading} className="flex-1 bg-[var(--color-accent-secondary)] hover:bg-green-800  dark:hover:bg-[#a5e620] text-white dark:text-slate-950 font-black py-4 rounded-2xl text-sm shadow-[0_0_20px_rgba(189,253,44,0.3)] disabled:opacity-50">
+            <button type="submit" disabled={loading} className="flex-1 bg-[var(--color-accent-secondary)] hover:bg-green-800  dark:hover:bg-[#a5e620] text-[var(--color-text-heading)] dark:text-slate-950 font-black py-4 rounded-2xl text-sm shadow-[0_0_20px_rgba(189,253,44,0.3)] disabled:opacity-50">
               {loading ? 'GUARDANDO...' : 'CREAR'}
             </button>
           </div>

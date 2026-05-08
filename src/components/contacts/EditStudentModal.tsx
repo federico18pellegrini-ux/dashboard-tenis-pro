@@ -61,7 +61,7 @@ export function EditStudentModal({
 
   if (!mounted) return null
 
-  const inputClasses = "w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-2xl p-4 text-sm font-bold text-white mt-1.5 outline-none focus:border-[#bdfd2c] transition-all"
+  const inputClasses = "w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-2xl p-4 text-sm font-bold text-[var(--color-text-heading)] mt-1.5 outline-none focus:border-[#bdfd2c] transition-all"
   const labelClasses = "text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-widest ml-1"
 
   return createPortal(
@@ -71,7 +71,7 @@ export function EditStudentModal({
       <div className="relative z-10 bg-[var(--color-bg-card)] border border-[var(--color-border)] px-8 pt-8 pb-5 rounded-[2.5rem] w-full max-w-lg shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto custom-scrollbar">
         <div className="flex justify-between items-center">
           <h2 className="text-2xl font-black text-[var(--color-text-heading)]  uppercase italic tracking-tighter">Editar Alumno</h2>
-          <button onClick={onClose} className="text-[var(--color-text-muted)] hover:text-white">
+          <button onClick={onClose} className="text-[var(--color-text-muted)] hover:text-[var(--color-text-heading)]">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
           </button>
         </div>
@@ -125,7 +125,7 @@ export function EditStudentModal({
                 <div key={i} className="flex gap-2 items-center">
                   <select 
                     value={s.day_of_week} 
-                    className="flex-1 bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-xl p-3 text-xs font-bold text-white outline-none"
+                    className="flex-1 bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-xl p-3 text-xs font-bold text-[var(--color-text-heading)] outline-none"
                     onChange={(e) => {
                       const n = [...schedules]; n[i].day_of_week = parseInt(e.target.value); setSchedules(n);
                     }}
@@ -134,7 +134,7 @@ export function EditStudentModal({
                     <option value="4">Jueves</option><option value="5">Viernes</option><option value="6">Sábado</option><option value="0">Domingo</option>
                   </select>
                   <input 
-                    type="time" value={s.start_time} className="bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-xl p-3 text-xs font-bold text-white outline-none"
+                    type="time" value={s.start_time} className="bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-xl p-3 text-xs font-bold text-[var(--color-text-heading)] outline-none"
                     onChange={(e) => {
                       const n = [...schedules]; n[i].start_time = e.target.value; setSchedules(n);
                     }}
@@ -161,7 +161,7 @@ export function EditStudentModal({
             />
           </div>
 
-          <button disabled={isSubmitting} type="submit" className="w-full bg-[var(--color-accent-secondary)] hover:bg-green-800  dark:hover:bg-[#a5e620] text-white dark:text-slate-950 font-black py-5 rounded-2xl text-sm uppercase tracking-tighter shadow-xl hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50">
+          <button disabled={isSubmitting} type="submit" className="w-full bg-[var(--color-accent-secondary)] hover:bg-green-800  dark:hover:bg-[#a5e620] text-[var(--color-text-heading)] dark:text-slate-950 font-black py-5 rounded-2xl text-sm uppercase tracking-tighter shadow-xl hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50">
             {isSubmitting ? 'GUARDANDO CAMBIOS...' : 'GUARDAR CAMBIOS'}
           </button>
         </form>

@@ -106,7 +106,7 @@ export function AddToClassModal({
             <h2 className="text-lg font-black text-[var(--color-text-heading)]  uppercase italic tracking-tighter truncate">Agregar a clase</h2>
             <p className="text-xs font-bold text-[var(--color-text-muted)] truncate">{studentName}</p>
           </div>
-          <button onClick={onClose} className="text-[var(--color-text-muted)] hover:text-white shrink-0" aria-label="Cerrar">
+          <button onClick={onClose} className="text-[var(--color-text-muted)] hover:text-[var(--color-text-heading)] shrink-0" aria-label="Cerrar">
             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
               <path d="M18 6 6 18" />
               <path d="m6 6 12 12" />
@@ -167,7 +167,7 @@ export function AddToClassModal({
             type="button"
             onClick={() => void handleConfirm()}
             disabled={!selectedClassId || saving}
-            className="flex-1 bg-[var(--color-accent-secondary)] hover:bg-green-800  dark:hover:bg-[#a5e620] text-white dark:text-slate-950 px-4 py-3 rounded-2xl text-sm font-black uppercase tracking-widest shadow-xl hover:scale-[1.01] active:scale-95 transition-all disabled:opacity-50"
+            className="flex-1 bg-[var(--color-accent-secondary)] hover:bg-green-800  dark:hover:bg-[#a5e620] text-[var(--color-text-heading)] dark:text-slate-950 px-4 py-3 rounded-2xl text-sm font-black uppercase tracking-widest shadow-xl hover:scale-[1.01] active:scale-95 transition-all disabled:opacity-50"
           >
             {saving ? 'Agregando…' : 'Confirmar'}
           </button>
