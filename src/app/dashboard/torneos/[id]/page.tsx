@@ -94,7 +94,9 @@ export default async function TournamentDetailPage({ params }: { params: Params 
     'use server'
     const studentId = String(formData.get('student_id') || '').trim()
     const method = String(formData.get('method') || 'cash')
-    await registerTournamentPayment(tournamentId, studentId, method)
+    const amountCents = Number(formData.get('amount_cents') || 0)
+    const studentName = String(formData.get('student_name') || '')
+    await registerTournamentPayment(tournamentId, studentId, method, amountCents, String(tournament.name), studentName)
   }
 
   async function statusAction(formData: FormData) {
@@ -291,6 +293,8 @@ export default async function TournamentDetailPage({ params }: { params: Params 
                           {!paid ? (
                             <form action={payAction} className="flex items-center gap-2">
                               <input type="hidden" name="student_id" value={studentId} />
+                              <input type="hidden" name="amount_cents" value={String(cat.price_cents || 0)} />
+                              <input type="hidden" name="student_name" value={String(e?.student?.full_name ?? '')} />
                               <select
                                 name="method"
                                 defaultValue="cash"

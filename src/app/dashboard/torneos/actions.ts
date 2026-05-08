@@ -67,10 +67,18 @@ export async function addStudentToTournament(tournamentId: string, studentId: st
   }
 }
 
-export async function registerTournamentPayment(tournamentId: string, studentId: string, method: string) {
+export async function registerTournamentPayment(
+  tournamentId: string,
+  studentId: string,
+  method: string,
+  amountCents: number,
+  tournamentName: string,
+  studentName: string,
+) {
   try {
     const supabase = await createSupabaseServerClient()
-    const { error } = await supabase
+
+    const { error: updateError } = await supabase
       .from('tournament_students')
       .update({
         payment_status: 'paid',
@@ -80,9 +88,22 @@ export async function registerTournamentPayment(tournamentId: string, studentId:
       .eq('tournament_id', tournamentId)
       .eq('student_id', studentId)
 
-    if (error) throw error
+    if (updateError) throw updateError
+
+    const { error: paymentError } = await supabase.from('payments').insert({
+      student_id: studentId,
+      amount_cents: amountCents,
+      payment_date: new Date().toISOString().split('T')[0],
+      payment_method: method,
+      type: 'tournament',
+      notes: `TORNEO — ${tournamentName} · ${studentName}`,
+      paid_at: new Date().toISOString(),
+    })
+    if (paymentError) throw paymentError
 
     revalidatePath('/dashboard/torneos')
+    revalidatePath('/dashboard/caja')
+    revalidatePath('/dashboard')
     return { success: true }
   } catch (err: any) {
     return { success: false, error: err?.message ?? 'Error' }
@@ -108,6 +129,18 @@ export async function updateTournamentStatus(id: string, status: string) {
     const { error } = await supabase.from('tournaments').update({ status }).eq('id', id)
     if (error) throw error
 
+    revalidatePath('/dashboard/torneos')
+    return { success: true }
+  } catch (err: any) {
+    return { success: false, error: err?.message ?? 'Error' }
+  }
+}
+
+export async function updateTournamentName(id: string, name: string) {
+  try {
+    const supabase = await createSupabaseServerClient()
+    const { error } = await supabase.from('tournaments').update({ name }).eq('id', id)
+    if (error) throw error
     revalidatePath('/dashboard/torneos')
     return { success: true }
   } catch (err: any) {
