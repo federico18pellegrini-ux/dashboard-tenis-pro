@@ -53,6 +53,12 @@ export default async function CalendarioPage({
     .lte('scheduled_at', endOfMonth.toISOString())
     .order('scheduled_at', { ascending: true })
 
+  const { data: tournamentsRaw } = await supabase
+    .from('tournaments')
+    .select('id, name, start_date, end_date, status')
+    .lte('start_date', endOfMonth.toISOString().split('T')[0])
+    .gte('end_date', startOfMonth.toISOString().split('T')[0])
+
   const classesByDay: Record<string, CalendarClassChip[]> = {}
 
   for (const row of classesRaw ?? []) {
@@ -83,6 +89,30 @@ export default async function CalendarioPage({
 
     if (!classesByDay[key]) classesByDay[key] = []
     classesByDay[key].push(chip)
+  }
+
+  for (const t of tournamentsRaw ?? []) {
+    const tor = t as any
+    const start = new Date(tor.start_date)
+    const end = new Date(tor.end_date)
+    for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+      const key = dayKeyLocal(new Date(d))
+      if (key < dayKeyLocal(startOfMonth) || key > dayKeyLocal(endOfMonth)) continue
+      const chip: CalendarClassChip = {
+        id: `torneo-${tor.id}-${key}`,
+        scheduledAt: new Date(d).toISOString(),
+        timeShort: '🏆',
+        timeRangeLabel: String(tor.name ?? 'Torneo'),
+        dateLabel: new Date(d).toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }),
+        clubAbbrev: '🏆',
+        clubFull: String(tor.name ?? 'Torneo'),
+        status: String(tor.status ?? 'upcoming'),
+        studentNames: [],
+        totalCobradoCents: 0,
+      }
+      if (!classesByDay[key]) classesByDay[key] = []
+      classesByDay[key].push(chip)
+    }
   }
 
   for (const k of Object.keys(classesByDay)) {
