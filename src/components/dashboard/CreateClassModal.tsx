@@ -20,7 +20,7 @@ export function CreateClassLauncher({ clubs, students }: { clubs: Club[]; studen
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="bg-[var(--color-accent-secondary)] hover:bg-green-800  dark:hover:bg-[#a5e620] text-[var(--color-text-heading)] dark:text-slate-950 px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all shadow-lg flex items-center gap-2"
+        className="bg-[var(--color-accent-secondary)] hover:bg-green-800   text-[var(--color-text-heading)]  px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all shadow-lg flex items-center gap-2"
       >
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
         Nueva clase
@@ -130,7 +130,7 @@ export function CreateClassModal({
                 value={clubId}
                 onChange={(e) => setClubId(e.target.value)}
                 required
-                className="w-full bg-white bg-[var(--color-bg-page)] border border-black/10 dark:border-[var(--color-border)] rounded-xl p-3 text-sm text-[var(--color-text-body)] dark:text-[var(--color-text-heading)] font-bold mt-1 outline-none"
+                className="w-full bg-[var(--color-bg-page)] border border-black/10  rounded-xl p-3 text-sm text-[var(--color-text-body)]  font-bold mt-1 outline-none"
               >
                 <option value="">Seleccionar...</option>
                 {clubs.map((c) => (
@@ -148,7 +148,7 @@ export function CreateClassModal({
                 onChange={(e) => setDate(e.target.value)}
                 onClick={(e) => (e.target as HTMLInputElement).showPicker?.()}
                 required
-                className="w-full bg-white bg-[var(--color-bg-page)] border border-black/10 dark:border-[var(--color-border)] rounded-xl p-3 text-sm text-[var(--color-text-body)] dark:text-[var(--color-text-heading)] font-bold mt-1 outline-none"
+                className="w-full bg-[var(--color-bg-page)] border border-black/10  rounded-xl p-3 text-sm text-[var(--color-text-body)]  font-bold mt-1 outline-none"
               />
             </div>
           </div>
@@ -160,7 +160,7 @@ export function CreateClassModal({
                 value={startTime}
                 onChange={(e) => setStartTime(e.target.value)}
                 required
-                className="w-full bg-white bg-[var(--color-bg-page)] border border-black/10 dark:border-[var(--color-border)] rounded-xl p-3 text-sm text-[var(--color-text-body)] dark:text-[var(--color-text-heading)] font-bold mt-1 outline-none"
+                className="w-full bg-[var(--color-bg-page)] border border-black/10  rounded-xl p-3 text-sm text-[var(--color-text-body)]  font-bold mt-1 outline-none"
               >
                 {timeOptions.map((t) => (
                   <option key={t} value={t}>
@@ -175,7 +175,7 @@ export function CreateClassModal({
                 value={endTime}
                 onChange={(e) => setEndTime(e.target.value)}
                 required
-                className="w-full bg-white bg-[var(--color-bg-page)] border border-black/10 dark:border-[var(--color-border)] rounded-xl p-3 text-sm text-[var(--color-text-body)] dark:text-[var(--color-text-heading)] font-bold mt-1 outline-none"
+                className="w-full bg-[var(--color-bg-page)] border border-black/10  rounded-xl p-3 text-sm text-[var(--color-text-body)]  font-bold mt-1 outline-none"
               >
                 {timeOptions.map((t) => (
                   <option key={t} value={t}>
@@ -188,7 +188,7 @@ export function CreateClassModal({
 
           <div>
             <label className="text-[10px] font-black text-[var(--color-text-body)] uppercase tracking-widest ml-1">Alumnos</label>
-            <div className="mt-1 max-h-[240px] overflow-y-auto custom-scrollbar bg-gray-200 bg-[var(--color-bg-page)] border border-black/10 dark:border-[var(--color-border)] rounded-xl p-3 space-y-2">
+            <div className="mt-1 max-h-[240px] overflow-y-auto custom-scrollbar bg-gray-200 bg-[var(--color-bg-page)] border border-black/10  rounded-xl p-3 space-y-2">
               {sortedStudents.map((s) => (
                 <label key={s.id} className="flex items-center gap-3 text-sm text-[var(--color-text-body)] text-[var(--color-text-body)] font-bold">
                   <input
@@ -216,7 +216,7 @@ export function CreateClassModal({
               value={pricePesos}
               onChange={(e) => setPricePesos(e.target.value)}
               required
-              className="w-full bg-white bg-[var(--color-bg-page)] border border-black/10 dark:border-[var(--color-border)] rounded-xl p-3 text-sm text-[var(--color-text-body)] dark:text-[var(--color-text-heading)] font-bold mt-1 outline-none"
+              className="w-full bg-[var(--color-bg-page)] border border-black/10  rounded-xl p-3 text-sm text-[var(--color-text-body)]  font-bold mt-1 outline-none"
             />
           </div>
 
