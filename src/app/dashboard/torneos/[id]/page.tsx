@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { revalidatePath } from 'next/cache'
 import { buildWhatsAppTournamentLink } from '@/lib/utils/whatsapp'
 import { AddStudentToCategoryPanel } from '@/components/dashboard/AddStudentToCategoryPanel'
+import { CloseDetailsButton } from '@/components/dashboard/CloseDetailsButton'
 import { addCategory, registerTournamentPayment, updateTournamentStatus } from '../actions'
 
 function formatPesos(amountCents: number) {
@@ -110,6 +111,27 @@ export default async function TournamentDetailPage({ params }: { params: Params 
     revalidatePath(`/dashboard/torneos/${tournamentId}`)
   }
 
+  async function editPaymentAction(formData: FormData) {
+    'use server'
+    const studentId = String(formData.get('student_id') || '').trim()
+    const categoryId = String(formData.get('category_id') || '').trim()
+    const method = String(formData.get('method') || 'cash')
+    const amountCents = Number(formData.get('amount_cents') || 0)
+    const supabase = await createSupabaseServerClient()
+    await supabase
+      .from('tournament_students')
+      .update({ payment_method: method })
+      .eq('tournament_id', tournamentId)
+      .eq('student_id', studentId)
+      .eq('category_id', categoryId)
+    await supabase
+      .from('payments')
+      .update({ payment_method: method, amount_cents: amountCents })
+      .eq('student_id', studentId)
+      .eq('type', 'tournament')
+    revalidatePath(`/dashboard/torneos/${tournamentId}`)
+  }
+
   async function statusAction(formData: FormData) {
     'use server'
     const status = String(formData.get('status') || '').trim()
@@ -145,7 +167,8 @@ export default async function TournamentDetailPage({ params }: { params: Params 
                 <summary className="cursor-pointer list-none inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] border border-[var(--color-border)] px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl">
                   + Agregar Categoría
                 </summary>
-                <div className="mt-3 bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-3xl p-5 shadow-2xl max-w-xl">
+                <div className="relative mt-3 bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-3xl p-5 shadow-2xl max-w-xl">
+                  <CloseDetailsButton />
                   <form action={addCategoryAction} className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                       <div className="md:col-span-1">
@@ -202,7 +225,8 @@ export default async function TournamentDetailPage({ params }: { params: Params 
                 <summary className="cursor-pointer list-none inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] border border-[var(--color-border)] px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl">
                   Cambiar estado
                 </summary>
-                <div className="mt-3 bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-3xl p-5 shadow-2xl max-w-xl">
+                <div className="relative mt-3 bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-3xl p-5 shadow-2xl max-w-xl">
+                  <CloseDetailsButton />
                   <form action={statusAction} className="space-y-3">
                     <select
                       name="status"
@@ -326,9 +350,32 @@ export default async function TournamentDetailPage({ params }: { params: Params 
                               </button>
                             </form>
                           ) : (
-                            <span className="px-3 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest bg-[var(--color-bg-card-inner)] text-[var(--color-text-muted)] border border-[var(--color-border)]">
-                              Pagado
-                            </span>
+                            <details className="shrink-0">
+                              <summary className="cursor-pointer list-none px-3 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest bg-[var(--color-bg-card-inner)] text-[var(--color-success)] border border-[var(--color-border)] hover:border-[var(--color-accent)] transition-colors">
+                                ✓ Pagado
+                              </summary>
+                              <div className="mt-2 bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl p-4 shadow-xl min-w-[220px]">
+                                <form action={editPaymentAction} className="space-y-3">
+                                  <input type="hidden" name="student_id" value={studentId} />
+                                  <input type="hidden" name="category_id" value={String(e?.category_id ?? '')} />
+                                  <div>
+                                    <label className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest block mb-1">Método</label>
+                                    <select name="method" defaultValue={String(e?.payment_method ?? 'cash')} className="w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-xl p-2 text-xs font-bold text-[var(--color-text-body)] outline-none">
+                                      <option value="cash">Efectivo</option>
+                                      <option value="transfer">Transferencia</option>
+                                      <option value="mp">Mercado Pago</option>
+                                    </select>
+                                  </div>
+                                  <div>
+                                    <label className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest block mb-1">Monto ($)</label>
+                                    <input type="number" name="amount_cents" defaultValue={String((cat.price_cents || 0) / 100)} className="w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-xl p-2 text-xs font-bold text-[var(--color-text-body)] outline-none" />
+                                  </div>
+                                  <button type="submit" className="w-full bg-[var(--color-accent)] text-white py-2 rounded-xl text-[10px] font-black uppercase tracking-widest">
+                                    Guardar cambios
+                                  </button>
+                                </form>
+                              </div>
+                            </details>
                           )}
                           <form action={removeStudentAction}>
                             <input type="hidden" name="student_id" value={studentId} />

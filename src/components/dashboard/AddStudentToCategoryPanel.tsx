@@ -27,7 +27,14 @@ export function AddStudentToCategoryPanel({
         + Agregar Alumno
       </button>
       {open && (
-        <div className="mt-3 bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-3xl p-5 shadow-2xl w-[min(560px,calc(100vw-2rem))]">
+        <div className="relative mt-3 bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-3xl p-5 shadow-2xl w-[min(560px,calc(100vw-2rem))]">
+          <button
+            type="button"
+            onClick={() => setOpen(false)}
+            className="absolute top-3 right-3 text-[var(--color-text-muted)] hover:text-[var(--color-text-body)] text-lg leading-none"
+          >
+            ✕
+          </button>
           <form
             className="space-y-3"
             onSubmit={async (e) => {
