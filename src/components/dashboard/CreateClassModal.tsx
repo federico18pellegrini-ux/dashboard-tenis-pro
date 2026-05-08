@@ -20,7 +20,7 @@ export function CreateClassLauncher({ clubs, students }: { clubs: Club[]; studen
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="bg-green-700 hover:bg-green-800 dark:bg-[#bdfd2c] dark:hover:bg-[#a5e620] text-white dark:text-slate-950 px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all shadow-lg flex items-center gap-2"
+        className="bg-[var(--color-accent-secondary)] hover:bg-green-800 dark:bg-[#bdfd2c] dark:hover:bg-[#a5e620] text-white dark:text-slate-950 px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all shadow-lg flex items-center gap-2"
       >
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
         Nueva clase
@@ -114,10 +114,10 @@ export function CreateClassModal({
     <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/40 dark:bg-slate-950/90 backdrop-blur-sm" onClick={onClose} />
 
-      <div className="relative bg-gray-100 dark:bg-slate-900 border border-black/10 dark:border-white/10 p-8 rounded-[2rem] w-full max-w-lg shadow-2xl overflow-y-auto max-h-[90vh]">
+      <div className="relative bg-[var(--color-bg-card-inner)] dark:bg-slate-900 border border-black/10 dark:border-white/10 p-8 rounded-[2rem] w-full max-w-lg shadow-2xl overflow-y-auto max-h-[90vh]">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-black text-gray-950 dark:text-[#ADFF2F] uppercase italic tracking-tighter">Nueva clase</h2>
-          <button onClick={onClose} className="text-gray-500 dark:text-slate-500 hover:text-gray-900 dark:hover:text-white transition-colors" aria-label="Cerrar">
+          <button onClick={onClose} className="text-[var(--color-text-muted)] dark:text-slate-500 hover:text-[var(--color-text-body)] dark:hover:text-white transition-colors" aria-label="Cerrar">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
           </button>
         </div>
@@ -125,12 +125,12 @@ export function CreateClassModal({
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest ml-1">Sede</label>
+              <label className="text-[10px] font-black text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)] uppercase tracking-widest ml-1">Sede</label>
               <select
                 value={clubId}
                 onChange={(e) => setClubId(e.target.value)}
                 required
-                className="w-full bg-white dark:bg-slate-950 border border-black/10 dark:border-slate-800 rounded-xl p-3 text-sm text-gray-900 dark:text-white font-bold mt-1 outline-none"
+                className="w-full bg-white dark:bg-slate-950 border border-black/10 dark:border-slate-800 rounded-xl p-3 text-sm text-[var(--color-text-body)] dark:text-white font-bold mt-1 outline-none"
               >
                 <option value="">Seleccionar...</option>
                 {clubs.map((c) => (
@@ -141,26 +141,26 @@ export function CreateClassModal({
               </select>
             </div>
             <div>
-              <label className="text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest ml-1">Fecha</label>
+              <label className="text-[10px] font-black text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)] uppercase tracking-widest ml-1">Fecha</label>
               <input
                 type="date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
                 onClick={(e) => (e.target as HTMLInputElement).showPicker?.()}
                 required
-                className="w-full bg-white dark:bg-slate-950 border border-black/10 dark:border-slate-800 rounded-xl p-3 text-sm text-gray-900 dark:text-white font-bold mt-1 outline-none"
+                className="w-full bg-white dark:bg-slate-950 border border-black/10 dark:border-slate-800 rounded-xl p-3 text-sm text-[var(--color-text-body)] dark:text-white font-bold mt-1 outline-none"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest ml-1">Hora inicio</label>
+              <label className="text-[10px] font-black text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)] uppercase tracking-widest ml-1">Hora inicio</label>
               <select
                 value={startTime}
                 onChange={(e) => setStartTime(e.target.value)}
                 required
-                className="w-full bg-white dark:bg-slate-950 border border-black/10 dark:border-slate-800 rounded-xl p-3 text-sm text-gray-900 dark:text-white font-bold mt-1 outline-none"
+                className="w-full bg-white dark:bg-slate-950 border border-black/10 dark:border-slate-800 rounded-xl p-3 text-sm text-[var(--color-text-body)] dark:text-white font-bold mt-1 outline-none"
               >
                 {timeOptions.map((t) => (
                   <option key={t} value={t}>
@@ -170,12 +170,12 @@ export function CreateClassModal({
               </select>
             </div>
             <div>
-              <label className="text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest ml-1">Hora fin</label>
+              <label className="text-[10px] font-black text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)] uppercase tracking-widest ml-1">Hora fin</label>
               <select
                 value={endTime}
                 onChange={(e) => setEndTime(e.target.value)}
                 required
-                className="w-full bg-white dark:bg-slate-950 border border-black/10 dark:border-slate-800 rounded-xl p-3 text-sm text-gray-900 dark:text-white font-bold mt-1 outline-none"
+                className="w-full bg-white dark:bg-slate-950 border border-black/10 dark:border-slate-800 rounded-xl p-3 text-sm text-[var(--color-text-body)] dark:text-white font-bold mt-1 outline-none"
               >
                 {timeOptions.map((t) => (
                   <option key={t} value={t}>
@@ -187,7 +187,7 @@ export function CreateClassModal({
           </div>
 
           <div>
-            <label className="text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest ml-1">Alumnos</label>
+            <label className="text-[10px] font-black text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)] uppercase tracking-widest ml-1">Alumnos</label>
             <div className="mt-1 max-h-[240px] overflow-y-auto custom-scrollbar bg-gray-200 dark:bg-slate-950 border border-black/10 dark:border-slate-800 rounded-xl p-3 space-y-2">
               {sortedStudents.map((s) => (
                 <label key={s.id} className="flex items-center gap-3 text-sm text-gray-800 dark:text-slate-200 font-bold">
@@ -201,13 +201,13 @@ export function CreateClassModal({
                 </label>
               ))}
             </div>
-            <p className="text-[10px] text-gray-500 dark:text-gray-400 font-bold uppercase tracking-widest mt-2">
+            <p className="text-[10px] text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)] font-bold uppercase tracking-widest mt-2">
               Seleccionados: {selectedIds.size}
             </p>
           </div>
 
           <div>
-            <label className="text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest ml-1">Precio por alumno ($)</label>
+            <label className="text-[10px] font-black text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)] uppercase tracking-widest ml-1">Precio por alumno ($)</label>
             <input
               type="number"
               min={0}
@@ -216,7 +216,7 @@ export function CreateClassModal({
               value={pricePesos}
               onChange={(e) => setPricePesos(e.target.value)}
               required
-              className="w-full bg-white dark:bg-slate-950 border border-black/10 dark:border-slate-800 rounded-xl p-3 text-sm text-gray-900 dark:text-white font-bold mt-1 outline-none"
+              className="w-full bg-white dark:bg-slate-950 border border-black/10 dark:border-slate-800 rounded-xl p-3 text-sm text-[var(--color-text-body)] dark:text-white font-bold mt-1 outline-none"
             />
           </div>
 
@@ -237,7 +237,7 @@ export function CreateClassModal({
             <button
               type="submit"
               disabled={isSubmitting}
-              className="flex-1 bg-green-600 text-white font-black py-3 rounded-2xl text-sm shadow-lg disabled:opacity-50"
+              className="flex-1 bg-[var(--color-accent)] text-white font-black py-3 rounded-2xl text-sm shadow-lg disabled:opacity-50"
             >
               {isSubmitting ? 'CREANDO...' : 'Crear clase'}
             </button>

@@ -153,7 +153,7 @@ export function AvailabilityManager({ clubs }: { clubs: ClubSlots[] }) {
           className={[
             'px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all shadow-xl border',
             hasUnsavedChanges
-              ? 'bg-green-700 text-white dark:bg-[#bdfd2c] dark:text-slate-950 border-green-700 dark:border-[#bdfd2c]/30 hover:bg-green-800 dark:hover:bg-[#a5e620]'
+              ? 'bg-[var(--color-accent-secondary)] text-white dark:bg-[#bdfd2c] dark:text-slate-950 border-green-700 dark:border-[#bdfd2c]/30 hover:bg-green-800 dark:hover:bg-[#a5e620]'
               : 'bg-slate-900 text-slate-500 border-slate-800',
             (isSaving || !hasUnsavedChanges) ? 'opacity-60 cursor-not-allowed' : '',
           ].join(' ')}

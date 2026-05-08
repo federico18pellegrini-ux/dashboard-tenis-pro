@@ -111,19 +111,19 @@ export function RegisterPaymentModal({
     <div className="fixed inset-0 z-[11000] flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/40 dark:bg-slate-950/90 backdrop-blur-sm" onClick={onClose} />
 
-      <div className="relative bg-gray-100 dark:bg-slate-900 border border-black/10 dark:border-white/10 p-8 rounded-[2rem] w-full max-w-md shadow-2xl overflow-y-auto max-h-[90vh]">
+      <div className="relative bg-[var(--color-bg-card-inner)] dark:bg-slate-900 border border-black/10 dark:border-white/10 p-8 rounded-[2rem] w-full max-w-md shadow-2xl overflow-y-auto max-h-[90vh]">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-black text-green-600 dark:text-emerald-400 uppercase italic tracking-tighter">
+          <h2 className="text-xl font-black text-[var(--color-accent)] dark:text-emerald-400 uppercase italic tracking-tighter">
             {isEdit ? 'Editar pago' : 'Registrar pago'} — {studentName}
           </h2>
-          <button onClick={onClose} className="text-gray-500 dark:text-slate-500 hover:text-gray-900 dark:hover:text-white transition-colors" aria-label="Cerrar">
+          <button onClick={onClose} className="text-[var(--color-text-muted)] dark:text-slate-500 hover:text-[var(--color-text-body)] dark:hover:text-white transition-colors" aria-label="Cerrar">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest ml-1">Monto ($)</label>
+            <label className="text-[10px] font-black text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)] uppercase tracking-widest ml-1">Monto ($)</label>
             <input
               type="number"
               min={0}
@@ -131,19 +131,19 @@ export function RegisterPaymentModal({
               value={amountPesos}
               onChange={(e) => setAmountPesos(e.target.value)}
               required
-              className="w-full bg-white dark:bg-slate-950 border border-black/10 dark:border-slate-800 rounded-xl p-3 text-sm text-gray-900 dark:text-white font-bold mt-1 outline-none"
+              className="w-full bg-white dark:bg-slate-950 border border-black/10 dark:border-slate-800 rounded-xl p-3 text-sm text-[var(--color-text-body)] dark:text-white font-bold mt-1 outline-none"
             />
-            <p className="text-[10px] text-gray-500 dark:text-gray-400 font-bold uppercase tracking-widest mt-2">
-              Total: <span className="text-gray-900 dark:text-slate-200">{formatPesos(previewCents)}</span>
+            <p className="text-[10px] text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)] font-bold uppercase tracking-widest mt-2">
+              Total: <span className="text-[var(--color-text-body)] dark:text-slate-200">{formatPesos(previewCents)}</span>
             </p>
           </div>
 
           <div>
-            <label className="text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest ml-1">Método</label>
+            <label className="text-[10px] font-black text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)] uppercase tracking-widest ml-1">Método</label>
             <select
               value={method}
               onChange={(e) => setMethod(e.target.value as any)}
-              className="w-full bg-white dark:bg-slate-950 border border-black/10 dark:border-slate-800 rounded-xl p-3 text-sm text-gray-900 dark:text-white font-bold mt-1 outline-none"
+              className="w-full bg-white dark:bg-slate-950 border border-black/10 dark:border-slate-800 rounded-xl p-3 text-sm text-[var(--color-text-body)] dark:text-white font-bold mt-1 outline-none"
             >
               <option value="cash">Efectivo</option>
               <option value="transfer">Transferencia</option>

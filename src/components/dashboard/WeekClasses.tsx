@@ -147,41 +147,41 @@ export function WeekClasses({
 
   return (
     <>
-    <section className="bg-gray-100/80 dark:bg-slate-900/40 rounded-[2.5rem] border border-black/10 dark:border-white/10 shadow-2xl overflow-hidden">
+    <section className="bg-[var(--color-bg-card-inner)]/80 dark:bg-slate-900/40 rounded-[2.5rem] border border-black/10 dark:border-white/10 shadow-2xl overflow-hidden">
       <div className="p-6 border-b border-black/10 dark:border-white/10 bg-gray-200/80 dark:bg-slate-950/40 flex items-center justify-between">
         <div>
           <h2 className="text-xs font-black text-gray-950 dark:text-[#ADFF2F] uppercase tracking-[0.15em] italic">
-            Clases del mes <span className="text-gray-500 dark:text-gray-400">({count})</span>
+            Clases del mes <span className="text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)]">({count})</span>
           </h2>
-          <div className="mt-1 text-[10px] font-black uppercase tracking-widest text-green-600 dark:text-green-400">
+          <div className="mt-1 text-[10px] font-black uppercase tracking-widest text-[var(--color-accent)] dark:text-[var(--color-accent)]">
             Cobrado: ${((paidTotalCents ?? 0) / 100).toLocaleString('es-AR')}
           </div>
         </div>
       </div>
 
       {count === 0 ? (
-        <div className="p-6 text-xs text-gray-500 dark:text-gray-400 font-bold uppercase tracking-widest">
+        <div className="p-6 text-xs text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)] font-bold uppercase tracking-widest">
           No hay clases programadas para este mes
         </div>
       ) : (
         <div className="p-4 md:p-6 space-y-4">
           {formatted.map((c) => (
-            <div key={c.id} className="bg-gray-100/90 dark:bg-slate-900/40 border border-black/10 dark:border-white/10 rounded-3xl shadow-xl overflow-hidden">
+            <div key={c.id} className="bg-[var(--color-bg-card-inner)]/90 dark:bg-slate-900/40 border border-black/10 dark:border-white/10 rounded-3xl shadow-xl overflow-hidden">
               {/* Header */}
               <div className="px-3.5 py-3 flex items-start justify-between gap-3 border-b border-black/10 dark:border-white/10">
                 <div className="min-w-0">
-                  <div className="text-[13px] font-medium text-gray-900 dark:text-slate-100 capitalize truncate">
+                  <div className="text-[13px] font-medium text-[var(--color-text-body)] dark:text-slate-100 capitalize truncate">
                     {c.classDate}
                   </div>
-                  <div className="text-[12px] text-gray-500 dark:text-gray-400 font-bold truncate">
+                  <div className="text-[12px] text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)] font-bold truncate">
                     {c.club?.name ?? 'Sede'}
                   </div>
-                  <div className="text-[12px] text-gray-500 dark:text-gray-400 font-bold truncate">
+                  <div className="text-[12px] text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)] font-bold truncate">
                     {c.startTime} – {c.endTime}
                   </div>
                 </div>
                 <div className="shrink-0 flex items-center gap-2">
-                  <div className="text-[12px] font-black text-green-700 dark:text-green-400">
+                  <div className="text-[12px] font-black text-green-700 dark:text-[var(--color-accent)]">
                     {c.totalCobradoLabel}
                   </div>
                 </div>
@@ -190,7 +190,7 @@ export function WeekClasses({
               {/* Students list */}
               <div className="px-3.5">
                 {(c.students ?? []).length === 0 ? (
-                  <div className="py-3 text-xs text-gray-500 dark:text-gray-400 font-bold uppercase tracking-widest">Sin alumnos</div>
+                  <div className="py-3 text-xs text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)] font-bold uppercase tracking-widest">Sin alumnos</div>
                 ) : (
                   <div>
                     {(c.students ?? []).map((s) => {
@@ -226,7 +226,7 @@ export function WeekClasses({
                                     defaultAmountCents: c.price_cents,
                                   })
                                 }
-                                className="border border-green-700/50 dark:border-emerald-700/50 text-green-700 dark:text-green-400 px-2.5 py-1 rounded-lg text-[11px] font-black uppercase tracking-widest hover:bg-green-100 dark:hover:bg-emerald-950/30 transition-colors"
+                                className="border border-green-700/50 dark:border-emerald-700/50 text-green-700 dark:text-[var(--color-accent)] px-2.5 py-1 rounded-lg text-[11px] font-black uppercase tracking-widest hover:bg-green-100 dark:hover:bg-emerald-950/30 transition-colors"
                               >
                                 Cobrar
                               </button>
@@ -271,7 +271,7 @@ export function WeekClasses({
                                 },
                               })
                             }
-                            className="shrink-0 text-green-600 dark:text-green-400 text-[12px] font-black hover:text-green-700 dark:hover:text-green-300 transition-colors"
+                            className="shrink-0 text-[var(--color-accent)] dark:text-[var(--color-accent)] text-[12px] font-black hover:text-green-700 dark:hover:text-green-300 transition-colors"
                             title="Editar / anular pago"
                           >
                             ✓ {amount}{methodShort ? ` · ${methodShort}` : ''}

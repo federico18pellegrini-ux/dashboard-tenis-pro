@@ -30,7 +30,7 @@ export function AddContactModal() {
   }
 
   if (!isOpen) return (
-    <button onClick={() => setIsOpen(true)} className="w-full md:w-auto bg-green-700 hover:bg-green-800 dark:bg-[#bdfd2c] dark:hover:bg-[#a5e620] text-white dark:text-slate-950 px-6 py-3 rounded-2xl font-black text-sm hover:scale-105 transition-all shadow-[0_10px_20px_rgba(189,253,44,0.2)] uppercase tracking-tighter">
+    <button onClick={() => setIsOpen(true)} className="w-full md:w-auto bg-[var(--color-accent-secondary)] hover:bg-green-800 dark:bg-[#bdfd2c] dark:hover:bg-[#a5e620] text-white dark:text-slate-950 px-6 py-3 rounded-2xl font-black text-sm hover:scale-105 transition-all shadow-[0_10px_20px_rgba(189,253,44,0.2)] uppercase tracking-tighter">
       + Nuevo Alumno
     </button>
   );
@@ -54,7 +54,7 @@ export function AddContactModal() {
           </div>
           <div className="flex gap-3 pt-4">
             <button type="button" onClick={() => setIsOpen(false)} className="flex-1 bg-slate-800 text-slate-400 font-bold py-4 rounded-2xl text-sm">CANCELAR</button>
-            <button type="submit" disabled={loading} className="flex-1 bg-green-700 hover:bg-green-800 dark:bg-[#bdfd2c] dark:hover:bg-[#a5e620] text-white dark:text-slate-950 font-black py-4 rounded-2xl text-sm shadow-[0_0_20px_rgba(189,253,44,0.3)] disabled:opacity-50">
+            <button type="submit" disabled={loading} className="flex-1 bg-[var(--color-accent-secondary)] hover:bg-green-800 dark:bg-[#bdfd2c] dark:hover:bg-[#a5e620] text-white dark:text-slate-950 font-black py-4 rounded-2xl text-sm shadow-[0_0_20px_rgba(189,253,44,0.3)] disabled:opacity-50">
               {loading ? 'GUARDANDO...' : 'CREAR'}
             </button>
           </div>

@@ -176,7 +176,7 @@ export function StudentDetailModal({
         {/* HEADER */}
         <div className="flex justify-between items-start mb-8 pb-6 border-b border-slate-800/60">
           <div className="flex items-center gap-4">
-            <div className="h-14 w-14 rounded-full bg-slate-950 border border-[#bdfd2c]/30 flex items-center justify-center font-black text-green-500 dark:text-[#ADFF2F] text-xl italic">
+            <div className="h-14 w-14 rounded-full bg-slate-950 border border-[#bdfd2c]/30 flex items-center justify-center font-black text-[var(--color-accent)] dark:text-[#ADFF2F] text-xl italic">
               {student.full_name.split(' ').map(n => n[0]).join('')}
             </div>
             <div>
@@ -259,7 +259,7 @@ export function StudentDetailModal({
                       <button
                         type="submit"
                         disabled={isSubmitting}
-                        className="flex-1 bg-green-700 hover:bg-green-800 dark:bg-[#bdfd2c] dark:hover:bg-[#a5e620] text-white dark:text-slate-950 py-3 rounded-xl text-[10px] font-black uppercase shadow-lg disabled:opacity-50"
+                        className="flex-1 bg-[var(--color-accent-secondary)] hover:bg-green-800 dark:bg-[#bdfd2c] dark:hover:bg-[#a5e620] text-white dark:text-slate-950 py-3 rounded-xl text-[10px] font-black uppercase shadow-lg disabled:opacity-50"
                       >
                         {isSubmitting ? '...' : 'OK'}
                       </button>
@@ -319,7 +319,7 @@ export function StudentDetailModal({
                 setFeedback({ kind: 'idle', message: '' })
                 setShowCreateForm(true)
               }}
-              className="w-full bg-green-700 hover:bg-green-800 dark:bg-[#bdfd2c] dark:hover:bg-[#a5e620] text-white dark:text-slate-950 py-3 rounded-2xl text-[10px] font-black uppercase shadow-lg"
+              className="w-full bg-[var(--color-accent-secondary)] hover:bg-green-800 dark:bg-[#bdfd2c] dark:hover:bg-[#a5e620] text-white dark:text-slate-950 py-3 rounded-2xl text-[10px] font-black uppercase shadow-lg"
             >
               + Agregar otro turno
             </button>
@@ -375,7 +375,7 @@ export function StudentDetailModal({
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="flex-1 bg-green-700 hover:bg-green-800 dark:bg-[#bdfd2c] dark:hover:bg-[#a5e620] text-white dark:text-slate-950 py-3 rounded-xl text-[10px] font-black uppercase shadow-lg disabled:opacity-50"
+                    className="flex-1 bg-[var(--color-accent-secondary)] hover:bg-green-800 dark:bg-[#bdfd2c] dark:hover:bg-[#a5e620] text-white dark:text-slate-950 py-3 rounded-xl text-[10px] font-black uppercase shadow-lg disabled:opacity-50"
                   >
                     {isSubmitting ? '...' : 'OK'}
                   </button>

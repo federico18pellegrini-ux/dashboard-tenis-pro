@@ -57,7 +57,7 @@ export default function UpdatePasswordPage() {
           
           <button 
             type="submit"
-            className="w-full py-4 rounded-2xl font-black text-white dark:text-slate-950 bg-green-700 hover:bg-green-800 dark:bg-[#bdfd2c] dark:hover:bg-[#a5e620] uppercase tracking-widest hover:scale-[1.02] active:scale-95 transition-all shadow-[0_10px_20px_rgba(189,253,44,0.1)]"
+            className="w-full py-4 rounded-2xl font-black text-white dark:text-slate-950 bg-[var(--color-accent-secondary)] hover:bg-green-800 dark:bg-[#bdfd2c] dark:hover:bg-[#a5e620] uppercase tracking-widest hover:scale-[1.02] active:scale-95 transition-all shadow-[0_10px_20px_rgba(189,253,44,0.1)]"
           >
             Actualizar Clave
           </button>

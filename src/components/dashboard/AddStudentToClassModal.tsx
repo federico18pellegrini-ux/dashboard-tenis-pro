@@ -74,12 +74,12 @@ export function AddStudentToClassModal({
     <div className="fixed inset-0 z-[11000] flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/40 dark:bg-slate-950/90 backdrop-blur-sm" onClick={onClose} />
 
-      <div className="relative bg-gray-100 dark:bg-slate-900 border border-black/10 dark:border-white/10 p-8 rounded-[2rem] w-full max-w-md shadow-2xl overflow-y-auto max-h-[90vh]">
+      <div className="relative bg-[var(--color-bg-card-inner)] dark:bg-slate-900 border border-black/10 dark:border-white/10 p-8 rounded-[2rem] w-full max-w-md shadow-2xl overflow-y-auto max-h-[90vh]">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-black text-gray-900 dark:text-slate-100 uppercase italic tracking-tighter">
+          <h2 className="text-xl font-black text-[var(--color-text-body)] dark:text-slate-100 uppercase italic tracking-tighter">
             Agregar alumno a la clase
           </h2>
-          <button onClick={onClose} className="text-gray-500 dark:text-slate-500 hover:text-gray-900 dark:hover:text-white transition-colors" aria-label="Cerrar">
+          <button onClick={onClose} className="text-[var(--color-text-muted)] dark:text-slate-500 hover:text-[var(--color-text-body)] dark:hover:text-white transition-colors" aria-label="Cerrar">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
           </button>
         </div>
@@ -87,7 +87,7 @@ export function AddStudentToClassModal({
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="max-h-[280px] overflow-y-auto custom-scrollbar bg-gray-200 dark:bg-slate-950 border border-black/10 dark:border-slate-800 rounded-xl p-3 space-y-2">
             {filteredStudents.length === 0 ? (
-              <div className="text-xs text-gray-500 dark:text-gray-400 font-bold uppercase tracking-widest">
+              <div className="text-xs text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)] font-bold uppercase tracking-widest">
                 No hay alumnos disponibles para agregar
               </div>
             ) : (
@@ -122,7 +122,7 @@ export function AddStudentToClassModal({
             <button
               type="submit"
               disabled={isSubmitting || filteredStudents.length === 0}
-              className="flex-1 bg-white dark:bg-slate-950 border border-black/10 dark:border-slate-800 text-gray-900 dark:text-slate-100 font-black py-3 rounded-2xl text-sm uppercase tracking-widest hover:border-gray-400 dark:hover:border-slate-700 disabled:opacity-50"
+              className="flex-1 bg-white dark:bg-slate-950 border border-black/10 dark:border-slate-800 text-[var(--color-text-body)] dark:text-slate-100 font-black py-3 rounded-2xl text-sm uppercase tracking-widest hover:border-gray-400 dark:hover:border-slate-700 disabled:opacity-50"
             >
               {isSubmitting ? 'AGREGANDO...' : 'Agregar'}
             </button>

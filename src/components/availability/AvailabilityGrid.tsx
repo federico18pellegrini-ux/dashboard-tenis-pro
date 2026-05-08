@@ -84,7 +84,7 @@ export function AvailabilityGrid({
                         className={[
                           'w-10 h-10 rounded-xl border transition-all shadow-inner',
                           active
-                            ? 'bg-green-700 border-green-700 dark:bg-[#bdfd2c] dark:border-[#bdfd2c]/40 text-white dark:text-slate-950'
+                            ? 'bg-[var(--color-accent-secondary)] border-green-700 dark:bg-[#bdfd2c] dark:border-[#bdfd2c]/40 text-white dark:text-slate-950'
                             : 'bg-slate-800/40 border-slate-700 text-slate-300 hover:border-slate-600',
                         ].join(' ')}
                         aria-pressed={active}

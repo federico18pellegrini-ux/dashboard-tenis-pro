@@ -161,7 +161,7 @@ export function EditStudentModal({
             />
           </div>
 
-          <button disabled={isSubmitting} type="submit" className="w-full bg-green-700 hover:bg-green-800 dark:bg-[#bdfd2c] dark:hover:bg-[#a5e620] text-white dark:text-slate-950 font-black py-5 rounded-2xl text-sm uppercase tracking-tighter shadow-xl hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50">
+          <button disabled={isSubmitting} type="submit" className="w-full bg-[var(--color-accent-secondary)] hover:bg-green-800 dark:bg-[#bdfd2c] dark:hover:bg-[#a5e620] text-white dark:text-slate-950 font-black py-5 rounded-2xl text-sm uppercase tracking-tighter shadow-xl hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50">
             {isSubmitting ? 'GUARDANDO CAMBIOS...' : 'GUARDAR CAMBIOS'}
           </button>
         </form>

@@ -167,7 +167,7 @@ export function AddToClassModal({
             type="button"
             onClick={() => void handleConfirm()}
             disabled={!selectedClassId || saving}
-            className="flex-1 bg-green-700 hover:bg-green-800 dark:bg-[#bdfd2c] dark:hover:bg-[#a5e620] text-white dark:text-slate-950 px-4 py-3 rounded-2xl text-sm font-black uppercase tracking-widest shadow-xl hover:scale-[1.01] active:scale-95 transition-all disabled:opacity-50"
+            className="flex-1 bg-[var(--color-accent-secondary)] hover:bg-green-800 dark:bg-[#bdfd2c] dark:hover:bg-[#a5e620] text-white dark:text-slate-950 px-4 py-3 rounded-2xl text-sm font-black uppercase tracking-widest shadow-xl hover:scale-[1.01] active:scale-95 transition-all disabled:opacity-50"
           >
             {saving ? 'Agregando…' : 'Confirmar'}
           </button>

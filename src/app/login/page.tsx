@@ -89,7 +89,7 @@ export default async function LoginPage({
           <div className="space-y-4 pt-2">
             <button
               formAction={login}
-              className="w-full flex justify-center py-5 px-4 rounded-2xl shadow-[0_10px_30px_rgba(189,253,44,0.15)] text-sm font-black text-white dark:text-slate-950 bg-green-700 hover:bg-green-800 dark:bg-[#bdfd2c] dark:hover:bg-[#aef026] hover:scale-[1.02] active:scale-95 transition-all uppercase tracking-widest"
+              className="w-full flex justify-center py-5 px-4 rounded-2xl shadow-[0_10px_30px_rgba(189,253,44,0.15)] text-sm font-black text-white dark:text-slate-950 bg-[var(--color-accent-secondary)] hover:bg-green-800 dark:bg-[#bdfd2c] dark:hover:bg-[#aef026] hover:scale-[1.02] active:scale-95 transition-all uppercase tracking-widest"
             >
               Entrar al Panel
             </button>
