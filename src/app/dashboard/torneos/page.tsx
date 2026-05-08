@@ -87,7 +87,7 @@ export default async function TournamentsPage() {
       notes: (t.notes as string | null) ?? null,
       startDateLabel: formatDateEsAR(t.start_date ?? null),
       endDateLabel: formatDateEsAR(t.end_date ?? null),
-      status,
+      status: status as 'Próximo' | 'En curso' | 'Finalizado',
       categories: categories.map((c: any) => ({
         id: String(c.id),
         name: String(c.name ?? 'Categoría'),
