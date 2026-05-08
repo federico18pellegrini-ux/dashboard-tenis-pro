@@ -150,17 +150,17 @@ export default async function CajaPage({
               </Link>
               <Link
                 href="/dashboard/contactos"
-                className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] bg-[var(--color-bg-card)] border border-black/10  p-3 rounded-2xl text-[var(--color-text-body)] text-[var(--color-text-body)] hover:border-[var(--color-accent)]  hover:text-[var(--color-accent)]  transition-colors shadow-xl"
+                className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] border border-black/10 p-3 rounded-2xl text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl"
                 aria-label="Contactos"
               >
-                <span aria-hidden className="text-lg leading-none">👥</span>
+                <span aria-hidden className="text-base leading-none">👥</span>
               </Link>
               <Link
                 href={`/dashboard/calendario?month=${month}&year=${year}`}
-                className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] bg-[var(--color-bg-card)] border border-black/10  p-3 rounded-2xl text-[var(--color-text-body)] text-[var(--color-text-body)] hover:border-[var(--color-accent)]  hover:text-[var(--color-accent)]  transition-colors shadow-xl"
+                className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] border border-black/10 p-3 rounded-2xl text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl"
                 aria-label="Calendario"
               >
-                <span aria-hidden className="text-lg leading-none">📅</span>
+                <span aria-hidden className="text-base leading-none">📅</span>
               </Link>
               <Link
                 href="/dashboard/torneos"

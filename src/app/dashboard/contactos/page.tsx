@@ -84,14 +84,14 @@ export default async function ContactsPage({
             <div className="flex justify-end gap-2">
               <Link
                 href="/dashboard/caja"
-                className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] bg-[var(--color-bg-card)] border border-black/10  px-3 py-2 rounded-xl text-[var(--color-text-body)] text-[var(--color-text-body)] hover:border-[var(--color-accent)]  hover:text-[var(--color-accent)]  transition-colors shadow-xl"
+                className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] border border-black/10 p-3 rounded-2xl text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl"
                 aria-label="Caja"
               >
                 <span aria-hidden className="text-base leading-none">💰</span>
               </Link>
               <Link
                 href={calHref}
-                className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] bg-[var(--color-bg-card)] border border-black/10  px-3 py-2 rounded-xl text-[var(--color-text-body)] text-[var(--color-text-body)] hover:border-[var(--color-accent)]  hover:text-[var(--color-accent)]  transition-colors shadow-xl"
+                className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] border border-black/10 p-3 rounded-2xl text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl"
                 aria-label="Calendario"
               >
                 <span aria-hidden className="text-base leading-none">📅</span>
