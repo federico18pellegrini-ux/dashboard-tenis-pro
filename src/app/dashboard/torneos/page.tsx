@@ -18,16 +18,14 @@ function formatDateEsAR(dateIsoOrDate: string | null | undefined) {
   return d.toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric' })
 }
 
-function computeTournamentStatus(t: any): 'Próximo' | 'En curso' | 'Finalizado' {
-  const raw = String(t?.status ?? '').toLowerCase()
-  if (raw === 'Próximo' || raw === 'En curso' || raw === 'Finalizado') return raw
-
-  const now = new Date()
-  const start = t?.start_date ? new Date(t.start_date) : null
-  const end = t?.end_date ? new Date(t.end_date) : null
-  if (end && end.getTime() < now.getTime()) return 'Finalizado'
-  if (start && start.getTime() <= now.getTime()) return 'En curso'
-  return 'Próximo'
+function computeTournamentStatus(t: any): string {
+  const raw = String(t?.status ?? 'upcoming')
+  const map: Record<string, string> = {
+    upcoming: 'Próximo',
+    in_progress: 'En curso',
+    finished: 'Finalizado',
+  }
+  return map[raw] ?? raw
 }
 
 export default async function TournamentsPage() {
