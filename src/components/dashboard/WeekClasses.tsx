@@ -148,7 +148,7 @@ export function WeekClasses({
   return (
     <>
     <section className="bg-[var(--color-bg-card-inner)]/80 bg-[var(--color-bg-card)]/40 rounded-[2.5rem] border border-black/10  shadow-2xl overflow-hidden">
-      <div className="p-6 border-b border-black/10  bg-gray-200/80 bg-[var(--color-bg-page)]/40 flex items-center justify-between">
+      <div className="p-6 border-b border-black/10  bg-[var(--color-bg-card)] flex items-center justify-between">
         <div>
           <h2 className="text-xs font-black text-[var(--color-text-heading)]  uppercase tracking-[0.15em] italic">
             Clases del mes <span className="text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)]">({count})</span>
@@ -235,7 +235,7 @@ export function WeekClasses({
                                   href={waHref}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="border border-gray-400 dark:border-[var(--color-border)] text-gray-700 text-[var(--color-text-body)] px-2.5 py-1 rounded-lg text-[11px] font-black uppercase tracking-widest hover:bg-gray-200 dark:hover:bg-[var(--color-bg-page)]/40 transition-colors"
+                                  className="bg-[var(--color-accent)] text-black px-2.5 py-1 rounded-lg text-[11px] font-black uppercase tracking-widest hover:bg-[var(--color-accent-secondary)] transition-colors"
                                   title="Enviar recordatorio por WhatsApp"
                                 >
                                   WA
@@ -291,7 +291,7 @@ export function WeekClasses({
                       type="button"
                       disabled={!!statusLoading && statusLoading.classId === c.id}
                       onClick={() => void setClassStatus(c.id, 'cancelled_by_coach')}
-                      className="flex-1 min-w-[120px] border border-red-700/50 dark:border-rose-700/50 text-red-600 dark:text-red-400 px-2.5 py-1 rounded-lg text-[11px] font-black uppercase tracking-widest hover:bg-red-100 dark:hover:bg-rose-950/30 transition-colors disabled:opacity-50"
+                      className="flex-1 min-w-[120px] bg-red-600 text-white px-2.5 py-1 rounded-lg text-[11px] font-black uppercase tracking-widest hover:bg-red-700 transition-colors disabled:opacity-50"
                     >
                       ✗ Cancelar
                     </button>
@@ -303,7 +303,7 @@ export function WeekClasses({
                           existingStudentIds: (c.students ?? []).map((s) => s.student_id),
                         })
                       }
-                      className="border border-gray-400 dark:border-[var(--color-border)] text-gray-700 text-[var(--color-text-body)] px-2.5 py-1 rounded-lg text-[11px] font-black uppercase tracking-widest hover:bg-gray-200 dark:hover:bg-[var(--color-bg-page)]/40 transition-colors"
+                      className="bg-[var(--color-accent)] text-black px-2.5 py-1 rounded-lg text-[11px] font-black uppercase tracking-widest hover:bg-[var(--color-accent-secondary)] transition-colors"
                       title="Agregar alumno"
                     >
                       + Alumno
@@ -337,7 +337,7 @@ export function WeekClasses({
                           existingStudentIds: (c.students ?? []).map((s) => s.student_id),
                         })
                       }
-                      className="border border-gray-400 dark:border-[var(--color-border)] text-gray-700 text-[var(--color-text-body)] px-2.5 py-1 rounded-lg text-[11px] font-black uppercase tracking-widest hover:bg-gray-200 dark:hover:bg-[var(--color-bg-page)]/40 transition-colors"
+                      className="bg-[var(--color-accent)] text-black px-2.5 py-1 rounded-lg text-[11px] font-black uppercase tracking-widest hover:bg-[var(--color-accent-secondary)] transition-colors"
                       title="Agregar alumno"
                     >
                       + Alumno

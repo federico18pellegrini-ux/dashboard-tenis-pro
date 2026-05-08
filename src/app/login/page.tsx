@@ -20,7 +20,7 @@ export default async function LoginPage({
             Padel Sartori
           </h1>
           <p className="text-[10px] font-bold text-[var(--color-text-muted)] mt-2 uppercase tracking-[0.2em]">
-            Gestión de Sedes • Control Total
+            Sistema de Gestión
           </p>
         </div>
 
@@ -28,7 +28,7 @@ export default async function LoginPage({
           <div className="space-y-4">
             <div>
               <label className="text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-widest ml-1 mb-2 block" htmlFor="email">
-                Email Institucional
+                Email
               </label>
               <input
                 id="email"
@@ -89,7 +89,7 @@ export default async function LoginPage({
       
       {/* Footer sutil */}
       <p className="mt-8 text-[9px] font-bold text-[var(--color-text-muted)] uppercase tracking-[0.3em]">
-        Desarrollado para Sedes Tigre & Benavídez
+        Desarrollado por Federico Pellegrini
       </p>
     </div>
   )
