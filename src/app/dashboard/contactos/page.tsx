@@ -108,19 +108,19 @@ export default async function ContactsPage({
             </p>
           </div>
 
-          <div className="w-full max-w-lg mx-auto">
-            <AddContactModal />
-          </div>
         </header>
 
         {/* NAVEGACIÓN */}
         <div className="flex flex-nowrap gap-2 overflow-x-auto no-scrollbar pb-2 border-b border-black/10 ">
-          <Link
-            href="/dashboard/contactos?status=student"
-            className="px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap bg-[var(--color-accent)] text-white  shadow-lg "
-          >
-            Alumnos
-          </Link>
+          <div className="flex items-center gap-3">
+            <Link
+              href="/dashboard/contactos?status=student"
+              className="px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap bg-[var(--color-accent)] text-white  shadow-lg "
+            >
+              Alumnos
+            </Link>
+            <AddContactModal />
+          </div>
         </div>
 
         {/* LISTA MOBILE-FIRST */}
@@ -167,7 +167,7 @@ export default async function ContactsPage({
                           className="inline-flex items-center gap-2 mt-2 text-xs uppercase tracking-widest hover:opacity-90 transition-opacity"
                         >
                           <span className="text-[var(--color-accent)] dark:text-[var(--color-accent)] font-medium">WA</span>
-                          <span className="text-gray-700 text-[var(--color-text-body)] font-bold normal-case tracking-normal">
+                          <span className="text-[var(--color-text-body)] font-bold normal-case tracking-normal">
                             {formatPhoneForDisplay(contact.phone)}
                           </span>
                         </a>
