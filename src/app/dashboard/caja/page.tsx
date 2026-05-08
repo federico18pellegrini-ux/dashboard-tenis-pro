@@ -47,7 +47,7 @@ export default async function CajaPage({
   const endOfMonth = new Date(year, month, 0)
   endOfMonth.setHours(23, 59, 59, 999)
 
-  const [clubsRes, expensesRes, classPaymentsRes] = await Promise.all([
+  const [clubsRes, expensesRes, classPaymentsRes, tournamentPaymentsRes] = await Promise.all([
     supabase.from('clubs').select('*'),
     supabase.from('expenses').select('*, clubs(name)').gte('expense_date', firstDayOfMonth).lte('expense_date', lastDayOfMonth).order('expense_date', { ascending: false }),
     supabase
@@ -68,15 +68,23 @@ export default async function CajaPage({
       .not('paid_at', 'is', null)
       .gte('paid_at', startOfMonth.toISOString())
       .lte('paid_at', endOfMonth.toISOString()),
+    supabase
+      .from('payments')
+      .select('id, student_id, amount_cents, payment_date, payment_method, notes, paid_at, student:students(full_name)')
+      .eq('type', 'tournament')
+      .gte('payment_date', firstDayOfMonth)
+      .lte('payment_date', lastDayOfMonth)
+      .order('payment_date', { ascending: false }),
   ])
 
   const clubs = clubsRes.data || []
   const expenses = expensesRes.data || []
   const classPayments = classPaymentsRes.data || []
+  const tournamentPayments = tournamentPaymentsRes.data || []
 
   const clubById = new Map<string, { id: string; name: string }>(clubs.map((c: any) => [c.id, { id: c.id, name: c.name }]))
 
-  const totalIncomesCents = classPayments.reduce((acc: number, p: any) => acc + (p.paid_amount || 0), 0)
+  const totalIncomesCents = classPayments.reduce((acc: number, p: any) => acc + (p.paid_amount || 0), 0) + tournamentPayments.reduce((acc: number, p: any) => acc + (p.amount_cents || 0), 0)
   const totalExpensesCents = expenses.reduce((acc: number, e: any) => acc + (e.amount_cents || 0), 0)
   const netCents = totalIncomesCents - totalExpensesCents
 
@@ -107,6 +115,16 @@ export default async function CajaPage({
       amount_cents: Number(p.paid_amount || 0),
     }
   })
+
+  const tournamentPaymentsRows = tournamentPayments.map((p: any) => ({
+    class_id: p.id as string,
+    student_id: p.student_id as string,
+    paid_at: (p.paid_at as string | null) ?? (p.payment_date as string | null) ?? null,
+    student_name: (p.student?.full_name as string | undefined) ?? 'Alumno',
+    method_label: paymentMethodLabel((p.payment_method as string | null) ?? null),
+    club_name: (p.notes as string | null)?.replace('TORNEO — ', '').split(' · ')[0] ?? 'Torneo',
+    amount_cents: Number(p.amount_cents || 0),
+  }))
 
   return (
     <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)] p-4 md:p-8 font-sans selection:bg-[#bdfd2c] selection:text-slate-950 overflow-x-hidden max-w-full">
@@ -206,6 +224,7 @@ export default async function CajaPage({
 
         {/* Bloque 3 — Ingresos por clases */}
         <CajaClassPaymentsSection title="Ingresos por clases" rows={classPaymentsRows} />
+        <CajaClassPaymentsSection title="Ingresos por torneos" rows={tournamentPaymentsRows} />
 
         {/* Bloque 4 — Detalle de gastos */}
         <CajaExpensesSection expenses={expenses} />

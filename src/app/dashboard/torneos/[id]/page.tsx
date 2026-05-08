@@ -126,7 +126,7 @@ export default async function TournamentDetailPage({ params }: { params: Params 
               {String(tournament.name ?? 'Torneo')}
             </h1>
             <p className="text-center text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-[0.2em] leading-none">
-              {formatDateEsAR(tournament.start_date)} → {formatDateEsAR(tournament.end_date)} • Estado: {String(tournament.status ?? 'upcoming')}
+              {formatDateEsAR(tournament.start_date)} → {formatDateEsAR(tournament.end_date)} • Estado: {String(tournament.status ?? 'Próximo')}
             </p>
 
             <div className="flex flex-wrap justify-center gap-2 pt-2">
@@ -195,12 +195,12 @@ export default async function TournamentDetailPage({ params }: { params: Params 
                   <form action={statusAction} className="space-y-3">
                     <select
                       name="status"
-                      defaultValue={String(tournament.status ?? 'upcoming')}
+                      defaultValue={String(tournament.status ?? 'Próximo')}
                       className="w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-xl p-3 text-xs text-[var(--color-text-heading)] font-bold outline-none focus:border-[var(--color-accent)] transition-all"
                     >
-                      <option value="upcoming">upcoming</option>
-                      <option value="in_progress">in_progress</option>
-                      <option value="finished">finished</option>
+                      <option value="Próximo">Próximo</option>
+                      <option value="En curso">En curso</option>
+                      <option value="Finalizado">Finalizado</option>
                     </select>
                     <button className="w-full bg-[var(--color-accent-secondary)] text-[var(--color-text-heading)] py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl">
                       Actualizar estado
@@ -304,7 +304,11 @@ export default async function TournamentDetailPage({ params }: { params: Params 
                                 <option value="transfer">transfer</option>
                                 <option value="mp">mp</option>
                               </select>
-                              <button className="bg-[var(--color-success)]/10 text-[var(--color-success)] border border-[var(--color-success)]/20 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-[var(--color-success)]/15 transition-colors">
+                              <button
+                                type="submit"
+                                formAction={payAction}
+                                className="bg-[var(--color-success)]/10 text-[var(--color-success)] border border-[var(--color-success)]/20 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-[var(--color-success)]/15 transition-colors disabled:opacity-50"
+                              >
                                 Registrar pago
                               </button>
                             </form>

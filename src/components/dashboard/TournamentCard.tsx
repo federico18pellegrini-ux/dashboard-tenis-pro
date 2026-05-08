@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 
-type TournamentStatus = 'upcoming' | 'in_progress' | 'finished'
+type TournamentStatus = 'Próximo' | 'En curso' | 'Finalizado'
 
 type TournamentCardModel = {
   id: string
@@ -30,16 +30,16 @@ function formatPesos(amountCents: number) {
 }
 
 function statusLabel(s: TournamentStatus) {
-  if (s === 'upcoming') return 'Próximo'
-  if (s === 'in_progress') return 'En curso'
+  if (s === 'Próximo') return 'Próximo'
+  if (s === 'En curso') return 'En curso'
   return 'Finalizado'
 }
 
 function statusClasses(s: TournamentStatus) {
-  if (s === 'upcoming') {
+  if (s === 'Próximo') {
     return 'bg-[var(--color-accent)]/10 text-[var(--color-accent)] border border-[var(--color-accent)]/20'
   }
-  if (s === 'in_progress') {
+  if (s === 'En curso') {
     return 'bg-[var(--color-success)]/10 text-[var(--color-success)] border border-[var(--color-success)]/20'
   }
   return 'bg-[var(--color-bg-card-inner)] text-[var(--color-text-muted)] border border-[var(--color-border)]'
