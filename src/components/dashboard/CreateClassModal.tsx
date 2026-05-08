@@ -188,7 +188,7 @@ export function CreateClassModal({
 
           <div>
             <label className="text-[10px] font-black text-[var(--color-text-body)] uppercase tracking-widest ml-1">Alumnos</label>
-            <div className="mt-1 max-h-[240px] overflow-y-auto custom-scrollbar bg-gray-200 bg-[var(--color-bg-page)] border border-black/10  rounded-xl p-3 space-y-2">
+            <div className="mt-1 max-h-[240px] overflow-y-auto custom-scrollbar bg-[var(--color-bg-page)] border border-black/10  rounded-xl p-3 space-y-2">
               {sortedStudents.map((s) => (
                 <label key={s.id} className="flex items-center gap-3 text-sm text-[var(--color-text-body)] text-[var(--color-text-body)] font-bold">
                   <input
