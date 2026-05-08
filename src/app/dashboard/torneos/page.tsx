@@ -49,10 +49,9 @@ export default async function TournamentsPage() {
           club:clubs(name)
         ),
         students:tournament_students(
-          id,
+          student_id,
           category_id,
-          payment_status,
-          paid_amount_cents
+          payment_status
         )
       `)
       .order('start_date', { ascending: false }),
@@ -80,8 +79,6 @@ export default async function TournamentsPage() {
     const totalCollectedCents = students.reduce((acc: number, s: any) => {
       const paid = String(s?.payment_status ?? '').toLowerCase() === 'paid'
       if (!paid) return acc
-      const explicit = Number(s?.paid_amount_cents ?? 0)
-      if (explicit > 0) return acc + explicit
       const fallback = priceByCategoryId.get(String(s?.category_id ?? '')) ?? 0
       return acc + fallback
     }, 0)
