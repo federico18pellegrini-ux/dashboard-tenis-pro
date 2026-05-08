@@ -5,6 +5,7 @@ import { revalidatePath } from 'next/cache'
 import { buildWhatsAppTournamentLink } from '@/lib/utils/whatsapp'
 import { AddStudentToCategoryPanel } from '@/components/dashboard/AddStudentToCategoryPanel'
 import { CloseDetailsButton } from '@/components/dashboard/CloseDetailsButton'
+import { EditTournamentPaymentPanel } from '@/components/dashboard/EditTournamentPaymentPanel'
 import { addCategory, registerTournamentPayment, updateTournamentStatus } from '../actions'
 
 function formatPesos(amountCents: number) {
@@ -350,32 +351,7 @@ export default async function TournamentDetailPage({ params }: { params: Params 
                               </button>
                             </form>
                           ) : (
-                            <details className="shrink-0">
-                              <summary className="cursor-pointer list-none px-3 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest bg-[var(--color-bg-card-inner)] text-[var(--color-success)] border border-[var(--color-border)] hover:border-[var(--color-accent)] transition-colors">
-                                ✓ Pagado
-                              </summary>
-                              <div className="mt-2 bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl p-4 shadow-xl min-w-[220px]">
-                                <form action={editPaymentAction} className="space-y-3">
-                                  <input type="hidden" name="student_id" value={studentId} />
-                                  <input type="hidden" name="category_id" value={String(e?.category_id ?? '')} />
-                                  <div>
-                                    <label className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest block mb-1">Método</label>
-                                    <select name="method" defaultValue={String(e?.payment_method ?? 'cash')} className="w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-xl p-2 text-xs font-bold text-[var(--color-text-body)] outline-none">
-                                      <option value="cash">Efectivo</option>
-                                      <option value="transfer">Transferencia</option>
-                                      <option value="mp">Mercado Pago</option>
-                                    </select>
-                                  </div>
-                                  <div>
-                                    <label className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest block mb-1">Monto ($)</label>
-                                    <input type="number" name="amount_cents" defaultValue={String((cat.price_cents || 0) / 100)} className="w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-xl p-2 text-xs font-bold text-[var(--color-text-body)] outline-none" />
-                                  </div>
-                                  <button type="submit" className="w-full bg-[var(--color-accent)] text-white py-2 rounded-xl text-[10px] font-black uppercase tracking-widest">
-                                    Guardar cambios
-                                  </button>
-                                </form>
-                              </div>
-                            </details>
+                            <EditTournamentPaymentPanel studentId={studentId} categoryId={String(e?.category_id ?? '')} defaultMethod={String(e?.payment_method ?? 'cash')} defaultAmountPesos={(cat.price_cents || 0) / 100} editPaymentAction={editPaymentAction} />
                           )}
                           <form action={removeStudentAction}>
                             <input type="hidden" name="student_id" value={studentId} />
