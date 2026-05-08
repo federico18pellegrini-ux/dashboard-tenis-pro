@@ -26,19 +26,19 @@ export default async function LoginPage({
   const message = resolvedParams?.message;
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center p-6 bg-slate-950 selection:bg-[#bdfd2c] selection:text-slate-950">
-      <div className="w-full max-w-sm space-y-8 bg-slate-900 p-10 rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-slate-800/50">
+    <div className="flex min-h-screen flex-col items-center justify-center p-6 bg-[var(--color-bg-page)]">
+      <div className="w-full max-w-sm space-y-8 bg-[var(--color-bg-card)] p-10 rounded-[2.5rem] shadow-2xl border border-[var(--color-border)]">
         
         {/* Header con Logo */}
         <div className="text-center flex flex-col items-center">
           <div className="mb-6 relative">
-            <div className="absolute inset-0 bg-[#bdfd2c] blur-[30px] opacity-20 animate-pulse"></div>
+            <div className="absolute inset-0 bg-[var(--color-accent)] blur-[30px] opacity-20 animate-pulse"></div>
             <Logo className="w-20 h-20 relative z-10 drop-shadow-[0_0_15px_rgba(189,253,44,0.4)]" />
           </div>
           <h1 className="text-3xl font-black tracking-tighter text-white uppercase italic">
             Padel Sartori
           </h1>
-          <p className="text-[10px] font-bold text-slate-500 mt-2 uppercase tracking-[0.2em]">
+          <p className="text-[10px] font-bold text-[var(--color-text-muted)] mt-2 uppercase tracking-[0.2em]">
             Gestión de Sedes • Control Total
           </p>
         </div>
@@ -46,7 +46,7 @@ export default async function LoginPage({
         <form className="space-y-6">
           <div className="space-y-4">
             <div>
-              <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1 mb-2 block" htmlFor="email">
+              <label className="text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-widest ml-1 mb-2 block" htmlFor="email">
                 Email Institucional
               </label>
               <input
@@ -54,13 +54,13 @@ export default async function LoginPage({
                 name="email"
                 type="email"
                 required
-                className="block w-full bg-slate-950 border border-slate-800 rounded-2xl px-5 py-4 text-sm font-bold text-white focus:border-[#bdfd2c] focus:ring-1 focus:ring-[#bdfd2c] outline-none transition-all placeholder:text-slate-800"
+                className="block w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-2xl px-5 py-4 text-sm font-bold text-white focus:border-[var(--color-accent)] focus:ring-1 focus:ring-[var(--color-accent)] outline-none transition-all placeholder:text-[var(--color-text-muted)]"
                 placeholder="tu@ejemplo.com"
               />
             </div>
             
             <div>
-              <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1 mb-2 block" htmlFor="password">
+              <label className="text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-widest ml-1 mb-2 block" htmlFor="password">
                 Contraseña
               </label>
               <input
@@ -68,7 +68,7 @@ export default async function LoginPage({
                 name="password"
                 type="password"
                 required
-                className="block w-full bg-slate-950 border border-slate-800 rounded-2xl px-5 py-4 text-sm font-bold text-white focus:border-[#bdfd2c] focus:ring-1 focus:ring-[#bdfd2c] outline-none transition-all"
+                className="block w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-2xl px-5 py-4 text-sm font-bold text-white focus:border-[var(--color-accent)] focus:ring-1 focus:ring-[var(--color-accent)] outline-none transition-all"
               />
             </div>
           </div>
@@ -81,7 +81,7 @@ export default async function LoginPage({
           )}
 
           {message && (
-            <div className="bg-[#bdfd2c]/10 border border-[#bdfd2c]/20 py-3 rounded-xl">
+            <div className="bg-[var(--color-accent)]/10 border border-[var(--color-accent)]/20 py-3 rounded-xl">
               <p className="text-[10px] text-[var(--color-text-heading)]  text-center font-black uppercase tracking-wider">{message}</p>
             </div>
           )}
@@ -89,7 +89,7 @@ export default async function LoginPage({
           <div className="space-y-4 pt-2">
             <button
               formAction={login}
-              className="w-full flex justify-center py-5 px-4 rounded-2xl shadow-[0_10px_30px_rgba(189,253,44,0.15)] text-sm font-black text-white dark:text-slate-950 bg-[var(--color-accent-secondary)] hover:bg-green-800  dark:hover:bg-[#aef026] hover:scale-[1.02] active:scale-95 transition-all uppercase tracking-widest"
+              className="w-full flex justify-center py-5 px-4 rounded-2xl shadow-[0_10px_30px_rgba(189,253,44,0.15)] text-sm font-black text-white  bg-[var(--color-accent-secondary)] hover:bg-[var(--color-accent-secondary)]   hover:scale-[1.02] active:scale-95 transition-all uppercase tracking-widest"
             >
               Entrar al Panel
             </button>
@@ -97,7 +97,7 @@ export default async function LoginPage({
             <div className="text-center">
               <button
                 formAction={resetPasswordAction}
-                className="text-[9px] font-black text-slate-600 hover:text-[#bdfd2c] transition-colors uppercase tracking-[0.2em] py-2"
+                className="text-[9px] font-black text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors uppercase tracking-[0.2em] py-2"
               >
                 ¿Olvidaste tu contraseña?
               </button>
@@ -107,7 +107,7 @@ export default async function LoginPage({
       </div>
       
       {/* Footer sutil */}
-      <p className="mt-8 text-[9px] font-bold text-slate-700 uppercase tracking-[0.3em]">
+      <p className="mt-8 text-[9px] font-bold text-[var(--color-text-muted)] uppercase tracking-[0.3em]">
         Desarrollado para Sedes Tigre & Benavídez
       </p>
     </div>
