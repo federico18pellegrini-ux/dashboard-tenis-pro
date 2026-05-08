@@ -6,6 +6,7 @@ import { AddStudentToClassModal } from '@/components/dashboard/AddStudentToClass
 import { buildWhatsAppPaymentLink } from '@/lib/utils/whatsapp'
 import { useRouter } from 'next/navigation'
 import { deleteClass, updateClassStatus } from '@/lib/actions/classes'
+import { removeStudentFromClass } from '@/app/dashboard/actions'
 
 type WeekClass = {
   id: string
@@ -241,6 +242,14 @@ export function WeekClasses({
                                   WA
                                 </a>
                               )}
+                              <button
+                                type="button"
+                                onClick={() => void removeStudentFromClass(c.id, s.student_id)}
+                                className="border border-red-500/30 text-red-500 px-2 py-1 rounded-lg text-[11px] font-black hover:bg-red-500/10 transition-colors"
+                                title="Eliminar alumno de la clase"
+                              >
+                                ✕
+                              </button>
                             </div>
                           </div>
                         )
@@ -257,25 +266,35 @@ export function WeekClasses({
                           <div className="min-w-0 text-[13px] font-bold text-[var(--color-text-body)] text-[var(--color-text-body)] truncate">
                             {s.full_name}
                           </div>
-                          <button
-                            type="button"
-                            onClick={() =>
-                              setPayModal({
-                                classId: c.id,
-                                studentId: s.student_id,
-                                studentName: s.full_name,
-                                defaultAmountCents: c.price_cents,
-                                existingPayment: {
-                                  paid_amount: s.paid_amount ?? c.price_cents,
-                                  payment_method: s.payment_method ?? 'cash',
-                                },
-                              })
-                            }
-                            className="shrink-0 text-[var(--color-accent)] dark:text-[var(--color-accent)] text-[12px] font-black hover:text-green-700 dark:hover:text-green-300 transition-colors"
-                            title="Editar / anular pago"
-                          >
-                            ✓ {amount}{methodShort ? ` · ${methodShort}` : ''}
-                          </button>
+                          <div className="shrink-0 flex items-center gap-2">
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setPayModal({
+                                  classId: c.id,
+                                  studentId: s.student_id,
+                                  studentName: s.full_name,
+                                  defaultAmountCents: c.price_cents,
+                                  existingPayment: {
+                                    paid_amount: s.paid_amount ?? c.price_cents,
+                                    payment_method: s.payment_method ?? 'cash',
+                                  },
+                                })
+                              }
+                              className="shrink-0 text-[var(--color-accent)] dark:text-[var(--color-accent)] text-[12px] font-black hover:text-green-700 dark:hover:text-green-300 transition-colors"
+                              title="Editar / anular pago"
+                            >
+                              ✓ {amount}{methodShort ? ` · ${methodShort}` : ''}
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => void removeStudentFromClass(c.id, s.student_id)}
+                              className="border border-red-500/30 text-red-500 px-2 py-1 rounded-lg text-[11px] font-black hover:bg-red-500/10 transition-colors"
+                              title="Eliminar alumno de la clase"
+                            >
+                              ✕
+                            </button>
+                          </div>
                         </div>
                       )
                     })}

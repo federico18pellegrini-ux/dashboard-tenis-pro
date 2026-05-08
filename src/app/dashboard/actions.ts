@@ -152,3 +152,19 @@ export async function deleteContact(contactId: string) {
   revalidatePath('/dashboard/contactos')
   return { success: true }
 }
+
+export async function removeStudentFromClass(classId: string, studentId: string) {
+  const supabase = await createSupabaseServerClient()
+  await supabase
+    .from('class_students')
+    .delete()
+    .eq('class_id', classId)
+    .eq('student_id', studentId)
+  await supabase
+    .from('payments')
+    .delete()
+    .eq('student_id', studentId)
+    .eq('class_id', classId)
+  revalidatePath('/dashboard')
+  return { success: true }
+}
