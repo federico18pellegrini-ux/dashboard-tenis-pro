@@ -170,7 +170,13 @@ export function CalendarMonthGrid({
           }}
         >
           <p className="text-xs font-black text-[var(--color-text-heading)]  uppercase tracking-tight">{openClass.dateLabel}</p>
-          <p className="mt-1 text-[11px] font-bold text-[var(--color-text-body)]">{openClass.timeRangeLabel}</p>
+          {openClass.clubAbbrev === '🏆' ? (
+            <span className="mt-1 inline-block rounded-md bg-amber-100 dark:bg-amber-950/50 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-amber-700 dark:text-amber-300">
+              {openClass.status}
+            </span>
+          ) : (
+            <p className="mt-1 text-[11px] font-bold text-[var(--color-text-body)]">{openClass.timeRangeLabel}</p>
+          )}
           {openClass.status === 'cancelled_by_coach' || openClass.status === 'cancelled_by_student' ? (
             <span className="mt-2 inline-block rounded-md bg-red-100 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-red-700 dark:bg-rose-950/80 dark:text-rose-200">
               CANCELADA
@@ -182,15 +188,19 @@ export function CalendarMonthGrid({
           ) : null}
           <p className="mt-2 text-xs font-bold text-[var(--color-text-muted)]">{openClass.clubFull}</p>
           <div className="mt-3 border-t border-[var(--color-border)] pt-3">
-            <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-2">Alumnos</p>
+            <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-2">
+              {openClass.clubAbbrev === '🏆' ? 'Inscriptos' : 'Alumnos'}
+            </p>
             {openClass.studentNames.length === 0 ? (
-              <p className="text-xs text-[var(--color-text-muted)]">Sin alumnos</p>
+              <p className="text-xs text-[var(--color-text-muted)]">
+                {openClass.clubAbbrev === '🏆' ? 'Sin inscriptos' : 'Sin alumnos'}
+              </p>
+            ) : openClass.clubAbbrev === '🏆' ? (
+              <p className="text-xs font-black text-[var(--color-text-body)]">{openClass.studentNames.length} inscriptos</p>
             ) : (
               <ul className="space-y-1 max-h-32 overflow-y-auto custom-scrollbar">
                 {openClass.studentNames.map((n, i) => (
-                  <li key={i} className="text-xs text-[var(--color-text-body)]">
-                    {n}
-                  </li>
+                  <li key={i} className="text-xs text-[var(--color-text-body)]">{n}</li>
                 ))}
               </ul>
             )}
