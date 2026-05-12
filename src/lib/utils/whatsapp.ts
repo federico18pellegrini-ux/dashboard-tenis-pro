@@ -17,10 +17,10 @@ export function buildWhatsAppPaymentLink({
     `del ${classDate} en ${clubName}.\n\n` +
     `*Monto:* $${amount}\n\n` +
     `*Transferencia:*\n` +
-    `CBU: 0000000000000000000000\n` +
-    `Alias: ALIAS.PLACEHOLDER\n\n` +
+    `CVU: 0000003100047870097639\n` +
+    `Alias: rmspadel.mp\n\n` +
     `*Mercado Pago:*\n` +
-    `https://mpago.la/PLACEHOLDER\n\n` +
+    `Nombre: Rodrigo Ezequiel Sartori\n\n` +
     `Cualquier consulta avisame!`
 
   const phone = studentPhone.replace(/\D/g, '')
@@ -48,10 +48,10 @@ export function buildWhatsAppTournamentLink({
     `*${tournamentName}* - categoría ${categoryName} en ${clubName}.\n\n` +
     `*Monto:* $${amount}\n\n` +
     `*Transferencia:*\n` +
-    `CBU: 0000000000000000000000\n` +
-    `Alias: ALIAS.PLACEHOLDER\n\n` +
+    `CVU: 0000003100047870097639\n` +
+    `Alias: rmspadel.mp\n\n` +
     `*Mercado Pago:*\n` +
-    `https://mpago.la/PLACEHOLDER\n\n` +
+    `Nombre: Rodrigo Ezequiel Sartori\n\n` +
     `Cualquier consulta avisame!`
   const phone = studentPhone.replace(/\D/g, '')
   return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`
