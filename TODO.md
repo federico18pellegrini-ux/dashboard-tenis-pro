@@ -20,7 +20,7 @@ confirmación con Rodrigo antes de ejecutar.
 
 ## Fase 3 — Cosméticos
 
-- [ ] **Labels mal en "Ingresos por torneos" en Caja**. La sección reutiliza
+- [x] **Labels mal en "Ingresos por torneos" en Caja**. La sección reutiliza
   `CajaClassPaymentsSection` y muestra "Clase —" + badge "CLASES" en
   movimientos de torneos. Renombrar labels.
 
@@ -28,7 +28,7 @@ confirmación con Rodrigo antes de ejecutar.
   registró el cobro) en vez de `scheduled_at` (cuándo fue la clase). Mostrar
   las dos, o swapear y poner la otra en tooltip.
 
-- [ ] **Renombrar `WeekClasses` → `MonthClasses`**. El componente, el archivo
+- [x] **Renombrar `WeekClasses` → `MonthClasses`**. El componente, el archivo
   y la variable `weekClassesRes` en `page.tsx` se llaman "week" pero filtran
   por mes completo. Confunde.
 
@@ -72,3 +72,48 @@ confirmación con Rodrigo antes de ejecutar.
   después de la migración. Permite sacar los `as any` en `updateClassStatus`
   (`status: input.status as any`) y `markStudentAttendance`
   (`attendance: input.attendance as any`).
+
+## Fase 5 — Modelo de pagos de torneo (NUEVO, descubierto 2026-05-12)
+
+Problemas estructurales descubiertos al fixear el botón 🗑 de Caja en torneos.
+Requiere migración + refactor de actions. **NO atacar sin reservar tiempo.**
+
+### Bugs identificados
+
+- [ ] **`registerTournamentPayment` no filtra por `category_id`.** Cuando un
+  alumno está inscripto en múltiples categorías del mismo torneo, marca todas
+  como pagadas pero solo crea 1 fila en `payments`. Caso real: Ceci Maldonado
+  pagó solo la 5ta y el sistema marcó como pagada también la 6ta.
+
+- [ ] **`payments` no tiene `category_id` ni `tournament_id`.** Imposibilita
+  saber qué categoría/torneo específico corresponde a cada pago. Solo se puede
+  filtrar por `student_id + type='tournament'`, ambiguo cuando hay múltiples
+  categorías.
+
+- [ ] **`deleteTournamentPayment` (Caja) no sincroniza `tournament_students`.**
+  El botón 🗑 borra de `payments` pero deja `tournament_students.payment_status`
+  como `paid` huérfano. Recíproco del bug original que tenía el botón viejo.
+
+- [ ] **Inconsistencia precio de categoría vs amount real.** La página del
+  torneo muestra "Cobrado" sumando `tournament_categories.price_cents` de
+  categorías con `payment_status='paid'`. Caja muestra el `amount_cents` real
+  de `payments`. Si alguien cargó un pago por monto distinto al precio (parcial,
+  ajuste, error), los totales no matchean. Caso real: 5ta Palermo precio $50.000
+  pero el `amount_cents` en payments es $20.000 → página dice $50k, Caja dice $20k.
+
+### Fix propuesto
+
+1. Migración SQL:
+   - Agregar `category_id` y `tournament_id` (nullable) a `payments`
+   - Backfill: matchear cada fila existente con su `tournament_students`
+     correspondiente
+2. Refactor `registerTournamentPayment`: agregar parámetro `categoryId`,
+   filtrar el UPDATE de tournament_students por ese id
+3. Pasar `categoryId` desde el `payAction` en la página del torneo
+4. Refactor `deleteTournamentPayment`: tomar el `payment_id`, leer su
+   `tournament_id` y `category_id`, y hacer UPDATE coherente en
+   `tournament_students` antes del DELETE
+5. Considerar también: ¿`deleteTournamentPayment` debería deshabilitarse desde
+   Caja y forzar que se anulen pagos solo desde la página del torneo?
+6. Decidir cuál fuente es la verdad para "cobrado de torneo": el precio de
+   categoría (suma de paid) o el amount real (suma de payments).
