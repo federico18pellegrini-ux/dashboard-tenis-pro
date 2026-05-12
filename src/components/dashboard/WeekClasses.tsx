@@ -5,15 +5,18 @@ import { RegisterPaymentModal } from '@/components/dashboard/RegisterPaymentModa
 import { AddStudentToClassModal } from '@/components/dashboard/AddStudentToClassModal'
 import { buildWhatsAppPaymentLink } from '@/lib/utils/whatsapp'
 import { useRouter } from 'next/navigation'
-import { deleteClass, updateClassStatus } from '@/lib/actions/classes'
+import { deleteClass, updateClassStatus, markStudentAttendance } from '@/lib/actions/classes'
 import { removeStudentFromClass } from '@/app/dashboard/actions'
+
+type Attendance = 'pending' | 'attended' | 'no_show'
+type ClassStatus = 'scheduled' | 'completed' | 'cancelled'
 
 type WeekClass = {
   id: string
   scheduled_at: string
   duration_minutes: number
   price_cents: number
-  status: string
+  status: ClassStatus
   club: { name: string }
   students: {
     full_name: string
@@ -22,6 +25,7 @@ type WeekClass = {
     paid: boolean
     paid_amount: number | null
     payment_method: string | null
+    attendance: Attendance
   }[]
 }
 
@@ -35,6 +39,14 @@ function formatPesos(amountCents: number) {
     currency: 'ARS',
     maximumFractionDigits: 0,
   }).format((amountCents || 0) / 100)
+}
+
+type ClassCategory = 'upcoming' | 'overdue' | 'closed'
+
+function categorizeClass(c: Pick<WeekClass, 'status' | 'scheduled_at' | 'duration_minutes'>): ClassCategory {
+  if (c.status === 'completed' || c.status === 'cancelled') return 'closed'
+  const end = addMinutes(new Date(c.scheduled_at), c.duration_minutes || 0)
+  return end.getTime() < Date.now() ? 'overdue' : 'upcoming'
 }
 
 function paymentMethodShort(method: string | null) {
@@ -63,7 +75,7 @@ export function WeekClasses({
   paidTotalCents?: number
 }) {
   const router = useRouter()
-  const count = classes?.length ?? 0
+  const monthClassCount = classes?.length ?? 0
   const [payModal, setPayModal] = useState<null | {
     classId: string
     studentId: string
@@ -80,8 +92,11 @@ export function WeekClasses({
     existingStudentIds: string[]
   }>(null)
 
-  const [statusLoading, setStatusLoading] = useState<null | { classId: string; status: string }>(null)
+  const [statusLoading, setStatusLoading] = useState<null | { classId: string; status: ClassStatus }>(null)
   const [deleteLoadingId, setDeleteLoadingId] = useState<string | null>(null)
+  const [showClosed, setShowClosed] = useState(false)
+  const [attendanceLoading, setAttendanceLoading] = useState<null | { classId: string; studentId: string }>(null)
+  const [removeLoading, setRemoveLoading] = useState<null | { classId: string; studentId: string }>(null)
 
   const formatted = useMemo(() => {
     return (classes ?? []).map((c) => {
@@ -103,21 +118,23 @@ export function WeekClasses({
 
       const totalCobradoLabel = formatPesos(totalCobrado)
       const classDate = start.toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long' })
-      return { ...c, datePart, startTime, endTime, studentsSummary, totalCobrado, totalCobradoLabel, classDate }
+      const category = categorizeClass(c)
+      return { ...c, datePart, startTime, endTime, studentsSummary, totalCobrado, totalCobradoLabel, classDate, category }
     })
   }, [classes])
 
-  async function setClassStatus(
-    classId: string,
-    status:
-      | 'scheduled'
-      | 'reminder_sent'
-      | 'confirmed'
-      | 'cancelled_by_student'
-      | 'cancelled_by_coach'
-      | 'completed'
-      | 'no_show',
-  ) {
+  const visible = useMemo(() => {
+    const order: Record<ClassCategory, number> = { overdue: 0, upcoming: 1, closed: 2 }
+    const filtered = formatted.filter((c) => showClosed || c.category !== 'closed')
+    return filtered.sort((a, b) => {
+      if (order[a.category] !== order[b.category]) return order[a.category] - order[b.category]
+      const ta = new Date(a.scheduled_at).getTime()
+      const tb = new Date(b.scheduled_at).getTime()
+      return a.category === 'closed' ? tb - ta : ta - tb
+    })
+  }, [formatted, showClosed])
+
+  async function setClassStatus(classId: string, status: ClassStatus) {
     setStatusLoading({ classId, status })
     try {
       const res = await updateClassStatus({ class_id: classId, status })
@@ -128,6 +145,37 @@ export function WeekClasses({
       router.refresh()
     } finally {
       setStatusLoading(null)
+    }
+  }
+
+  async function handleAttendance(classId: string, studentId: string, attendance: Attendance) {
+    setAttendanceLoading({ classId, studentId })
+    try {
+      const res = await markStudentAttendance({ class_id: classId, student_id: studentId, attendance })
+      if (!res.success) {
+        alert(res.error ?? 'Error al actualizar asistencia')
+        return
+      }
+      router.refresh()
+    } finally {
+      setAttendanceLoading(null)
+    }
+  }
+
+  function nextAttendance(current: Attendance): Attendance {
+    if (current === 'pending') return 'attended'
+    if (current === 'attended') return 'no_show'
+    return 'pending'
+  }
+
+  async function handleRemoveStudent(classId: string, studentId: string, studentName: string) {
+    if (!window.confirm(`¿Sacar a ${studentName} de esta clase?`)) return
+    setRemoveLoading({ classId, studentId })
+    try {
+      await removeStudentFromClass(classId, studentId)
+      router.refresh()
+    } finally {
+      setRemoveLoading(null)
     }
   }
 
@@ -149,30 +197,58 @@ export function WeekClasses({
   return (
     <>
     <section className="bg-[var(--color-bg-card-inner)]/80 bg-[var(--color-bg-card)]/40 rounded-[2.5rem] border border-black/10  shadow-2xl overflow-hidden">
-      <div className="p-6 border-b border-black/10  bg-[var(--color-bg-card)] flex items-center justify-between">
-        <div>
+      <div className="p-6 border-b border-black/10  bg-[var(--color-bg-card)] flex items-center justify-between gap-3">
+        <div className="min-w-0">
           <h2 className="text-xs font-black text-[var(--color-text-heading)]  uppercase tracking-[0.15em] italic">
-            Clases del mes <span className="text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)]">({count})</span>
+            Clases del mes <span className="text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)]">({visible.length})</span>
           </h2>
           <div className="mt-1 text-[10px] font-black uppercase tracking-widest text-[var(--color-accent)] dark:text-[var(--color-accent)]">
             Cobrado: ${((paidTotalCents ?? 0) / 100).toLocaleString('es-AR')}
           </div>
         </div>
+        <button
+          type="button"
+          onClick={() => setShowClosed((v) => !v)}
+          className="shrink-0 text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] hover:text-[var(--color-text-body)] transition-colors"
+        >
+          {showClosed ? '◉ Cerradas' : '◯ Cerradas'}
+        </button>
       </div>
 
-      {count === 0 ? (
+      {monthClassCount === 0 ? (
         <div className="p-6 text-xs text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)] font-bold uppercase tracking-widest">
           No hay clases programadas para este mes
         </div>
+      ) : visible.length === 0 ? (
+        <div className="p-6 text-xs text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)] font-bold uppercase tracking-widest">
+          No hay clases en esta vista. Activá «Cerradas» para ver completadas o canceladas.
+        </div>
       ) : (
         <div className="p-4 md:p-6 space-y-4">
-          {formatted.map((c) => (
-            <div key={c.id} className="bg-[var(--color-bg-card-inner)]/90 bg-[var(--color-bg-card)]/40 border border-black/10  rounded-3xl shadow-xl overflow-hidden">
+          {visible.map((c) => (
+            <div
+              key={c.id}
+              className={`bg-[var(--color-bg-card-inner)]/90 bg-[var(--color-bg-card)]/40 rounded-3xl shadow-xl overflow-hidden border border-black/10 ${
+                c.category === 'overdue' ? 'ring-2 ring-orange-500/40' : ''
+              } ${c.category === 'closed' ? 'opacity-70' : ''}`}
+            >
               {/* Header */}
               <div className="px-3.5 py-3 flex items-start justify-between gap-3 border-b border-black/10 ">
                 <div className="min-w-0">
-                  <div className="text-[13px] font-medium text-[var(--color-text-body)] text-[var(--color-text-heading)] capitalize truncate">
-                    {c.classDate}
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <div className="text-[13px] font-medium text-[var(--color-text-body)] text-[var(--color-text-heading)] capitalize truncate">
+                      {c.classDate}
+                    </div>
+                    {c.category === 'overdue' && (
+                      <span className="shrink-0 rounded-lg border border-orange-500/40 bg-orange-500/15 px-2 py-0.5 text-[9px] font-black uppercase tracking-widest text-orange-700 dark:text-orange-400">
+                        PENDIENTE DE CIERRE
+                      </span>
+                    )}
+                    {c.category === 'closed' && (
+                      <span className="shrink-0 rounded-lg border border-black/15 bg-black/5 px-2 py-0.5 text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">
+                        {c.status === 'completed' ? 'COMPLETADA' : 'CANCELADA'}
+                      </span>
+                    )}
                   </div>
                   <div className="text-[12px] text-[var(--color-text-muted)] dark:text-[var(--color-text-muted)] font-bold truncate">
                     {c.club?.name ?? 'Sede'}
@@ -242,10 +318,32 @@ export function WeekClasses({
                                   WA
                                 </a>
                               )}
+                              {c.category !== 'upcoming' && (
+                                <button
+                                  type="button"
+                                  disabled={
+                                    attendanceLoading?.classId === c.id && attendanceLoading?.studentId === s.student_id
+                                  }
+                                  onClick={() => void handleAttendance(c.id, s.student_id, nextAttendance(s.attendance))}
+                                  className={`shrink-0 px-2 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest transition-colors border disabled:opacity-50 ${
+                                    s.attendance === 'attended'
+                                      ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-700 dark:text-emerald-400'
+                                      : s.attendance === 'no_show'
+                                        ? 'bg-red-500/15 border-red-500/30 text-red-600 dark:text-red-400'
+                                        : 'bg-black/5 dark:bg-white/5 border-black/10 text-[var(--color-text-muted)]'
+                                  }`}
+                                  title="Click para cambiar asistencia"
+                                >
+                                  {s.attendance === 'attended' && '✓ Vino'}
+                                  {s.attendance === 'no_show' && '✗ Faltó'}
+                                  {s.attendance === 'pending' && '○ Pendiente'}
+                                </button>
+                              )}
                               <button
                                 type="button"
-                                onClick={() => void removeStudentFromClass(c.id, s.student_id)}
-                                className="border border-red-500/30 text-red-500 px-2 py-1 rounded-lg text-[11px] font-black hover:bg-red-500/10 transition-colors"
+                                disabled={removeLoading?.classId === c.id && removeLoading?.studentId === s.student_id}
+                                onClick={() => void handleRemoveStudent(c.id, s.student_id, s.full_name)}
+                                className="border border-red-500/30 text-red-500 px-2 py-1 rounded-lg text-[11px] font-black hover:bg-red-500/10 transition-colors disabled:opacity-50"
                                 title="Eliminar alumno de la clase"
                               >
                                 ✕
@@ -286,10 +384,32 @@ export function WeekClasses({
                             >
                               ✓ {amount}{methodShort ? ` · ${methodShort}` : ''}
                             </button>
+                            {c.category !== 'upcoming' && (
+                              <button
+                                type="button"
+                                disabled={
+                                  attendanceLoading?.classId === c.id && attendanceLoading?.studentId === s.student_id
+                                }
+                                onClick={() => void handleAttendance(c.id, s.student_id, nextAttendance(s.attendance))}
+                                className={`shrink-0 px-2 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest transition-colors border disabled:opacity-50 ${
+                                  s.attendance === 'attended'
+                                    ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-700 dark:text-emerald-400'
+                                    : s.attendance === 'no_show'
+                                      ? 'bg-red-500/15 border-red-500/30 text-red-600 dark:text-red-400'
+                                      : 'bg-black/5 dark:bg-white/5 border-black/10 text-[var(--color-text-muted)]'
+                                }`}
+                                title="Click para cambiar asistencia"
+                              >
+                                {s.attendance === 'attended' && '✓ Vino'}
+                                {s.attendance === 'no_show' && '✗ Faltó'}
+                                {s.attendance === 'pending' && '○ Pendiente'}
+                              </button>
+                            )}
                             <button
                               type="button"
-                              onClick={() => void removeStudentFromClass(c.id, s.student_id)}
-                              className="border border-red-500/30 text-red-500 px-2 py-1 rounded-lg text-[11px] font-black hover:bg-red-500/10 transition-colors"
+                              disabled={removeLoading?.classId === c.id && removeLoading?.studentId === s.student_id}
+                              onClick={() => void handleRemoveStudent(c.id, s.student_id, s.full_name)}
+                              className="border border-red-500/30 text-red-500 px-2 py-1 rounded-lg text-[11px] font-black hover:bg-red-500/10 transition-colors disabled:opacity-50"
                               title="Eliminar alumno de la clase"
                             >
                               ✕
@@ -304,12 +424,12 @@ export function WeekClasses({
 
               {/* Footer */}
               <div className="px-3.5 py-3 bg-gray-200/60 bg-[var(--color-bg-page)]/30 border-t border-black/10 ">
-                {c.status === 'scheduled' ? (
+                {c.category === 'upcoming' && (
                   <div className="flex items-center gap-2 flex-wrap">
                     <button
                       type="button"
                       disabled={!!statusLoading && statusLoading.classId === c.id}
-                      onClick={() => void setClassStatus(c.id, 'cancelled_by_coach')}
+                      onClick={() => void setClassStatus(c.id, 'cancelled')}
                       className="flex-1 min-w-[120px] bg-red-600 text-white px-2.5 py-1 rounded-lg text-[11px] font-black uppercase tracking-widest hover:bg-red-700 transition-colors disabled:opacity-50"
                     >
                       ✗ Cancelar
@@ -338,15 +458,16 @@ export function WeekClasses({
                       {deleteLoadingId === c.id ? '…' : '🗑'}
                     </button>
                   </div>
-                ) : (
+                )}
+                {c.category === 'overdue' && (
                   <div className="flex items-center gap-2 flex-wrap">
                     <button
                       type="button"
                       disabled={!!statusLoading && statusLoading.classId === c.id}
-                      onClick={() => void setClassStatus(c.id, 'scheduled')}
-                      className="flex-1 min-w-[120px] border border-gray-400 dark:border-[var(--color-border)] text-gray-700 text-[var(--color-text-body)] px-2.5 py-1 rounded-lg text-[11px] font-black uppercase tracking-widest hover:bg-gray-200 dark:hover:bg-[var(--color-bg-page)]/40 transition-colors disabled:opacity-50"
+                      onClick={() => void setClassStatus(c.id, 'completed')}
+                      className="flex-1 min-w-[120px] bg-emerald-700 text-white px-2.5 py-1 rounded-lg text-[11px] font-black uppercase tracking-widest hover:bg-emerald-800 transition-colors disabled:opacity-50"
                     >
-                      Reabrir
+                      ✓ Cerrar clase
                     </button>
                     <button
                       type="button"
@@ -360,6 +481,28 @@ export function WeekClasses({
                       title="Agregar alumno"
                     >
                       + Alumno
+                    </button>
+                    <button
+                      type="button"
+                      disabled={deleteLoadingId === c.id}
+                      onClick={() => void handleDeleteClass(c.id)}
+                      className="shrink-0 ml-auto border border-red-600/70 text-red-600 dark:text-red-400 px-2 py-1 rounded-lg text-xs hover:bg-red-50 dark:hover:bg-rose-950/30 transition-colors disabled:opacity-50"
+                      title="Eliminar clase"
+                      aria-label="Eliminar clase"
+                    >
+                      {deleteLoadingId === c.id ? '…' : '🗑'}
+                    </button>
+                  </div>
+                )}
+                {c.category === 'closed' && (
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <button
+                      type="button"
+                      disabled={!!statusLoading && statusLoading.classId === c.id}
+                      onClick={() => void setClassStatus(c.id, 'scheduled')}
+                      className="flex-1 min-w-[120px] border border-gray-400 dark:border-[var(--color-border)] text-gray-700 text-[var(--color-text-body)] px-2.5 py-1 rounded-lg text-[11px] font-black uppercase tracking-widest hover:bg-gray-200 dark:hover:bg-[var(--color-bg-page)]/40 transition-colors disabled:opacity-50"
+                    >
+                      Reabrir
                     </button>
                     <button
                       type="button"

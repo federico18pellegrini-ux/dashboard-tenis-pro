@@ -58,15 +58,7 @@ export async function createClass(formData: unknown) {
 
 const UpdateClassStatusSchema = z.object({
   class_id: z.string().uuid(),
-  status: z.enum([
-    'scheduled',
-    'reminder_sent',
-    'confirmed',
-    'cancelled_by_student',
-    'cancelled_by_coach',
-    'completed',
-    'no_show',
-  ]),
+  status: z.enum(['scheduled', 'completed', 'cancelled']),
 })
 
 export async function updateClassStatus(data: unknown) {
@@ -79,6 +71,32 @@ export async function updateClassStatus(data: unknown) {
       // Bypass del schema cache / tipos generados de Supabase que modelan status como enum.
       .update({ status: input.status } as any)
       .eq('id', input.class_id)
+
+    if (error) throw error
+
+    revalidatePath('/dashboard')
+    return { success: true as const }
+  } catch (err: any) {
+    return { success: false as const, error: err?.message ?? 'Error inesperado.' }
+  }
+}
+
+const MarkStudentAttendanceSchema = z.object({
+  class_id: z.string().uuid(),
+  student_id: z.string().uuid(),
+  attendance: z.enum(['pending', 'attended', 'no_show']),
+})
+
+export async function markStudentAttendance(data: unknown) {
+  try {
+    const input = MarkStudentAttendanceSchema.parse(data)
+    const supabase = await createSupabaseServerClient()
+
+    const { error } = await supabase
+      .from('class_students')
+      .update({ attendance: input.attendance } as any)
+      .eq('class_id', input.class_id)
+      .eq('student_id', input.student_id)
 
     if (error) throw error
 

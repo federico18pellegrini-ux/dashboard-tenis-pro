@@ -67,6 +67,7 @@ export default async function DashboardPage({
           paid,
           paid_amount,
           payment_method,
+          attendance,
           student_id,
           student:students(full_name, phone)
         )
@@ -98,6 +99,7 @@ export default async function DashboardPage({
       paid: cs.paid,
       paid_amount: cs.paid_amount,
       payment_method: cs.payment_method,
+      attendance: cs.attendance ?? 'pending',
     })),
   }))
 
