@@ -8,7 +8,7 @@ import { MonthSelector } from '@/components/dashboard/MonthSelector'
 import { whatsappLink } from '@/lib/whatsapp/links'
 import { HourlyGrid } from '@/components/dashboard/HourlyGrid'
 import { CreateClassLauncher } from '@/components/dashboard/CreateClassModal'
-import { WeekClasses } from '@/components/dashboard/WeekClasses'
+import { MonthClasses } from '@/components/dashboard/MonthClasses'
 
 export default async function DashboardPage({
   searchParams,
@@ -42,7 +42,7 @@ export default async function DashboardPage({
   const endOfMonth = new Date(selectedYear, selectedMonth, 0, 23, 59, 59, 999)
 
   // --- FETCH DE DATOS ---
-  const [studentsRes, schedulesRes, clubsRes, paymentsRes, availabilityRes, weekClassesRes] = await Promise.all([
+  const [studentsRes, schedulesRes, clubsRes, paymentsRes, availabilityRes, monthClassesRes] = await Promise.all([
     supabase.from('students').select('*, clubs(name)'),
     supabase.from('schedules').select(`
       *, 
@@ -82,7 +82,7 @@ export default async function DashboardPage({
   const payments = paymentsRes.data || []
   const availabilitySlots = availabilityRes.data || []
   const students = studentsRes.data || []
-  const weekClasses = weekClassesRes.data || []
+  const monthClasses = monthClassesRes.data || []
 
   const currentClubId = clubs.find(c => c.name === club)?.id ?? null
   const filteredSchedules = currentClubId ? schedules.filter(s => s.club_id === currentClubId) : schedules
@@ -90,7 +90,7 @@ export default async function DashboardPage({
   const debtorIds = new Set(filteredSchedules.filter(s => !payments.some(p => p.student_id === s.student_id)).map(s => s.student_id))
   const debtors = studentsRes.data?.filter(st => debtorIds.has(st.id)) || []
 
-  const normalizedWeekClasses = (weekClasses ?? []).map((c: any) => ({
+  const normalizedMonthClasses = (monthClasses ?? []).map((c: any) => ({
     ...c,
     students: (c.students ?? []).map((cs: any) => ({
       full_name: cs.student?.full_name ?? '',
@@ -103,7 +103,7 @@ export default async function DashboardPage({
     })),
   }))
 
-  const classesPaidTotalCents = normalizedWeekClasses.reduce((acc: number, c: any) => {
+  const classesPaidTotalCents = normalizedMonthClasses.reduce((acc: number, c: any) => {
     const students = Array.isArray(c.students) ? c.students : []
     return (
       acc +
@@ -182,8 +182,8 @@ export default async function DashboardPage({
           </div>
         </header>
 
-        <WeekClasses
-          classes={normalizedWeekClasses}
+        <MonthClasses
+          classes={normalizedMonthClasses}
           allStudents={students.map((s: any) => ({ id: s.id, full_name: s.full_name }))}
           paidTotalCents={classesPaidTotalCents}
         />

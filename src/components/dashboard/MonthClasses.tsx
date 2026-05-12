@@ -11,7 +11,7 @@ import { removeStudentFromClass } from '@/app/dashboard/actions'
 type Attendance = 'pending' | 'attended' | 'no_show'
 type ClassStatus = 'scheduled' | 'completed' | 'cancelled'
 
-type WeekClass = {
+type MonthClass = {
   id: string
   scheduled_at: string
   duration_minutes: number
@@ -43,7 +43,7 @@ function formatPesos(amountCents: number) {
 
 type ClassCategory = 'upcoming' | 'overdue' | 'closed'
 
-function categorizeClass(c: Pick<WeekClass, 'status' | 'scheduled_at' | 'duration_minutes'>): ClassCategory {
+function categorizeClass(c: Pick<MonthClass, 'status' | 'scheduled_at' | 'duration_minutes'>): ClassCategory {
   if (c.status === 'completed' || c.status === 'cancelled') return 'closed'
   const end = addMinutes(new Date(c.scheduled_at), c.duration_minutes || 0)
   return end.getTime() < Date.now() ? 'overdue' : 'upcoming'
@@ -65,12 +65,12 @@ function paymentMethodLabel(method: string | null) {
   return method
 }
 
-export function WeekClasses({
+export function MonthClasses({
   classes,
   allStudents,
   paidTotalCents,
 }: {
-  classes: WeekClass[]
+  classes: MonthClass[]
   allStudents: { id: string; full_name: string }[]
   paidTotalCents?: number
 }) {
