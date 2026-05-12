@@ -117,3 +117,54 @@ Requiere migración + refactor de actions. **NO atacar sin reservar tiempo.**
    Caja y forzar que se anulen pagos solo desde la página del torneo?
 6. Decidir cuál fuente es la verdad para "cobrado de torneo": el precio de
    categoría (suma de paid) o el amount real (suma de payments).
+
+## Contactos — flujo "Agregar a clase"
+
+- [ ] **Crear clase desde "Agregar a clase" en Contactos.** Hoy, si no hay
+  clases disponibles este mes para asignar al alumno, el flujo te obliga a
+  ir al dashboard, crear la clase, volver a Contactos, y reintentar. Sería
+  más natural permitir crear una clase nueva desde el mismo modal. Decisión
+  de UX: ¿modal anidado, redirección al dashboard con contexto del alumno
+  preseleccionado, o un mini-form inline?
+
+## Fase 6 — Recurrencia de clases (NUEVO, especificado 2026-05-12)
+
+Hoy el modal "Alta de Alumno" pide día/hora/club como "agenda semanal"
+pero esa info se guarda en `schedules` (modelo viejo) y no genera clases
+automáticamente. Resultado: trampa de UX, el usuario asigna agenda y nunca
+ve nada. La sección está oculta del modal hasta implementar esto.
+
+### Spec (decidido con Rodrigo / Fede el 2026-05-12)
+
+Al crear alumno con agenda "Lunes 10:00 Cuarto Club":
+
+- Crear 4 filas en `classes`, una por cada lunes próximo (4 semanas adelante)
+- Para cada clase: agregar fila en `class_students` con ese alumno
+- `price_cents` = `students.price_per_class_cents`
+
+Si una clase pasa y el alumno faltó:
+
+- La clase NO se borra
+- `class_students.attendance = 'no_show'` (se marca desde el dashboard)
+- `class_students.paid = false`
+
+Si cambia el día/hora del alumno:
+
+- Las clases ya creadas quedan tal cual
+- El usuario las edita/elimina manualmente desde el dashboard
+
+Clase puntual (fuera de recurrencia):
+
+- Flujo existente: botón "+ Nueva clase" del dashboard
+
+### Cosas a definir antes de implementar
+
+- [ ] ¿Cómo se renuevan las clases una vez que pasan? ¿Job que crea las
+  próximas 4 cada semana? ¿Manual cuando se acaban?
+- [ ] ¿Qué pasa si una clase grupal ya existe en ese día/hora/club?
+  ¿Se agrega el alumno a la existente o se crea una nueva?
+- [ ] Migración de los 9 registros existentes en `schedules` que quedaron
+  huérfanos del modelo viejo (decidir caso por caso)
+- [ ] Cuando se elimina o desactiva un alumno: ¿qué pasa con sus clases
+  futuras pendientes?
+- [ ] Restaurar la sección "Agenda Semanal" en AddStudentModal
