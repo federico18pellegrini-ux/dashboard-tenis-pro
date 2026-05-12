@@ -2,9 +2,10 @@
 
 import { useMemo, useState } from 'react'
 import { CancelClassPaymentButton } from '@/components/dashboard/CancelClassPaymentButton'
+import { DeleteTournamentPaymentButton } from '@/components/dashboard/DeleteTournamentPaymentButton'
 
 type Row = {
-  class_id: string
+  id: string // clase: id de clase; torneo: id de fila en payments
   student_id: string
   paid_at: string | null
   student_name: string
@@ -43,9 +44,11 @@ function downloadCsv(filename: string, rows: Array<{ fecha: string; alumno: stri
 export function CajaClassPaymentsSection({
   title,
   rows,
+  kind,
 }: {
   title: string
   rows: Row[]
+  kind: 'class' | 'tournament'
 }) {
   const [expanded, setExpanded] = useState(false)
   const visible = expanded ? rows : rows.slice(0, 5)
@@ -69,7 +72,7 @@ export function CajaClassPaymentsSection({
         </div>
         <button
           type="button"
-          onClick={() => downloadCsv('ingresos-clases.csv', exportRows)}
+          onClick={() => downloadCsv(kind === 'class' ? 'ingresos-clases.csv' : 'ingresos-torneos.csv', exportRows)}
           className="shrink-0 bg-transparent border border-[var(--color-border)] text-[var(--color-text-body)] px-3 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest hover:border-[var(--color-accent)] hover:bg-[var(--color-bg-page)]/40 transition-colors"
         >
           Exportar Excel
@@ -78,31 +81,37 @@ export function CajaClassPaymentsSection({
 
       {rows.length === 0 ? (
         <div className="p-10 text-center opacity-20">
-          <p className="text-xs font-black uppercase tracking-[0.3em]">Sin cobros de clases este mes</p>
+          <p className="text-xs font-black uppercase tracking-[0.3em]">
+            {kind === 'class' ? 'Sin cobros de clases este mes' : 'Sin cobros de torneos este mes'}
+          </p>
         </div>
       ) : (
         <>
           <div className="divide-y divide-[var(--color-border)]">
             {visible.map((p, idx) => (
-              <div key={`${p.class_id}-${p.student_id}-${idx}`} className="p-5 md:p-6 hover:bg-[var(--color-bg-card-inner)] transition-colors">
+              <div key={`${p.id}-${p.student_id}-${idx}`} className="p-5 md:p-6 hover:bg-[var(--color-bg-card-inner)] transition-colors">
                 <div className="flex items-start justify-between gap-4">
                   <div className="min-w-0">
                     <div className="text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-widest">
                       {formatDateShort(p.paid_at)}
                     </div>
                     <div className="mt-2 text-sm font-black text-[var(--color-text-heading)] uppercase tracking-tight truncate">
-                      Clase — {p.student_name || 'Alumno'} · {p.method_label || '—'}
+                      {kind === 'class' ? 'Clase' : 'Torneo'} — {p.student_name || 'Alumno'} · {p.method_label || '—'}
                     </div>
                   </div>
                   <div className="shrink-0">
-                    <CancelClassPaymentButton classId={p.class_id} studentId={p.student_id} />
+                    {kind === 'class' ? (
+                      <CancelClassPaymentButton classId={p.id} studentId={p.student_id} />
+                    ) : (
+                      <DeleteTournamentPaymentButton paymentId={p.id} />
+                    )}
                   </div>
                 </div>
 
                 <div className="mt-3 flex items-center justify-between gap-4">
                   <div className="flex items-center gap-2 min-w-0">
                     <span className="text-[9px] font-black bg-[var(--color-bg-page)] text-emerald-400 px-2.5 py-1 rounded-lg border border-emerald-500/20 uppercase tracking-tighter shrink-0">
-                      CLASES
+                      {kind === 'class' ? 'CLASES' : 'TORNEO'}
                     </span>
                     <span className="text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-widest truncate">
                       {p.club_name || 'Global'}
@@ -132,4 +141,3 @@ export function CajaClassPaymentsSection({
     </section>
   )
 }
-

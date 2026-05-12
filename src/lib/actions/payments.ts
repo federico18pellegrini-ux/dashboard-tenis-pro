@@ -62,3 +62,27 @@ export async function cancelClassPayment(data: unknown) {
   }
 }
 
+const DeleteTournamentPaymentSchema = z.object({
+  payment_id: z.string().uuid(),
+})
+
+export async function deleteTournamentPayment(data: unknown) {
+  try {
+    const input = DeleteTournamentPaymentSchema.parse(data)
+    const supabase = await createSupabaseServerClient()
+
+    const { error } = await supabase
+      .from('payments')
+      .delete()
+      .eq('id', input.payment_id)
+      .eq('type', 'tournament')
+
+    if (error) throw error
+
+    revalidatePath('/dashboard')
+    revalidatePath('/dashboard/caja')
+    return { success: true as const }
+  } catch (err: any) {
+    return { success: false as const, error: err?.message ?? 'Error inesperado.' }
+  }
+}

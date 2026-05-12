@@ -112,7 +112,7 @@ export default async function CajaPage({
   const classPaymentsRows = classPayments.map((p: any) => {
     const clubName = p.class?.club_id ? (clubById.get(p.class.club_id)?.name ?? 'Global') : 'Global'
     return {
-      class_id: p.class_id as string,
+      id: p.class_id as string,
       student_id: p.student_id as string,
       paid_at: (p.paid_at as string | null) ?? null,
       student_name: (p.student?.full_name as string | undefined) ?? 'Alumno',
@@ -123,7 +123,7 @@ export default async function CajaPage({
   })
 
   const tournamentPaymentsRows = tournamentPayments.map((p: any) => ({
-    class_id: p.id as string,
+    id: p.id as string,
     student_id: p.student_id as string,
     paid_at: (p.paid_at as string | null) ?? (p.payment_date as string | null) ?? null,
     student_name: (p.student?.full_name as string | undefined) ?? 'Alumno',
@@ -251,8 +251,8 @@ export default async function CajaPage({
         </section>
 
         {/* Bloque 3 — Ingresos por clases */}
-        <CajaClassPaymentsSection title="Ingresos por clases" rows={classPaymentsRows} />
-        <CajaClassPaymentsSection title="Ingresos por torneos" rows={tournamentPaymentsRows} />
+        <CajaClassPaymentsSection title="Ingresos por clases" rows={classPaymentsRows} kind="class" />
+        <CajaClassPaymentsSection title="Ingresos por torneos" rows={tournamentPaymentsRows} kind="tournament" />
 
         {/* Bloque 4 — Detalle de gastos */}
         <CajaExpensesSection expenses={expenses} />
