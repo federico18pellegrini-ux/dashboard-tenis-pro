@@ -102,9 +102,7 @@ export function CajaClassPaymentsSection({
                   <div className="shrink-0">
                     {kind === 'class' ? (
                       <CancelClassPaymentButton classId={p.id} studentId={p.student_id} />
-                    ) : (
-                      <DeleteTournamentPaymentButton paymentId={p.id} />
-                    )}
+                    ) : null}
                   </div>
                 </div>
 
