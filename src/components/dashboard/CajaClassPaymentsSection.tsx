@@ -72,7 +72,7 @@ export function CajaClassPaymentsSection({
         </div>
         <button
           type="button"
-          onClick={() => downloadCsv(kind === 'class' ? 'ingresos-clases.csv' : 'ingresos-torneos.csv', exportRows)}
+          onClick={() => downloadCsv(kind === 'class' ? 'ingresos-clases.csv' : 'ingresos-torneos-y-cancha-abierta.csv', exportRows)}
           className="shrink-0 bg-transparent border border-[var(--color-border)] text-[var(--color-text-body)] px-3 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest hover:border-[var(--color-accent)] hover:bg-[var(--color-bg-page)]/40 transition-colors"
         >
           Exportar Excel
@@ -82,7 +82,7 @@ export function CajaClassPaymentsSection({
       {rows.length === 0 ? (
         <div className="p-10 text-center opacity-20">
           <p className="text-xs font-black uppercase tracking-[0.3em]">
-            {kind === 'class' ? 'Sin cobros de clases este mes' : 'Sin cobros de torneos este mes'}
+            {kind === 'class' ? 'Sin cobros de clases este mes' : 'Sin cobros de torneos y cancha abierta este mes'}
           </p>
         </div>
       ) : (

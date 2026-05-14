@@ -44,7 +44,7 @@ export function buildWhatsAppTournamentLink({
 }): string {
   const amount = (amountCents / 100).toLocaleString('es-AR')
   const message =
-    `Hola ${studentName}! Te paso los datos para el pago del torneo ` +
+    `Hola ${studentName}! Te paso los datos para el pago del evento ` +
     `*${tournamentName}* - categoría ${categoryName} en ${clubName}.\n\n` +
     `*Monto:* $${amount}\n\n` +
     `*Transferencia:*\n` +

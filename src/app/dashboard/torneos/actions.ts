@@ -110,16 +110,40 @@ export async function registerTournamentPayment(
   }
 }
 
-export async function deleteTournament(id: string) {
+export async function deleteTournament(id: string, confirmText: string) {
   try {
+    if (confirmText !== 'ELIMINAR') {
+      return { success: false, error: 'Escribí ELIMINAR para confirmar.' }
+    }
+
     const supabase = await createSupabaseServerClient()
-    const { error } = await supabase.from('tournaments').delete().eq('id', id)
-    if (error) throw error
+
+    const { data: tournament, error: fetchError } = await supabase
+      .from('tournaments')
+      .select('name')
+      .eq('id', id)
+      .single()
+    if (fetchError) throw fetchError
+    if (!tournament) throw new Error('Torneo no encontrado')
+
+    const tournamentName = String(tournament.name)
+
+    const { error: paymentsError } = await supabase
+      .from('payments')
+      .delete()
+      .eq('type', 'tournament')
+      .like('notes', `TORNEO — ${tournamentName} · %`)
+    if (paymentsError) throw paymentsError
+
+    const { error: deleteError } = await supabase.from('tournaments').delete().eq('id', id)
+    if (deleteError) throw deleteError
 
     revalidatePath('/dashboard/torneos')
+    revalidatePath('/dashboard/caja')
+    revalidatePath('/dashboard')
     return { success: true }
   } catch (err: any) {
-    return { success: false, error: err?.message ?? 'Error' }
+    return { success: false, error: err?.message ?? 'Error al eliminar torneo' }
   }
 }
 

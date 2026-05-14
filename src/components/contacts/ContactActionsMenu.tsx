@@ -118,7 +118,7 @@ export function ContactActionsMenu({ contact, clubs = [] }: { contact: any, club
               }}
             >
               <span>🏆</span>
-              + Agregar a torneo
+              + Agregar a torneo o cancha abierta
             </button>
           )}
 

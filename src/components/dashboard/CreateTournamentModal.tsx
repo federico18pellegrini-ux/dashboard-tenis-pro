@@ -45,13 +45,13 @@ export function CreateTournamentModal({ clubs: _clubs }: { clubs: Club[] }) {
 
       if (insertError) throw insertError
       const id = data?.id
-      if (!id) throw new Error('No se pudo crear el torneo.')
+      if (!id) throw new Error('No se pudo crear el evento.')
 
       setOpen(false)
       router.push(`/dashboard/torneos/${id}`)
       router.refresh()
     } catch (err: any) {
-      setError(err?.message ?? 'Error al crear el torneo.')
+      setError(err?.message ?? 'Error al crear el evento.')
     } finally {
       setIsSubmitting(false)
     }
@@ -63,7 +63,7 @@ export function CreateTournamentModal({ clubs: _clubs }: { clubs: Club[] }) {
       <div className="relative bg-[var(--color-bg-card)] border border-[var(--color-border)] p-8 rounded-[2.5rem] w-full max-w-lg shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
         <div className="flex items-center justify-between mb-6 border-b border-[var(--color-border)] pb-4">
           <h2 className="text-xl font-black text-[var(--color-text-heading)] uppercase italic tracking-tighter">
-            Nuevo torneo
+            Nuevo evento
           </h2>
           <button
             type="button"
@@ -88,7 +88,7 @@ export function CreateTournamentModal({ clubs: _clubs }: { clubs: Club[] }) {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
-                  placeholder="Ej: Torneo Otoño 2026"
+                  placeholder="Ej: Torneo Otoño 2026 o Cancha abierta sábado"
                   className="w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-xl p-3 text-xs text-[var(--color-text-heading)] font-bold outline-none focus:border-[var(--color-accent)] transition-all"
                 />
               </div>
@@ -155,7 +155,7 @@ export function CreateTournamentModal({ clubs: _clubs }: { clubs: Club[] }) {
                 disabled={isSubmitting}
                 className="flex-1 bg-[var(--color-accent-secondary)] text-[var(--color-text-heading)] py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl disabled:opacity-50 transition-all"
               >
-                {isSubmitting ? 'CREANDO...' : 'Crear torneo'}
+                {isSubmitting ? 'CREANDO...' : 'Crear evento'}
               </button>
             </div>
           </form>
@@ -176,7 +176,7 @@ export function CreateTournamentModal({ clubs: _clubs }: { clubs: Club[] }) {
           <path d="M5 12h14" />
           <path d="M12 5v14" />
         </svg>
-        Nuevo torneo
+        Nuevo evento
       </button>
     )
   }

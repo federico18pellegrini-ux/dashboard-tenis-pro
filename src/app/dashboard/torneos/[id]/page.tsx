@@ -64,11 +64,11 @@ export default async function TournamentDetailPage({ params }: { params: Params 
     return (
       <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)] p-4 md:p-8 font-sans">
         <div className="max-w-4xl mx-auto space-y-6">
-          <Link href="/dashboard/torneos" className="inline-flex items-center gap-2 bg-[var(--color-bg-card-inner)] border border-[var(--color-border)] px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shrink-0">
+          <Link href="/dashboard/torneos" aria-label="Volver a torneos y cancha abierta" className="inline-flex items-center gap-2 bg-[var(--color-bg-card-inner)] border border-[var(--color-border)] px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shrink-0">
             &lt; Volver
           </Link>
           <div className="p-10 text-center text-xs text-[var(--color-text-muted)] font-bold uppercase tracking-widest border border-[var(--color-border)] rounded-3xl bg-[var(--color-bg-card-inner)]/50">
-            No se encontró el torneo
+            No se encontró el evento
           </div>
         </div>
       </div>
@@ -164,7 +164,7 @@ export default async function TournamentDetailPage({ params }: { params: Params 
             <Link
               href="/dashboard/torneos"
               className="group bg-[var(--color-bg-card-inner)] border border-[var(--color-border)] p-3 rounded-2xl hover:border-[var(--color-accent)] transition-all shadow-xl"
-              aria-label="Volver a torneos"
+              aria-label="Volver a torneos y cancha abierta"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-[var(--color-text-muted)] group-hover:text-[var(--color-accent)] transition-colors">
                 <path d="m15 18-6-6 6-6" />
@@ -174,7 +174,7 @@ export default async function TournamentDetailPage({ params }: { params: Params 
 
           <div className="flex flex-col items-stretch gap-3">
             <h1 className="text-center text-2xl md:text-4xl font-black tracking-tighter text-[var(--color-text-heading)] uppercase italic leading-none">
-              {String(tournament.name ?? 'Torneo')}
+              {String(tournament.name ?? 'Evento')}
             </h1>
             <p className="text-center text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-[0.2em] leading-none">
               {formatDateEsAR(tournament.start_date)} → {formatDateEsAR(tournament.end_date)} • Estado: {({'upcoming': 'PRÓXIMO', 'in_progress': 'EN CURSO', 'finished': 'FINALIZADO'} as Record<string, string>)[String(tournament.status)] ?? String(tournament.status).toUpperCase()}

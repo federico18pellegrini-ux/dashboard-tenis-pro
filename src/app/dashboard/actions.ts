@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
 import { normalizePhone } from '@/lib/utils/phone'
+import { revalidateContactsSurfaces } from '@/lib/actions/contacts'
 
 /**
  * 1. ALTA DE ALUMNO MULTI-DÍA (Optimizado)
@@ -65,8 +66,7 @@ export async function addManualStudent(input: {
     if (contactRes.error) throw contactRes.error
     if (scheduleRes.error) throw scheduleRes.error
 
-    revalidatePath('/dashboard')
-    revalidatePath('/dashboard/contactos')
+    await revalidateContactsSurfaces()
     return { success: true }
   } catch (err: any) {
     return { success: false, error: err.message }
@@ -140,16 +140,7 @@ export async function deleteStudent(studentId: string) {
   const supabase = await createSupabaseServerClient()
   const { error } = await supabase.from('students').delete().eq('id', studentId)
   if (error) return { success: false, error: error.message }
-  revalidatePath('/dashboard')
-  revalidatePath('/dashboard/contactos')
-  return { success: true }
-}
-
-export async function deleteContact(contactId: string) {
-  const supabase = await createSupabaseServerClient()
-  const { error } = await supabase.from('contacts').delete().eq('id', contactId)
-  if (error) return { success: false, error: error.message }
-  revalidatePath('/dashboard/contactos')
+  await revalidateContactsSurfaces()
   return { success: true }
 }
 
@@ -167,4 +158,9 @@ export async function removeStudentFromClass(classId: string, studentId: string)
     .eq('class_id', classId)
   revalidatePath('/dashboard')
   return { success: true }
+}
+
+export async function deleteContact(contactId: string) {
+  const { deleteContact: impl } = await import('@/lib/actions/contacts')
+  return impl(contactId)
 }

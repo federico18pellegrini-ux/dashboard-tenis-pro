@@ -80,9 +80,9 @@ export function AddExpenseModal({ clubs }: { clubs: any[] }) {
                 <option value="servicios">Servicios</option>
                 <option value="mantenimiento">Mantenimiento</option>
                 <option value="otros">Otros</option>
-                <option value="torneo_inscripcion">Torneo - Inscripción</option>
-                <option value="torneo_premios">Torneo - Premios</option>
-                <option value="torneo_logistica">Torneo - Logística</option>
+                <option value="torneo_inscripcion">Torneo o cancha abierta — Inscripción</option>
+                <option value="torneo_premios">Torneo o cancha abierta — Premios</option>
+                <option value="torneo_logistica">Torneo o cancha abierta — Logística</option>
               </select>
             </div>
           </div>

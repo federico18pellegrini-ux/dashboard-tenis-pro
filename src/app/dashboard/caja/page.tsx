@@ -128,7 +128,7 @@ export default async function CajaPage({
     paid_at: (p.paid_at as string | null) ?? (p.payment_date as string | null) ?? null,
     student_name: (p.student?.full_name as string | undefined) ?? 'Alumno',
     method_label: paymentMethodLabel((p.payment_method as string | null) ?? null),
-    club_name: (p.notes as string | null)?.replace('TORNEO — ', '').split(' · ')[0] ?? 'Torneo',
+    club_name: (p.notes as string | null)?.replace('TORNEO — ', '').split(' · ')[0] ?? 'Evento',
     amount_cents: Number(p.amount_cents || 0),
   }))
 
@@ -146,7 +146,7 @@ export default async function CajaPage({
               ← Volver
             </Link>
             <Link
-              href="/dashboard/contactos"
+              href="/dashboard/contactos?status=student"
               className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] border border-black/10 p-3 rounded-2xl text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl"
               aria-label="Contactos"
             >
@@ -162,7 +162,7 @@ export default async function CajaPage({
             <Link
               href="/dashboard/torneos"
               className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] border border-black/10 p-3 rounded-2xl text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl"
-              aria-label="Torneos"
+              aria-label="Torneos y cancha abierta"
             >
               <span aria-hidden className="text-base leading-none">🏆</span>
             </Link>
@@ -229,7 +229,7 @@ export default async function CajaPage({
               </div>
             ))}
             <div className="bg-[var(--color-bg-card-inner)] bg-[var(--color-bg-page)] rounded-3xl border border-black/10 p-5 md:p-6 shadow-xl">
-              <h3 className="text-xs font-black text-[var(--color-text-body)] uppercase tracking-widest mb-4">Torneos</h3>
+              <h3 className="text-xs font-black text-[var(--color-text-body)] uppercase tracking-widest mb-4">Torneos y cancha abierta</h3>
               <div className="space-y-2">
                 <div className="flex justify-between items-center text-xs">
                   <span className="font-black text-[var(--color-text-muted)] uppercase tracking-widest">Cobrado</span>
@@ -252,7 +252,7 @@ export default async function CajaPage({
 
         {/* Bloque 3 — Ingresos por clases */}
         <CajaClassPaymentsSection title="Ingresos por clases" rows={classPaymentsRows} kind="class" />
-        <CajaClassPaymentsSection title="Ingresos por torneos" rows={tournamentPaymentsRows} kind="tournament" />
+        <CajaClassPaymentsSection title="Ingresos por torneos y cancha abierta" rows={tournamentPaymentsRows} kind="tournament" />
 
         {/* Bloque 4 — Detalle de gastos */}
         <CajaExpensesSection expenses={expenses} />

@@ -48,7 +48,7 @@ export function AddToTournamentModal({
 
   const handleSubmit = async () => {
     if (!selectedTournament || !selectedCategory) {
-      setError('Seleccioná torneo y categoría')
+      setError('Seleccioná evento y categoría')
       return
     }
     setLoading(true)
@@ -71,7 +71,7 @@ export function AddToTournamentModal({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
       <div className="bg-[var(--color-bg-card)] rounded-3xl border border-[var(--color-border)] shadow-2xl p-6 w-full max-w-sm space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-black text-[var(--color-text-heading)] uppercase tracking-widest">🏆 Agregar a torneo</h2>
+          <h2 className="text-sm font-black text-[var(--color-text-heading)] uppercase tracking-widest">🏆 Agregar a torneo o cancha abierta</h2>
           <button onClick={onClose} className="text-[var(--color-text-muted)] hover:text-[var(--color-text-body)]">
             ✕
           </button>
@@ -87,7 +87,7 @@ export function AddToTournamentModal({
             }}
             className="w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-xl p-3 text-xs font-bold text-[var(--color-text-body)] outline-none"
           >
-            <option value="">Seleccionar torneo...</option>
+            <option value="">Seleccionar evento...</option>
             {tournaments.map((t) => (
               <option key={t.id} value={t.id}>
                 {t.name}

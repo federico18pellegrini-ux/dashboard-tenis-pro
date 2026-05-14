@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { DeleteTournamentButton } from '@/components/dashboard/DeleteTournamentButton'
 
 type TournamentStatus = 'Próximo' | 'En curso' | 'Finalizado'
 
@@ -19,6 +20,8 @@ type TournamentCardModel = {
   totalStudents: number
   paidStudents: number
   totalCollectedCents: number
+  paymentsCount: number
+  paymentsTotalCents: number
 }
 
 function formatPesos(amountCents: number) {
@@ -98,13 +101,23 @@ export function TournamentCard({ tournament }: { tournament: TournamentCardModel
           </div>
         </div>
 
-        <div className="shrink-0">
+        <div className="shrink-0 flex flex-col gap-2">
           <Link
             href={`/dashboard/torneos/${tournament.id}`}
             className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] border border-[var(--color-border)] px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl whitespace-nowrap"
           >
             Ver detalle
           </Link>
+          <DeleteTournamentButton
+            tournamentId={tournament.id}
+            tournamentName={tournament.name}
+            impact={{
+              categoriesCount: tournament.categories.length,
+              studentsCount: tournament.totalStudents,
+              paymentsCount: tournament.paymentsCount,
+              paymentsTotalCents: tournament.paymentsTotalCents,
+            }}
+          />
         </div>
       </div>
     </div>

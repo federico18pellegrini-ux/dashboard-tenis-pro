@@ -52,6 +52,7 @@ export function AssignContactToSlotModal(props: {
   const [query, setQuery] = useState('')
   const [debouncedQuery, setDebouncedQuery] = useState('')
   const [contacts, setContacts] = useState<ContactRow[]>([])
+  const [contactsRefreshKey, setContactsRefreshKey] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
   const [isAssigningId, setIsAssigningId] = useState<string | null>(null)
   const [toast, setToast] = useState<ToastState>({ kind: 'idle' })
@@ -107,7 +108,7 @@ export function AssignContactToSlotModal(props: {
     return () => {
       cancelled = true
     }
-  }, [open, debouncedQuery])
+  }, [open, debouncedQuery, contactsRefreshKey])
 
   async function handleAssign(contact: ContactRow) {
     setIsAssigningId(contact.id)
@@ -259,7 +260,10 @@ export function AssignContactToSlotModal(props: {
 
               {/* Abre el modal existente */}
               <div className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-heading)] ">
-                <AddContactModal />
+                <AddContactModal
+                  mode="embedded"
+                  onCreated={() => setContactsRefreshKey((k) => k + 1)}
+                />
               </div>
             </div>
           </div>

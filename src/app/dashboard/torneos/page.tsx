@@ -56,6 +56,16 @@ export default async function TournamentsPage() {
     supabase.from('clubs').select('id, name').order('name'),
   ])
 
+  const { data: tournamentPaymentsData } = await supabase
+    .from('payments')
+    .select('amount_cents, notes')
+    .eq('type', 'tournament')
+
+  const tournamentPayments = (tournamentPaymentsData ?? []) as Array<{
+    amount_cents: number | null
+    notes: string | null
+  }>
+
   const tournaments = (tournamentsRes.data ?? []) as any[]
   const clubs = (clubsRes.data ?? []) as Array<{ id: string; name: string }>
 
@@ -81,9 +91,20 @@ export default async function TournamentsPage() {
       return acc + fallback
     }, 0)
 
+    const tourName = String(t.name ?? 'Evento')
+    const prefix = `TORNEO — ${tourName} · `
+    const matchedPayments = tournamentPayments.filter(
+      (p) => typeof p.notes === 'string' && p.notes.startsWith(prefix),
+    )
+    const paymentsCount = matchedPayments.length
+    const paymentsTotalCents = matchedPayments.reduce(
+      (acc, p) => acc + (Number(p.amount_cents) || 0),
+      0,
+    )
+
     return {
       id: String(t.id),
-      name: String(t.name ?? 'Torneo'),
+      name: tourName,
       notes: (t.notes as string | null) ?? null,
       startDateLabel: formatDateEsAR(t.start_date ?? null),
       endDateLabel: formatDateEsAR(t.end_date ?? null),
@@ -97,6 +118,8 @@ export default async function TournamentsPage() {
       totalStudents,
       paidStudents,
       totalCollectedCents,
+      paymentsCount,
+      paymentsTotalCents,
     }
   })
 
@@ -113,7 +136,7 @@ export default async function TournamentsPage() {
               ← Volver
             </Link>
             <Link
-              href="/dashboard/contactos"
+              href="/dashboard/contactos?status=student"
               className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] border border-black/10 p-3 rounded-2xl text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl"
               aria-label="Contactos"
             >
@@ -133,8 +156,8 @@ export default async function TournamentsPage() {
             >
               <span aria-hidden className="text-base leading-none">📅</span>
             </Link>
-            <h1 className="flex-1 text-center text-2xl md:text-3xl font-black tracking-tighter text-[var(--color-text-heading)] uppercase italic">
-              Torneos
+            <h1 className="flex-1 text-center text-xl sm:text-2xl md:text-3xl font-black tracking-tighter text-[var(--color-text-heading)] uppercase italic leading-tight">
+              Torneos y cancha abierta
             </h1>
             <div className="shrink-0">
               <CreateTournamentModal clubs={clubs} />
@@ -142,7 +165,7 @@ export default async function TournamentsPage() {
           </div>
 
           <p className="text-center text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-[0.2em] leading-none">
-            {list.length} TORNEOS • TOTAL COBRADO: {formatPesos(list.reduce((acc, t) => acc + (t.totalCollectedCents || 0), 0))}
+            {list.length} EVENTOS • TOTAL COBRADO: {formatPesos(list.reduce((acc, t) => acc + (t.totalCollectedCents || 0), 0))}
           </p>
         </header>
 
@@ -153,7 +176,7 @@ export default async function TournamentsPage() {
 
           {list.length === 0 && (
             <div className="p-10 text-center text-xs text-[var(--color-text-muted)] font-bold uppercase tracking-widest border border-[var(--color-border)] rounded-3xl bg-[var(--color-bg-card-inner)]/50">
-              No hay torneos todavía
+              No hay eventos todavía
             </div>
           )}
         </div>

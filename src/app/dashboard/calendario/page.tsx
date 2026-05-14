@@ -113,10 +113,10 @@ export default async function CalendarioPage({
         id: `torneo-${tor.id}-${key}`,
         scheduledAt: new Date(d).toISOString(),
         timeShort: '🏆',
-        timeRangeLabel: String(tor.name ?? 'Torneo'),
+        timeRangeLabel: String(tor.name ?? 'Evento'),
         dateLabel: new Date(d).toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }),
         clubAbbrev: '🏆',
-        clubFull: String(tor.name ?? 'Torneo'),
+        clubFull: String(tor.name ?? 'Evento'),
         status: ({ 'upcoming': 'Próximo', 'in_progress': 'En curso', 'finished': 'Finalizado' } as Record<string, string>)[String(tor.status)] ?? String(tor.status),
         studentNames: Array((tor.students ?? []).length).fill("inscripto"),
         totalCobradoCents: (tor.students ?? [])
@@ -145,7 +145,7 @@ export default async function CalendarioPage({
               ← Volver
             </Link>
             <Link
-              href="/dashboard/contactos"
+              href="/dashboard/contactos?status=student"
               className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] border border-black/10 p-3 rounded-2xl text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl"
               aria-label="Contactos"
             >
@@ -161,7 +161,7 @@ export default async function CalendarioPage({
             <Link
               href="/dashboard/torneos"
               className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] border border-black/10 p-3 rounded-2xl text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl"
-              aria-label="Torneos"
+              aria-label="Torneos y cancha abierta"
             >
               <span aria-hidden className="text-base leading-none">🏆</span>
             </Link>

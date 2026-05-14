@@ -6,15 +6,46 @@ import { AddContactModal } from '@/components/contacts/AddContactModal'
 import { ContactActionsMenu } from '@/components/contacts/ContactActionsMenu'
 import { formatPhoneForDisplay } from '@/lib/utils/phone'
 
+function contactosHref(parts: { status: string; prospecto_creado?: string }, q: string) {
+  const p = new URLSearchParams()
+  p.set('status', parts.status)
+  if (parts.prospecto_creado) p.set('prospecto_creado', parts.prospecto_creado)
+  if (q.trim()) p.set('q', q.trim())
+  return `/dashboard/contactos?${p.toString()}`
+}
+
+function segmentTabClass(active: boolean) {
+  return [
+    'inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all border shadow-lg whitespace-nowrap',
+    active
+      ? 'bg-[var(--color-accent)] text-white border-transparent'
+      : 'bg-[var(--color-bg-card-inner)] text-[var(--color-text-body)] border-black/10 hover:border-[var(--color-accent)]',
+  ].join(' ')
+}
+
 export default async function ContactsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ status?: string; q?: string }>
+  searchParams: Promise<{ status?: string; q?: string; prospecto_creado?: string }>
 }) {
-  const supabase = await createSupabaseServerClient()
-  const { status = 'student', q = '' } = await searchParams
+  const raw = await searchParams
+  const q = typeof raw.q === 'string' ? raw.q : ''
+  const prospecto_creado = typeof raw.prospecto_creado === 'string' ? raw.prospecto_creado : undefined
+  const statusRaw = typeof raw.status === 'string' ? raw.status.trim() : ''
+  const allowed = new Set(['student', 'unclassified', 'all'])
+  if (!statusRaw || !allowed.has(statusRaw)) {
+    const p = new URLSearchParams()
+    p.set('status', 'student')
+    if (q.trim()) p.set('q', q.trim())
+    if (prospecto_creado === '1') p.set('prospecto_creado', '1')
+    redirect(`/dashboard/contactos?${p.toString()}`)
+  }
+  const status = statusRaw as 'student' | 'unclassified' | 'all'
 
-  const { data: { user } } = await supabase.auth.getUser()
+  const supabase = await createSupabaseServerClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
   // 1. Fetch de contactos con filtros
@@ -90,7 +121,7 @@ export default async function ContactsPage({
             <Link
               href="/dashboard/torneos"
               className="inline-flex items-center justify-center bg-[var(--color-bg-card-inner)] border border-black/10 p-3 rounded-2xl text-[var(--color-text-body)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors shadow-xl"
-              aria-label="Torneos"
+              aria-label="Torneos y cancha abierta"
             >
               <span aria-hidden className="text-base leading-none">🏆</span>
             </Link>
@@ -99,23 +130,56 @@ export default async function ContactsPage({
             </h1>
           </div>
 
-          <p className="text-center text-[10px] font-black text-[var(--color-text-body)] dark:text-[var(--color-text-body)] uppercase tracking-[0.2em] leading-none">
-            {total} TOTAL • {studentsCount} ALUMNOS • {unclassified} PENDIENTES
-          </p>
         </header>
 
-        {/* NAVEGACIÓN */}
-        <div className="flex flex-nowrap gap-2 overflow-x-auto no-scrollbar pb-2 border-b border-black/10 ">
-          <div className="flex items-center gap-3">
+        <nav
+          className="flex flex-col gap-3 border-b border-black/10 pb-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between"
+          aria-label="Vista de contactos"
+        >
+          <div className="flex flex-wrap gap-2">
             <Link
-              href="/dashboard/contactos?status=student"
-              className="px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap bg-[var(--color-accent)] text-white  shadow-lg "
+              href={contactosHref({ status: 'student' }, q)}
+              className={segmentTabClass(status === 'student')}
+              aria-current={status === 'student' ? 'page' : undefined}
             >
-              Alumnos
+              <span>Alumnos</span>
+              <span className="tabular-nums opacity-80">({studentsCount})</span>
             </Link>
+            <Link
+              href={contactosHref({ status: 'unclassified' }, q)}
+              className={segmentTabClass(status === 'unclassified')}
+              aria-current={status === 'unclassified' ? 'page' : undefined}
+            >
+              <span>Pendientes</span>
+              <span className="tabular-nums opacity-80">({unclassified})</span>
+            </Link>
+            <Link
+              href={contactosHref({ status: 'all' }, q)}
+              className={segmentTabClass(status === 'all')}
+              aria-current={status === 'all' ? 'page' : undefined}
+            >
+              <span>Todos</span>
+              <span className="tabular-nums opacity-80">({total})</span>
+            </Link>
+          </div>
+          <div className="shrink-0 [&_button]:w-full sm:[&_button]:w-auto">
             <AddContactModal />
           </div>
-        </div>
+        </nav>
+
+        {prospecto_creado === '1' && status === 'unclassified' && (
+          <div className="flex flex-col gap-3 rounded-2xl border border-[var(--color-accent)]/40 bg-[var(--color-accent)]/10 px-4 py-3 md:flex-row md:items-center md:justify-between">
+            <p className="text-xs font-bold text-[var(--color-text-heading)] leading-snug">
+              Posible alumno guardado. Ya estás viendo Pendientes: acá están los que aún no convertiste en alumno.
+            </p>
+            <Link
+              href={contactosHref({ status: 'unclassified' }, q)}
+              className="shrink-0 inline-flex items-center justify-center text-center text-[10px] font-black uppercase tracking-widest text-[var(--color-accent)] underline underline-offset-2 hover:opacity-90"
+            >
+              Cerrar aviso
+            </Link>
+          </div>
+        )}
 
         {/* LISTA MOBILE-FIRST */}
         <div className="space-y-3 pb-10">
@@ -149,9 +213,23 @@ export default async function ContactsPage({
                         .join('') || '?'}
                     </div>
                     <div className="min-w-0">
-                      <p className="text-sm font-black text-[var(--color-text-body)] text-[var(--color-text-heading)] uppercase tracking-tight leading-tight truncate">
-                        {contact.full_name}
-                      </p>
+                      <div className="flex flex-wrap items-center gap-2 min-w-0">
+                        <p className="text-sm font-black text-[var(--color-text-body)] text-[var(--color-text-heading)] uppercase tracking-tight leading-tight truncate">
+                          {contact.full_name}
+                        </p>
+                        {status === 'all' && (
+                          <span
+                            className={[
+                              'shrink-0 text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-lg border',
+                              contact.status === 'student'
+                                ? 'border-emerald-500/40 text-emerald-700 dark:text-emerald-300 bg-emerald-500/10'
+                                : 'border-amber-500/40 text-amber-800 dark:text-amber-200 bg-amber-500/10',
+                            ].join(' ')}
+                          >
+                            {contact.status === 'student' ? 'Alumno' : 'Pendiente'}
+                          </span>
+                        )}
+                      </div>
 
                       {waHref ? (
                         <a
@@ -200,8 +278,20 @@ export default async function ContactsPage({
           })}
 
           {contacts.length === 0 && (
-            <div className="p-10 text-center text-xs text-[var(--color-text-body)] dark:text-[var(--color-text-body)] font-bold uppercase tracking-widest border border-black/10  rounded-3xl bg-[var(--color-bg-card-inner)]/50 bg-[var(--color-bg-card)]/20">
-              No hay contactos para este filtro
+            <div className="p-10 text-center space-y-3 text-xs text-[var(--color-text-body)] dark:text-[var(--color-text-body)] font-bold uppercase tracking-widest border border-black/10  rounded-3xl bg-[var(--color-bg-card-inner)]/50 bg-[var(--color-bg-card)]/20">
+              <p>No hay contactos para este filtro</p>
+              {status === 'student' && (
+                <p className="normal-case font-bold text-[10px] text-[var(--color-text-muted)] max-w-md mx-auto leading-relaxed">
+                  Los posibles alumnos nuevos quedan en{' '}
+                  <Link
+                    href={contactosHref({ status: 'unclassified' }, q)}
+                    className="text-[var(--color-accent)] underline underline-offset-2"
+                  >
+                    Pendientes
+                  </Link>
+                  , no acá.
+                </p>
+              )}
             </div>
           )}
         </div>

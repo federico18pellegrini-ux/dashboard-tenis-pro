@@ -4,6 +4,26 @@ import { revalidatePath } from 'next/cache'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
 import { normalizePhone } from '@/lib/utils/phone'
 
+/** Invalida el listado de Contactos (ruta + página con query) y el dashboard donde se listan alumnos. */
+export async function revalidateContactsSurfaces() {
+  revalidatePath('/dashboard/contactos')
+  revalidatePath('/dashboard/contactos', 'page')
+  revalidatePath('/dashboard')
+}
+
+export type CreateManualContactResult =
+  | { success: true }
+  | { success: false; error: string; code?: 'duplicate' }
+
+function isUniqueViolation(err: unknown): boolean {
+  const e = err as { code?: string; message?: string }
+  const msg = String(e?.message ?? '')
+  return (
+    e?.code === '23505' ||
+    /\bduplicate\b|unique constraint|already exists|violates unique|uniq_/i.test(msg)
+  )
+}
+
 /**
  * 1. CREAR CONTACTO MANUAL
  * Registra prospectos en estado 'unclassified'.
@@ -14,7 +34,7 @@ export async function createManualContact(data: {
   phone: string;
   tags?: string[];
   notes?: string; // ← Agregado para resolver el Type Error
-}) {
+}): Promise<CreateManualContactResult> {
   try {
     const supabase = await createSupabaseServerClient()
     const sanitizedPhone = normalizePhone(data.phone)
@@ -32,10 +52,22 @@ export async function createManualContact(data: {
 
     if (error) throw error
 
-    revalidatePath('/dashboard/contactos')
+    await revalidateContactsSurfaces()
     return { success: true }
-  } catch (err: any) {
-    return { success: false, error: err.message }
+  } catch (err: unknown) {
+    if (isUniqueViolation(err)) {
+      return {
+        success: false,
+        code: 'duplicate',
+        error:
+          'Ya existe un contacto con ese teléfono — seguramente está en Pendientes (no en Alumnos).',
+      }
+    }
+    const msg =
+      err instanceof Error
+        ? err.message
+        : String((err as { message?: string })?.message ?? err)
+    return { success: false, error: msg || 'No se pudo guardar el contacto.' }
   }
 }
 
@@ -84,8 +116,7 @@ export async function promoteContactToStudent(contactId: string, data: {
       })
       .eq('id', contactId)
 
-    revalidatePath('/dashboard/contactos')
-    revalidatePath('/dashboard')
+    await revalidateContactsSurfaces()
     return { success: true }
   } catch (err: any) {
     return { success: false, error: err.message }
@@ -149,8 +180,7 @@ export async function updateStudentData(studentId: string, data: {
         .eq('student_id', studentId)
     }
 
-    revalidatePath('/dashboard/contactos')
-    revalidatePath('/dashboard')
+    await revalidateContactsSurfaces()
     return { success: true }
   } catch (err: any) {
     console.error("Error en updateStudentData:", err.message)
@@ -168,7 +198,7 @@ export async function deleteContact(contactId: string) {
 
     if (error) throw error
 
-    revalidatePath('/dashboard/contactos')
+    await revalidateContactsSurfaces()
     return { success: true }
   } catch (err: any) {
     return { success: false, error: err.message }

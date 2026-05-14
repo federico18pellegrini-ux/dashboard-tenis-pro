@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
+import { revalidateContactsSurfaces } from '@/lib/actions/contacts'
 import {
   AssignContactToSlotSchema,
   type AssignContactToSlotInput,
@@ -106,8 +107,7 @@ export async function assignContactToSlot(input: AssignContactToSlotInput) {
         throw scheduleErr
       }
 
-      revalidatePath('/dashboard/contactos')
-      revalidatePath('/dashboard')
+      await revalidateContactsSurfaces()
       return { success: true as const, studentId: newStudent.id }
     }
 
@@ -127,7 +127,7 @@ export async function assignContactToSlot(input: AssignContactToSlotInput) {
 
       if (scheduleErr) throw scheduleErr
 
-      revalidatePath('/dashboard')
+      await revalidateContactsSurfaces()
       return { success: true as const, studentId }
     }
 
