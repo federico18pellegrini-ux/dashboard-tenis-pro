@@ -101,6 +101,14 @@ Requiere migración + refactor de actions. **NO atacar sin reservar tiempo.**
   ajuste, error), los totales no matchean. Caso real: 5ta Palermo precio $50.000
   pero el `amount_cents` en payments es $20.000 → página dice $50k, Caja dice $20k.
 
+- [ ] **`deleteTournament` matchea pagos por texto en `notes`.** Como
+  `payments` no tiene FK a `tournaments`, el borrado en cascada de pagos al
+  eliminar un torneo se hace con `WHERE type='tournament' AND notes LIKE
+  'TORNEO — <name> · %'`. Frágil ante rename del torneo entre crear el pago
+  y borrarlo. Cuando se implemente la migración (agregar `tournament_id` a
+  `payments`), refactorizar `deleteTournament` para usar la FK en vez del
+  matching de texto.
+
 ### Fix propuesto
 
 1. Migración SQL:
