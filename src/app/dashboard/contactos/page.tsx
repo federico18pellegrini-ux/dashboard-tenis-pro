@@ -5,12 +5,14 @@ import { PromoteToStudentModal } from '@/components/contacts/PromoteToStudentMod
 import { AddContactModal } from '@/components/contacts/AddContactModal'
 import { ContactActionsMenu } from '@/components/contacts/ContactActionsMenu'
 import { formatPhoneForDisplay } from '@/lib/utils/phone'
-import { formatStudentLevel } from '@/lib/levels'
+import { formatStudentLevel, isStudentLevel, type StudentLevel } from '@/lib/levels'
+import { LevelFilter } from '@/components/contacts/LevelFilter'
 
-function contactosHref(parts: { status: string; prospecto_creado?: string }, q: string) {
+function contactosHref(parts: { status: string; prospecto_creado?: string; level?: string }, q: string) {
   const p = new URLSearchParams()
   p.set('status', parts.status)
   if (parts.prospecto_creado) p.set('prospecto_creado', parts.prospecto_creado)
+  if (parts.level) p.set('level', parts.level)
   if (q.trim()) p.set('q', q.trim())
   return `/dashboard/contactos?${p.toString()}`
 }
@@ -27,7 +29,7 @@ function segmentTabClass(active: boolean) {
 export default async function ContactsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ status?: string; q?: string; prospecto_creado?: string }>
+  searchParams: Promise<{ status?: string; q?: string; prospecto_creado?: string; level?: string }>
 }) {
   const raw = await searchParams
   const q = typeof raw.q === 'string' ? raw.q : ''
@@ -43,6 +45,9 @@ export default async function ContactsPage({
   }
   const status = statusRaw as 'student' | 'unclassified' | 'all'
 
+  const levelRaw = typeof raw.level === 'string' ? raw.level.trim() : ''
+  const level: StudentLevel | undefined = isStudentLevel(levelRaw) ? levelRaw : undefined
+
   const supabase = await createSupabaseServerClient()
   const {
     data: { user },
@@ -50,15 +55,24 @@ export default async function ContactsPage({
   if (!user) redirect('/login')
 
   // 1. Fetch de contactos con filtros
+  const studentEmbed =
+    status === 'student' && level
+      ? `student:students!inner(
+        level,
+        club_id,
+        club:clubs(name)
+      )`
+      : `student:students(
+        level,
+        club_id,
+        club:clubs(name)
+      )`
+
   let query = supabase
     .from('contacts')
     .select(`
       *,
-      student:students(
-        level,
-        club_id,
-        club:clubs(name)
-      )
+      ${studentEmbed}
     `)
   
   if (status !== 'all') {
@@ -67,6 +81,10 @@ export default async function ContactsPage({
   
   if (q) {
     query = query.ilike('full_name', `%${q}%`)
+  }
+
+  if (status === 'student' && level) {
+    query = query.eq('students.level', level)
   }
 
   // FIX: Tipado explícito para evitar 'never[]'
@@ -139,7 +157,7 @@ export default async function ContactsPage({
         >
           <div className="flex flex-wrap gap-2">
             <Link
-              href={contactosHref({ status: 'student' }, q)}
+              href={contactosHref({ status: 'student', level }, q)}
               className={segmentTabClass(status === 'student')}
               aria-current={status === 'student' ? 'page' : undefined}
             >
@@ -167,6 +185,8 @@ export default async function ContactsPage({
             <AddContactModal />
           </div>
         </nav>
+
+        {status === 'student' && <LevelFilter currentLevel={level} />}
 
         {prospecto_creado === '1' && status === 'unclassified' && (
           <div className="flex flex-col gap-3 rounded-2xl border border-[var(--color-accent)]/40 bg-[var(--color-accent)]/10 px-4 py-3 md:flex-row md:items-center md:justify-between">
