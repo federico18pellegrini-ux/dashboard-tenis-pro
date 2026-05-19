@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { addManualStudent } from '@/app/dashboard/actions'
+import { STUDENT_LEVELS, DEFAULT_STUDENT_LEVEL } from '@/lib/levels'
 
 interface Club {
   id: string
@@ -103,10 +104,14 @@ export function AddStudentModal({ clubs }: { clubs: Club[] }) {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className={labelClasses}>Nivel</label>
-                  <select name="level" className={inputClasses}>
-                    <option value="principiante">Principiante</option>
-                    <option value="intermedio">Intermedio</option>
-                    <option value="avanzado">Avanzado</option>
+                  <select
+                    name="level"
+                    defaultValue={DEFAULT_STUDENT_LEVEL}
+                    className={inputClasses}
+                  >
+                    {STUDENT_LEVELS.map((lvl) => (
+                      <option key={lvl} value={lvl}>{lvl}</option>
+                    ))}
                   </select>
                 </div>
                 <div>

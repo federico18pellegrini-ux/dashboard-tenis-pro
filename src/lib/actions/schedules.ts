@@ -13,6 +13,7 @@ import {
   UpdateScheduleSlotSchema,
   type UpdateScheduleSlotInput,
 } from '@/lib/schemas/schedules'
+import { DEFAULT_STUDENT_LEVEL } from '@/lib/levels'
 
 function toTimeWithSeconds(hhmm: string) {
   return hhmm.length === 5 ? `${hhmm}:00` : hhmm
@@ -74,7 +75,7 @@ export async function assignContactToSlot(input: AssignContactToSlotInput) {
           full_name: contact.full_name,
           phone: contact.phone,
           club_id: clubId,
-          level: 'principiante',
+          level: DEFAULT_STUDENT_LEVEL,
           price_per_class_cents: 0,
           active: true,
         })

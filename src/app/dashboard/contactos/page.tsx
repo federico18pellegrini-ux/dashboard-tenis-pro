@@ -5,6 +5,7 @@ import { PromoteToStudentModal } from '@/components/contacts/PromoteToStudentMod
 import { AddContactModal } from '@/components/contacts/AddContactModal'
 import { ContactActionsMenu } from '@/components/contacts/ContactActionsMenu'
 import { formatPhoneForDisplay } from '@/lib/utils/phone'
+import { formatStudentLevel } from '@/lib/levels'
 
 function contactosHref(parts: { status: string; prospecto_creado?: string }, q: string) {
   const p = new URLSearchParams()
@@ -187,14 +188,7 @@ export default async function ContactsPage({
             const phoneDigits = String(contact.phone || '').replace(/\D/g, '')
             const waHref = phoneDigits ? `https://wa.me/${phoneDigits}` : null
             const levelRaw = contact.student?.level as string | undefined
-            const levelLabel =
-              levelRaw === 'principiante'
-                ? 'Principiante'
-                : levelRaw === 'intermedio'
-                  ? 'Intermedio'
-                  : levelRaw === 'avanzado'
-                    ? 'Avanzado'
-                    : null
+            const levelLabel = formatStudentLevel(levelRaw)
             const clubName = (contact.student?.club?.name as string | undefined) ?? null
 
             return (

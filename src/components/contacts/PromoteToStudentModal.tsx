@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { promoteContactToStudent } from '@/lib/actions/contacts'
 import { useRouter } from 'next/navigation'
+import { STUDENT_LEVELS, DEFAULT_STUDENT_LEVEL } from '@/lib/levels'
 
 export function PromoteToStudentModal({ contact, clubs }: { contact: any, clubs: any[] }) {
   const [isOpen, setIsOpen] = useState(false)
@@ -78,10 +79,14 @@ export function PromoteToStudentModal({ contact, clubs }: { contact: any, clubs:
             </div>
             <div>
               <label className="text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-widest ml-1">Nivel</label>
-              <select name="level" className="w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-2xl p-4 text-sm font-bold text-[var(--color-text-heading)] mt-1">
-                <option value="principiante">Principiante</option>
-                <option value="intermedio">Intermedio</option>
-                <option value="avanzado">Avanzado</option>
+              <select
+                name="level"
+                defaultValue={DEFAULT_STUDENT_LEVEL}
+                className="w-full bg-[var(--color-bg-page)] border border-[var(--color-border)] rounded-2xl p-4 text-sm font-bold text-[var(--color-text-heading)] mt-1"
+              >
+                {STUDENT_LEVELS.map((lvl) => (
+                  <option key={lvl} value={lvl}>{lvl}</option>
+                ))}
               </select>
             </div>
           </div>

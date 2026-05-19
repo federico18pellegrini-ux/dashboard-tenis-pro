@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { updateStudentData } from '@/lib/actions/contacts'
 import { useRouter } from 'next/navigation'
+import { STUDENT_LEVELS, DEFAULT_STUDENT_LEVEL } from '@/lib/levels'
 
 interface Schedule {
   day_of_week: number
@@ -106,10 +107,14 @@ export function EditStudentModal({
             </div>
             <div>
               <label className={labelClasses}>Nivel</label>
-              <select name="level" defaultValue={contact.level || 'principiante'} className={inputClasses}>
-                <option value="principiante">Principiante</option>
-                <option value="intermedio">Intermedio</option>
-                <option value="avanzado">Avanzado</option>
+              <select
+                name="level"
+                defaultValue={contact.level || DEFAULT_STUDENT_LEVEL}
+                className={inputClasses}
+              >
+                {STUDENT_LEVELS.map((lvl) => (
+                  <option key={lvl} value={lvl}>{lvl}</option>
+                ))}
               </select>
             </div>
           </div>
