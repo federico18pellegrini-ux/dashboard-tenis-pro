@@ -36,6 +36,12 @@ confirmación con Rodrigo antes de ejecutar.
   las clases del mismo color verde. Agregar badge/color para días con clases
   pendientes de cierre.
 
+## Fase 3 — Bugs descubiertos 2026-05-20
+
+- [ ] **Modal "Agregar alumno a clase" tiene dark mode roto.** Las opciones del select aparecen en gris muy claro sobre fondo oscuro, casi ilegibles. Solo afecta el modal de asignar alumno a una clase desde el dashboard. Revisar `AssignContactToSlotModal.tsx` o el componente equivalente.
+
+- [ ] **Alumnos duplicados en la DB.** Hay 3 filas de "Enrique Dr" en la lista de alumnos al abrir el modal "Agregar alumno a clase". Confirmar con `SELECT id, full_name, phone FROM students WHERE full_name LIKE '%Enrique%';` y dedupear. Posible bug en el flujo de creación que permite duplicados sin validar.
+
 ## Fase 4 — Preguntas para Rodrigo (decisiones de producto)
 
 - [ ] **Política de precios de clase**. ¿`classes.price_cents` se carga

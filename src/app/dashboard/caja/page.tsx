@@ -50,6 +50,8 @@ export default async function CajaPage({
   const [clubsRes, expensesRes, classPaymentsRes, tournamentPaymentsRes] = await Promise.all([
     supabase.from('clubs').select('*'),
     supabase.from('expenses').select('*, clubs(name)').gte('expense_date', firstDayOfMonth).lte('expense_date', lastDayOfMonth).order('expense_date', { ascending: false }),
+    // Filtro por fecha de clase (classes.scheduled_at), no por paid_at.
+    // Sintaxis: .gte/.lte('classes.scheduled_at', ...) con embed classes!inner.
     supabase
       .from('class_students')
       .select(`
@@ -59,15 +61,15 @@ export default async function CajaPage({
         paid_at,
         payment_method,
         student:students(full_name),
-        class:classes(
+        class:classes!inner(
           club_id,
           scheduled_at
         )
       `)
       .eq('paid', true)
       .not('paid_at', 'is', null)
-      .gte('paid_at', startOfMonth.toISOString())
-      .lte('paid_at', endOfMonth.toISOString()),
+      .gte('classes.scheduled_at', startOfMonth.toISOString())
+      .lte('classes.scheduled_at', endOfMonth.toISOString()),
     supabase
       .from('payments')
       .select('id, student_id, amount_cents, payment_date, payment_method, notes, paid_at, student:students(full_name)')
@@ -109,23 +111,31 @@ export default async function CajaPage({
     }
   })
 
-  const classPaymentsRows = classPayments.map((p: any) => {
-    const clubName = p.class?.club_id ? (clubById.get(p.class.club_id)?.name ?? 'Global') : 'Global'
-    return {
-      id: p.class_id as string,
-      student_id: p.student_id as string,
-      paid_at: (p.paid_at as string | null) ?? null,
-      student_name: (p.student?.full_name as string | undefined) ?? 'Alumno',
-      method_label: paymentMethodLabel((p.payment_method as string | null) ?? null),
-      club_name: clubName,
-      amount_cents: Number(p.paid_amount || 0),
-    }
-  })
+  const classPaymentsRows = classPayments
+    .map((p: any) => {
+      const clubName = p.class?.club_id ? (clubById.get(p.class.club_id)?.name ?? 'Global') : 'Global'
+      return {
+        id: p.class_id as string,
+        student_id: p.student_id as string,
+        paid_at: (p.paid_at as string | null) ?? null,
+        scheduled_at: (p.class?.scheduled_at as string | null) ?? null,
+        student_name: (p.student?.full_name as string | undefined) ?? 'Alumno',
+        method_label: paymentMethodLabel((p.payment_method as string | null) ?? null),
+        club_name: clubName,
+        amount_cents: Number(p.paid_amount || 0),
+      }
+    })
+    .sort((a, b) => {
+      const aDate = a.scheduled_at ?? a.paid_at ?? ''
+      const bDate = b.scheduled_at ?? b.paid_at ?? ''
+      return bDate.localeCompare(aDate)
+    })
 
   const tournamentPaymentsRows = tournamentPayments.map((p: any) => ({
     id: p.id as string,
     student_id: p.student_id as string,
     paid_at: (p.paid_at as string | null) ?? (p.payment_date as string | null) ?? null,
+    scheduled_at: null as string | null,
     student_name: (p.student?.full_name as string | undefined) ?? 'Alumno',
     method_label: paymentMethodLabel((p.payment_method as string | null) ?? null),
     club_name: (p.notes as string | null)?.replace('TORNEO — ', '').split(' · ')[0] ?? 'Evento',

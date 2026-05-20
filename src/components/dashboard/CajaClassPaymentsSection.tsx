@@ -8,6 +8,7 @@ type Row = {
   id: string // clase: id de clase; torneo: id de fila en payments
   student_id: string
   paid_at: string | null
+  scheduled_at: string | null
   student_name: string
   method_label: string
   club_name: string
@@ -55,7 +56,7 @@ export function CajaClassPaymentsSection({
 
   const exportRows = useMemo(() => {
     return rows.map((r) => ({
-      fecha: formatDateShort(r.paid_at),
+      fecha: formatDateShort(r.scheduled_at ?? r.paid_at),
       alumno: r.student_name || 'Alumno',
       metodo: r.method_label || '—',
       sede: r.club_name || 'Global',
@@ -93,8 +94,13 @@ export function CajaClassPaymentsSection({
                 <div className="flex items-start justify-between gap-4">
                   <div className="min-w-0">
                     <div className="text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-widest">
-                      {formatDateShort(p.paid_at)}
+                      {formatDateShort(p.scheduled_at ?? p.paid_at)}
                     </div>
+                    {p.scheduled_at && formatDateShort(p.scheduled_at) !== formatDateShort(p.paid_at) && (
+                      <div className="text-[9px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest opacity-60 mt-0.5">
+                        Cobrada el {formatDateShort(p.paid_at)}
+                      </div>
+                    )}
                     <div className="mt-2 text-sm font-black text-[var(--color-text-heading)] uppercase tracking-tight truncate">
                       {kind === 'class' ? 'Clase' : 'Torneo'} — {p.student_name || 'Alumno'} · {p.method_label || '—'}
                     </div>
