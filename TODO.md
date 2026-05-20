@@ -40,7 +40,7 @@ confirmación con Rodrigo antes de ejecutar.
 
 - [x] **Modal "Agregar alumno a clase" tiene dark mode roto.** Resuelto en c1496d6 (2026-05-20). El archivo era AddStudentToClassModal.tsx, no AssignContactToSlotModal.tsx.
 
-- [ ] **Alumnos duplicados en la DB.** Hay 3 filas de "Enrique Dr" en la lista de alumnos al abrir el modal "Agregar alumno a clase". Confirmar con `SELECT id, full_name, phone FROM students WHERE full_name LIKE '%Enrique%';` y dedupear. Posible bug en el flujo de creación que permite duplicados sin validar.
+- [x] **Alumnos duplicados en la DB.** Resuelto 2026-05-20, ver Fase 4.
 
 ## Fase 4 — Bugs descubiertos 2026-05-20 (post-cleanup Enrique Dr)
 
