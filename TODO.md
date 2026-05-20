@@ -42,6 +42,14 @@ confirmación con Rodrigo antes de ejecutar.
 
 - [ ] **Alumnos duplicados en la DB.** Hay 3 filas de "Enrique Dr" en la lista de alumnos al abrir el modal "Agregar alumno a clase". Confirmar con `SELECT id, full_name, phone FROM students WHERE full_name LIKE '%Enrique%';` y dedupear. Posible bug en el flujo de creación que permite duplicados sin validar.
 
+## Fase 4 — Bugs descubiertos 2026-05-20 (post-cleanup Enrique Dr)
+
+- [x] **3 alumnos duplicados "Enrique Dr"**. Mismo nombre, teléfono, club, level. Creados con 4 segundos de diferencia el 13/05. Resuelto manualmente: DELETE de 2 students duplicados, mantuvimos el más viejo. Sin pérdida de data (los 3 tenían 0 clases / 0 pagos / 0 inscripciones).
+
+- [ ] **Bug del flujo "Agregar alumno": permite múltiples submits.** El triple Enrique Dr indica que el form de creación de alumno NO bloquea el botón después de enviar. Cualquier doble-click crea duplicados. Implementar disabled del botón mientras se procesa, o validación de duplicado por teléfono antes de insertar.
+
+- [ ] **Inconsistencia students vs contacts**. Encontramos students con `full_name='Enrique Dr'` pero CERO contacts con ese nombre. Si el modelo asume 1:1 (`students.id = contacts.id`), eso es violación de invariante. Investigar si el flujo de "Agregar alumno" desde el dashboard crea correctamente el contact correspondiente, o si solo inserta en students.
+
 ## Fase 4 — Preguntas para Rodrigo (decisiones de producto)
 
 - [ ] **Política de precios de clase**. ¿`classes.price_cents` se carga
